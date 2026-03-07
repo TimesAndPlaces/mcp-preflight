@@ -44,5 +44,5 @@ This public repository stays intentionally narrow. It contains the Lite product 
 - `apps/vscode-extension`: VS Code integration
 
 ## Support
-- Questions and feature requests: GitHub Discussions
-- Bugs: GitHub Issues
+- Questions and feature requests: [GitHub Discussions](https://github.com/TimesAndPlaces/mcp-preflight/discussions)
+- Bugs: [GitHub Issues](https://github.com/TimesAndPlaces/mcp-preflight/issues)
