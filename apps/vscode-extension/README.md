@@ -1,27 +1,39 @@
 # MCP Preflight
 
-MCP Preflight is a local-first security preflight scanner for Model Context Protocol setups. It helps you review `mcp.json`, prompt resources, repo manifests, and obvious secret exposures before you trust a new MCP server or agent workflow.
+MCP Preflight helps you catch risky MCP configs before you run them.
 
-## Why use it
-- Local by default. No hosted scanner required.
-- Deterministic findings with fix guidance.
-- Problems-panel diagnostics for risky MCP config patterns.
-- Fast audit export paths through JSON, Markdown, HTML, and SARIF from the CLI.
+The point is simple: scan first, trust later. The extension is local-first, fast to run, and written for people who want a clear answer instead of a dashboard.
+
+## What you get
+- scan the current workspace
+- scan the current file
+- Problems panel diagnostics
+- fix guidance in plain language
+- no required login for the Lite scan flow
 
 ## Commands
 - `MCP Preflight: Scan Workspace`
 - `MCP Preflight: Scan Current File`
 - `MCP Preflight: Show Fix Recipes`
 
-## Current checks
-- Secret and private key exposure
-- Token passthrough and overbroad environment inheritance
-- Unsafe shell wrappers and bootstrap launchers
-- Unpinned dependencies and missing lockfiles
-- Prompt injection and tool poisoning indicators
-- Insecure transport, credential-bearing URLs, and sensitive remote MCP targets
-- Overbroad filesystem or network scope in MCP launch args
-- Invalid MCP config and malformed suppression files
+## What it checks today
+- hardcoded secrets and private key material
+- token passthrough and broad environment inheritance
+- unsafe shell wrappers and ephemeral launchers
+- unpinned dependencies and missing lockfiles
+- prompt-injection and tool-poisoning indicators
+- insecure transport, credential-bearing URLs, and sensitive remote targets
+- broad filesystem or network scope in MCP launch arguments
+- invalid MCP config and malformed suppression files
 
-## Privacy
-Scans run locally by default. MCP Preflight does not require login and does not send your workspace to a hosted backend.
+## Why people use it
+- local scan by default
+- no hosted MCP Preflight account required for the Lite scan
+- MCP-specific checks instead of a broad platform surface
+- findings that explain what looked risky and what to fix next
+
+## Read more
+- [Privacy note](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/PRIVACY.md)
+- [Rule overview](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/RULES.md)
+- [Sample report](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/SAMPLE_REPORT.md)
+- [Security reporting](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/SECURITY.md)
