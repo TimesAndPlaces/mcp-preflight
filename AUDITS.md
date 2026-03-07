@@ -6,6 +6,7 @@ They are meant to be practical preflight reads, not accusations and not vulnerab
 
 ## Published notes
 - [Quick preflight read: the official filesystem reference server setup](audits/2026-03-07-official-filesystem-server-setup.md)
+- [How to secure `mcp.json` without turning it into ceremony](audits/2026-03-08-secure-mcp-json-without-ceremony.md)
 
 ## What these notes try to do
 - stay close to the original source material
