@@ -18,6 +18,10 @@ The point is simple: scan first, trust later. The extension is local-first, fast
 - `MCP Preflight: Show Fix Recipes`
 - `MCP Preflight: Install Pro License`
 - `MCP Preflight: Show License Status`
+- `MCP Preflight: Show Local Activity`
+- `MCP Preflight: Upgrade to Pro`
+- `MCP Preflight: Leave a Review`
+- `MCP Preflight: Get Help`
 
 ## What it checks today
 - hardcoded secrets and private key material
@@ -35,10 +39,16 @@ The point is simple: scan first, trust later. The extension is local-first, fast
 - Pro unlock stays local too, through a signed license token on the machine
 - MCP-specific checks instead of a broad platform surface
 - findings that explain what looked risky and what to fix next
+- local activity is visible in the editor instead of being hidden behind a web dashboard
 
 ## Upgrade
 - Buy MCP Preflight Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
 - Pro stays local after purchase: install the signed license token on the machine instead of logging into a hosted MCP Preflight account
+
+## Local activity
+The extension keeps a small local activity log for scan runs, local license actions, blocked Pro surfaces, and the product links you open from the command palette.
+
+That log stays on the machine unless you choose to export or share it yourself.
 
 ## Read more
 - [Privacy note](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/PRIVACY.md)

@@ -4,6 +4,9 @@ import process from "node:process";
 import { spawnSync } from "node:child_process";
 
 import {
+  exportActivitySnapshot,
+  formatActivitySummary,
+  getActivitySummary,
   evaluatePolicy,
   formatLicenseStatus,
   formatReportAsHtml,
@@ -15,7 +18,10 @@ import {
   hasProFeature,
   installLicenseToken,
   listPolicyPresets,
+  PRODUCT_URLS,
+  recordActivity,
   removeInstalledLicense,
+  resetActivityLog,
   resolveLicense,
   scanWorkspace,
   type PolicyEvaluation,
@@ -45,6 +51,9 @@ async function main(): Promise<void> {
     case "license":
       await runLicenseCommand(args.slice(1));
       return;
+    case "activity":
+      await runActivityCommand(args.slice(1));
+      return;
     case "ci":
       await runCiCommand(args.slice(1));
       return;
@@ -53,6 +62,15 @@ async function main(): Promise<void> {
       return;
     case "policy":
       await runPolicyCommand(args.slice(1));
+      return;
+    case "upgrade":
+      await openProductSurface("upgrade", PRODUCT_URLS.upgrade);
+      return;
+    case "review":
+      await runReviewCommand(args.slice(1));
+      return;
+    case "support":
+      await runSupportCommand(args.slice(1));
       return;
     default:
       if (command.startsWith("-")) {
@@ -75,15 +93,29 @@ async function runScanCommand(args: string[]): Promise<void> {
   const license = await resolveLicense(config.scanOptions);
 
   if (requiresProReports(config.format)) {
-    assertProFeature(license, "reports");
+    await assertProFeature(license, "reports");
   }
 
   if (config.scanOptions.suppressionsFilePath || config.scanOptions.includeSuppressedFindings) {
-    assertProFeature(license, "suppressions");
+    await assertProFeature(license, "suppressions");
   }
 
+  const startedAt = Date.now();
   const report = await scanWorkspace(config.workspacePath, config.scanOptions);
   const output = renderReport(report, config.format);
+  await recordActivity({
+    type: "scan-completed",
+    surface: "cli",
+    scanMode: "workspace",
+    verdict: report.verdict,
+    durationMs: Date.now() - startedAt,
+    filesScanned: report.summary.filesScanned,
+    errors: report.summary.errors,
+    warnings: report.summary.warnings,
+    info: report.summary.info,
+    suppressed: report.summary.suppressed,
+    licenseStatus: license.status
+  });
 
   if (config.outputPath) {
     await writeOutputFile(config.outputPath, output);
@@ -117,6 +149,28 @@ async function runLicenseCommand(args: string[]): Promise<void> {
   }
 }
 
+async function runActivityCommand(args: string[]): Promise<void> {
+  const [subcommand = "status"] = args;
+
+  switch (subcommand) {
+    case "status":
+      await showActivityStatus(args.slice(1));
+      return;
+    case "export":
+      await exportActivity(args.slice(1));
+      return;
+    case "reset":
+      await resetActivity(args.slice(1));
+      return;
+    case "--help":
+    case "-h":
+      printActivityUsage();
+      return;
+    default:
+      throw new Error(`Unknown activity command: ${subcommand}`);
+  }
+}
+
 async function runCiCommand(args: string[]): Promise<void> {
   const config = parseCiArguments(args);
 
@@ -126,19 +180,33 @@ async function runCiCommand(args: string[]): Promise<void> {
   }
 
   const license = await resolveLicense(config.scanOptions);
-  assertProFeature(license, "ci");
+  await assertProFeature(license, "ci");
 
   if (config.policy !== "balanced") {
-    assertProFeature(license, "policy-presets");
+    await assertProFeature(license, "policy-presets");
   }
 
   if (config.scanOptions.suppressionsFilePath || config.scanOptions.includeSuppressedFindings) {
-    assertProFeature(license, "suppressions");
+    await assertProFeature(license, "suppressions");
   }
 
+  const startedAt = Date.now();
   const report = await scanWorkspace(config.workspacePath, config.scanOptions);
   const evaluation = evaluatePolicy(report, config.policy);
   const output = renderCiOutput(report, evaluation, config.format);
+  await recordActivity({
+    type: "scan-completed",
+    surface: "cli",
+    scanMode: "ci",
+    verdict: report.verdict,
+    durationMs: Date.now() - startedAt,
+    filesScanned: report.summary.filesScanned,
+    errors: report.summary.errors,
+    warnings: report.summary.warnings,
+    info: report.summary.info,
+    suppressed: report.summary.suppressed,
+    licenseStatus: license.status
+  });
 
   if (config.outputPath) {
     await writeOutputFile(config.outputPath, output);
@@ -164,6 +232,86 @@ async function runHooksCommand(args: string[]): Promise<void> {
     default:
       throw new Error(`Unknown hooks command: ${subcommand}`);
   }
+}
+
+async function runReviewCommand(args: string[]): Promise<void> {
+  let destination: "marketplace" | "openvsx" = "marketplace";
+
+  while (args.length > 0) {
+    const current = args.shift();
+
+    if (!current) {
+      continue;
+    }
+
+    if (current === "--help" || current === "-h") {
+      printReviewUsage();
+      return;
+    }
+
+    if (current === "--channel") {
+      const next = requireValue(args.shift(), "Expected `marketplace` or `openvsx` after --channel.");
+      if (next === "openvsx") {
+        destination = "openvsx";
+        continue;
+      }
+
+      if (next === "marketplace") {
+        destination = "marketplace";
+        continue;
+      }
+
+      throw new Error("Expected `marketplace` or `openvsx` after --channel.");
+    }
+
+    throw new Error(`Unknown option: ${current}`);
+  }
+
+  await openProductSurface(
+    destination,
+    destination === "openvsx" ? PRODUCT_URLS.openvsx : PRODUCT_URLS.marketplace,
+    "review-opened"
+  );
+}
+
+async function runSupportCommand(args: string[]): Promise<void> {
+  let destination: "discussions" | "issues" = "discussions";
+
+  while (args.length > 0) {
+    const current = args.shift();
+
+    if (!current) {
+      continue;
+    }
+
+    if (current === "--help" || current === "-h") {
+      printSupportUsage();
+      return;
+    }
+
+    if (current === "--channel") {
+      const next = requireValue(args.shift(), "Expected `discussions` or `issues` after --channel.");
+      if (next === "issues") {
+        destination = "issues";
+        continue;
+      }
+
+      if (next === "discussions") {
+        destination = "discussions";
+        continue;
+      }
+
+      throw new Error("Expected `discussions` or `issues` after --channel.");
+    }
+
+    throw new Error(`Unknown option: ${current}`);
+  }
+
+  await openProductSurface(
+    destination,
+    destination === "issues" ? PRODUCT_URLS.issues : PRODUCT_URLS.discussions,
+    "support-opened"
+  );
 }
 
 async function runPolicyCommand(args: string[]): Promise<void> {
@@ -199,6 +347,11 @@ async function showLicenseStatus(args: string[]): Promise<void> {
   }
 
   const license = await resolveLicense({ licenseFilePath });
+  await recordActivity({
+    type: "license-status-checked",
+    surface: "cli",
+    licenseStatus: license.status
+  });
   const lines = [formatLicenseStatus(license)];
 
   if (license.source) {
@@ -261,13 +414,27 @@ async function installLicense(args: string[]): Promise<void> {
     throw new Error("Provide a license token with --token, --from-file, or a positional token value.");
   }
 
-  const license = await installLicenseToken(token, {
-    licenseFilePath
-  });
+  try {
+    const license = await installLicenseToken(token, {
+      licenseFilePath
+    });
+    await recordActivity({
+      type: "license-installed",
+      surface: "cli",
+      licenseStatus: license.status
+    });
 
-  process.stdout.write(`${formatLicenseStatus(license)}\n`);
-  if (license.installPath) {
-    process.stdout.write(`Installed at: ${license.installPath}\n`);
+    process.stdout.write(`${formatLicenseStatus(license)}\n`);
+    if (license.installPath) {
+      process.stdout.write(`Installed at: ${license.installPath}\n`);
+    }
+  } catch (error) {
+    await recordActivity({
+      type: "license-install-failed",
+      surface: "cli",
+      licenseStatus: "invalid"
+    });
+    throw error;
   }
 }
 
@@ -286,7 +453,99 @@ async function removeLicense(args: string[]): Promise<void> {
     return;
   }
 
+  await recordActivity({
+    type: "license-removed",
+    surface: "cli",
+    licenseStatus: "missing"
+  });
   process.stdout.write(`Removed local license file at ${removedPath}\n`);
+}
+
+async function showActivityStatus(args: string[]): Promise<void> {
+  const { activityFilePath, help } = parseActivityPathArguments(args);
+
+  if (help) {
+    printActivityUsage();
+    return;
+  }
+
+  const summary = await getActivitySummary(activityFilePath);
+  process.stdout.write(`${formatActivitySummary(summary)}\n`);
+}
+
+async function exportActivity(args: string[]): Promise<void> {
+  let format: "text" | "json" = "json";
+  let outputPath: string | undefined;
+  let activityFilePath: string | undefined;
+
+  while (args.length > 0) {
+    const current = args.shift();
+
+    if (!current) {
+      continue;
+    }
+
+    if (current === "--help" || current === "-h") {
+      printActivityUsage();
+      return;
+    }
+
+    if (current === "--format") {
+      const next = requireValue(args.shift(), "Expected `text` or `json` after --format.");
+      if (next !== "text" && next !== "json") {
+        throw new Error("Expected `text` or `json` after --format.");
+      }
+
+      format = next;
+      continue;
+    }
+
+    if (current === "--output") {
+      outputPath = path.resolve(requireValue(args.shift(), "Expected a file path after --output."));
+      continue;
+    }
+
+    if (current === "--activity-file") {
+      activityFilePath = path.resolve(
+        requireValue(args.shift(), "Expected a file path after --activity-file.")
+      );
+      continue;
+    }
+
+    throw new Error(`Unknown option: ${current}`);
+  }
+
+  const snapshot = await exportActivitySnapshot(activityFilePath);
+  const output =
+    format === "json"
+      ? JSON.stringify(snapshot, null, 2)
+      : formatActivitySummary(snapshot.summary);
+
+  if (outputPath) {
+    await writeOutputFile(outputPath, output);
+    process.stdout.write(`Wrote ${format} activity export to ${outputPath}\n`);
+    return;
+  }
+
+  process.stdout.write(`${output}\n`);
+}
+
+async function resetActivity(args: string[]): Promise<void> {
+  const { activityFilePath, help } = parseActivityPathArguments(args);
+
+  if (help) {
+    printActivityUsage();
+    return;
+  }
+
+  const removed = await resetActivityLog(activityFilePath);
+
+  if (!removed) {
+    process.stdout.write("No local activity log was found.\n");
+    return;
+  }
+
+  process.stdout.write("Reset the local activity log.\n");
 }
 
 async function installHook(args: string[]): Promise<void> {
@@ -348,10 +607,10 @@ async function installHook(args: string[]): Promise<void> {
     licenseToken
   });
 
-  assertProFeature(license, "hooks");
+  await assertProFeature(license, "hooks");
 
   if (policy !== "balanced") {
-    assertProFeature(license, "policy-presets");
+    await assertProFeature(license, "policy-presets");
   }
 
   const repoRoot = getGitRepoRoot(targetPath);
@@ -583,6 +842,41 @@ function parseLicensePathArguments(args: string[]): {
   };
 }
 
+function parseActivityPathArguments(args: string[]): {
+  help: boolean;
+  activityFilePath?: string;
+} {
+  let help = false;
+  let activityFilePath: string | undefined;
+
+  while (args.length > 0) {
+    const current = args.shift();
+
+    if (!current) {
+      continue;
+    }
+
+    if (current === "--help" || current === "-h") {
+      help = true;
+      continue;
+    }
+
+    if (current === "--activity-file") {
+      activityFilePath = path.resolve(
+        requireValue(args.shift(), "Expected a file path after --activity-file.")
+      );
+      continue;
+    }
+
+    throw new Error(`Unknown option: ${current}`);
+  }
+
+  return {
+    help,
+    activityFilePath
+  };
+}
+
 function renderReport(report: ScanReport, format: Format): string {
   switch (format) {
     case "json":
@@ -653,10 +947,19 @@ function parsePolicyPreset(value: string): PolicyPreset {
   return value;
 }
 
-function assertProFeature(license: ResolvedLicense, feature: Parameters<typeof getProFeatureMessage>[0]): void {
+async function assertProFeature(
+  license: ResolvedLicense,
+  feature: Parameters<typeof getProFeatureMessage>[0]
+): Promise<void> {
   const message = getProFeatureMessage(feature, license);
 
   if (!hasProFeature(license, feature)) {
+    await recordActivity({
+      type: "pro-feature-blocked",
+      surface: "cli",
+      feature,
+      licenseStatus: license.status
+    });
     throw new Error(message);
   }
 }
@@ -687,15 +990,48 @@ function getGitRepoRoot(targetPath: string): string | undefined {
   return result.stdout.trim() || undefined;
 }
 
+async function openProductSurface(
+  destination: "upgrade" | "marketplace" | "openvsx" | "discussions" | "issues",
+  url: string,
+  eventType: "upgrade-opened" | "review-opened" | "support-opened" = "upgrade-opened"
+): Promise<void> {
+  openUrl(url);
+  await recordActivity({
+    type: eventType,
+    surface: "cli",
+    destination
+  });
+  process.stdout.write(`Opened ${url}\n`);
+}
+
+function openUrl(url: string): void {
+  const platform = process.platform;
+
+  const result =
+    platform === "win32"
+      ? spawnSync("cmd", ["/c", "start", "", url], { stdio: "ignore", windowsHide: true })
+      : platform === "darwin"
+        ? spawnSync("open", [url], { stdio: "ignore" })
+        : spawnSync("xdg-open", [url], { stdio: "ignore" });
+
+  if (result.status !== 0) {
+    throw new Error(`Could not open ${url} in the default browser.`);
+  }
+}
+
 function printGlobalUsage(): void {
   process.stdout.write(
     [
       "Usage:",
       "  mcp-preflight scan [path] [options]",
       "  mcp-preflight license <status|install|remove> [options]",
+      "  mcp-preflight activity <status|export|reset> [options]",
       "  mcp-preflight ci [path] [options]",
       "  mcp-preflight hooks install [path] [options]",
       "  mcp-preflight policy list",
+      "  mcp-preflight upgrade",
+      "  mcp-preflight review [--channel marketplace|openvsx]",
+      "  mcp-preflight support [--channel discussions|issues]",
       "",
       "Run `mcp-preflight <command> --help` for command-specific options."
     ].join("\n")
@@ -733,6 +1069,18 @@ function printLicenseUsage(): void {
   process.stdout.write("\n");
 }
 
+function printActivityUsage(): void {
+  process.stdout.write(
+    [
+      "Usage:",
+      "  mcp-preflight activity status [--activity-file path]",
+      "  mcp-preflight activity export [--format text|json] [--output path] [--activity-file path]",
+      "  mcp-preflight activity reset [--activity-file path]"
+    ].join("\n")
+  );
+  process.stdout.write("\n");
+}
+
 function printCiUsage(): void {
   process.stdout.write(
     [
@@ -765,6 +1113,26 @@ function printPolicyUsage(): void {
     [
       "Usage:",
       "  mcp-preflight policy list"
+    ].join("\n")
+  );
+  process.stdout.write("\n");
+}
+
+function printReviewUsage(): void {
+  process.stdout.write(
+    [
+      "Usage:",
+      "  mcp-preflight review [--channel marketplace|openvsx]"
+    ].join("\n")
+  );
+  process.stdout.write("\n");
+}
+
+function printSupportUsage(): void {
+  process.stdout.write(
+    [
+      "Usage:",
+      "  mcp-preflight support [--channel discussions|issues]"
     ].join("\n")
   );
   process.stdout.write("\n");

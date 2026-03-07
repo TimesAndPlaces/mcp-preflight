@@ -2,7 +2,7 @@
   "name": "mcp-preflight-vscode",
   "displayName": "MCP Preflight",
   "description": "Local-first MCP security preflight scans for configs, prompts, and repo manifests.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "mcp-preflight",
   "homepage": "https://github.com/TimesAndPlaces/mcp-preflight",
   "repository": {
@@ -46,7 +46,11 @@
     "onCommand:mcpPreflight.scanCurrentFile",
     "onCommand:mcpPreflight.showFixRecipes",
     "onCommand:mcpPreflight.installLicense",
-    "onCommand:mcpPreflight.showLicenseStatus"
+    "onCommand:mcpPreflight.showLicenseStatus",
+    "onCommand:mcpPreflight.showLocalActivity",
+    "onCommand:mcpPreflight.upgradeToPro",
+    "onCommand:mcpPreflight.leaveReview",
+    "onCommand:mcpPreflight.getHelp"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -70,6 +74,22 @@
       {
         "command": "mcpPreflight.showLicenseStatus",
         "title": "MCP Preflight: Show License Status"
+      },
+      {
+        "command": "mcpPreflight.showLocalActivity",
+        "title": "MCP Preflight: Show Local Activity"
+      },
+      {
+        "command": "mcpPreflight.upgradeToPro",
+        "title": "MCP Preflight: Upgrade to Pro"
+      },
+      {
+        "command": "mcpPreflight.leaveReview",
+        "title": "MCP Preflight: Leave a Review"
+      },
+      {
+        "command": "mcpPreflight.getHelp",
+        "title": "MCP Preflight: Get Help"
       }
     ]
   },

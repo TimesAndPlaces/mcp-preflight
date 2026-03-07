@@ -1,7 +1,16 @@
 import * as vscode from "vscode";
 
 import type { Finding, ResolvedLicense, ScanReport } from "@mcp-preflight/core";
-import { formatLicenseStatus, installLicenseToken, resolveLicense, scanWorkspace } from "@mcp-preflight/core";
+import {
+  formatActivitySummary,
+  formatLicenseStatus,
+  getActivitySummary,
+  installLicenseToken,
+  PRODUCT_URLS,
+  recordActivity,
+  resolveLicense,
+  scanWorkspace
+} from "@mcp-preflight/core";
 
 let latestReport: ScanReport | undefined;
 
@@ -31,6 +40,18 @@ export function activate(context: vscode.ExtensionContext): void {
     }),
     vscode.commands.registerCommand("mcpPreflight.showLicenseStatus", async () => {
       await showLicenseStatus(output);
+    }),
+    vscode.commands.registerCommand("mcpPreflight.showLocalActivity", async () => {
+      await showLocalActivitySummary(output);
+    }),
+    vscode.commands.registerCommand("mcpPreflight.upgradeToPro", async () => {
+      await openProductPage(output, "upgrade", PRODUCT_URLS.upgrade, "upgrade-opened");
+    }),
+    vscode.commands.registerCommand("mcpPreflight.leaveReview", async () => {
+      await leaveReview(output);
+    }),
+    vscode.commands.registerCommand("mcpPreflight.getHelp", async () => {
+      await getHelp(output);
     })
   );
 }
@@ -58,6 +79,18 @@ async function runWorkspaceScan(
     () => scanWorkspace(folder.uri.fsPath)
   );
   latestReport = report;
+  await recordActivity({
+    type: "scan-completed",
+    surface: "vscode-extension",
+    scanMode: "workspace",
+    verdict: report.verdict,
+    durationMs: Date.now() - startedAt,
+    filesScanned: report.summary.filesScanned,
+    errors: report.summary.errors,
+    warnings: report.summary.warnings,
+    info: report.summary.info,
+    suppressed: report.summary.suppressed
+  });
   publishDiagnostics(report, diagnostics);
   renderOutput(report, output);
   updateStatusBar(statusBar, report);
@@ -93,6 +126,18 @@ async function runCurrentFileScan(
       })
   );
   latestReport = report;
+  await recordActivity({
+    type: "scan-completed",
+    surface: "vscode-extension",
+    scanMode: "focused",
+    verdict: report.verdict,
+    durationMs: Date.now() - startedAt,
+    filesScanned: report.summary.filesScanned,
+    errors: report.summary.errors,
+    warnings: report.summary.warnings,
+    info: report.summary.info,
+    suppressed: report.summary.suppressed
+  });
   publishDiagnostics(report, diagnostics, editor.document.uri.fsPath);
   renderOutput(report, output, editor.document.uri.fsPath);
   updateStatusBar(statusBar, report);
@@ -212,10 +257,20 @@ async function promptForLicenseInstall(output: vscode.OutputChannel): Promise<vo
 
   try {
     const license = await installLicenseToken(token);
+    await recordActivity({
+      type: "license-installed",
+      surface: "vscode-extension",
+      licenseStatus: license.status
+    });
     output.appendLine(formatLicenseDetails(license));
     output.show(true);
     void vscode.window.showInformationMessage("MCP Preflight Pro was activated on this machine.");
   } catch (error) {
+    await recordActivity({
+      type: "license-install-failed",
+      surface: "vscode-extension",
+      licenseStatus: "invalid"
+    });
     const message = error instanceof Error ? error.message : String(error);
     void vscode.window.showErrorMessage(`MCP Preflight could not install the license: ${message}`);
   }
@@ -223,11 +278,77 @@ async function promptForLicenseInstall(output: vscode.OutputChannel): Promise<vo
 
 async function showLicenseStatus(output: vscode.OutputChannel): Promise<void> {
   const license = await resolveLicense();
+  await recordActivity({
+    type: "license-status-checked",
+    surface: "vscode-extension",
+    licenseStatus: license.status
+  });
   output.appendLine(formatLicenseDetails(license));
   output.show(true);
   void vscode.window.showInformationMessage(
     license.status === "valid" ? "MCP Preflight Pro is active." : "MCP Preflight is running in Lite mode."
   );
+}
+
+async function showLocalActivitySummary(output: vscode.OutputChannel): Promise<void> {
+  const summary = await getActivitySummary();
+  output.clear();
+  output.appendLine(formatActivitySummary(summary));
+  output.show(true);
+}
+
+async function leaveReview(output: vscode.OutputChannel): Promise<void> {
+  const selection = await vscode.window.showQuickPick(
+    [
+      {
+        label: "VS Code Marketplace",
+        url: PRODUCT_URLS.marketplace,
+        destination: "marketplace" as const
+      },
+      {
+        label: "Open VSX",
+        url: PRODUCT_URLS.openvsx,
+        destination: "openvsx" as const
+      }
+    ],
+    {
+      title: "Leave a review for MCP Preflight"
+    }
+  );
+
+  if (!selection) {
+    return;
+  }
+
+  await openProductPage(output, selection.destination, selection.url, "review-opened");
+}
+
+async function getHelp(output: vscode.OutputChannel): Promise<void> {
+  const selection = await vscode.window.showQuickPick(
+    [
+      {
+        label: "GitHub Discussions",
+        description: "Questions, feedback, and feature requests",
+        url: PRODUCT_URLS.discussions,
+        destination: "discussions" as const
+      },
+      {
+        label: "GitHub Issues",
+        description: "Bug reports and reproducible defects",
+        url: PRODUCT_URLS.issues,
+        destination: "issues" as const
+      }
+    ],
+    {
+      title: "Get help with MCP Preflight"
+    }
+  );
+
+  if (!selection) {
+    return;
+  }
+
+  await openProductPage(output, selection.destination, selection.url, "support-opened");
 }
 
 function renderFixRecipeHtml(report: ScanReport | undefined): string {
@@ -359,4 +480,26 @@ function formatLicenseDetails(license: ResolvedLicense): string {
   }
 
   return lines.join("\n");
+}
+
+async function openProductPage(
+  output: vscode.OutputChannel,
+  destination: "upgrade" | "marketplace" | "openvsx" | "discussions" | "issues",
+  url: string,
+  eventType: "upgrade-opened" | "review-opened" | "support-opened"
+): Promise<void> {
+  const didOpen = await vscode.env.openExternal(vscode.Uri.parse(url));
+
+  if (!didOpen) {
+    void vscode.window.showErrorMessage(`MCP Preflight could not open ${url}.`);
+    return;
+  }
+
+  await recordActivity({
+    type: eventType,
+    surface: "vscode-extension",
+    destination
+  });
+  output.appendLine(`Opened ${url}`);
+  output.show(true);
 }

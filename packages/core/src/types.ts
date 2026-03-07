@@ -4,6 +4,19 @@ export type ProFeature = "reports" | "suppressions" | "ci" | "hooks" | "policy-p
 export type LicenseStatus = "missing" | "valid" | "invalid" | "expired";
 export type LicenseSource = "direct" | "env-token" | "env-file" | "default-file" | "explicit-file";
 export type PolicyPreset = "balanced" | "strict";
+export type ActivitySurface = "cli" | "vscode-extension";
+export type ActivityScanMode = "workspace" | "focused" | "ci";
+export type ActivityEventType =
+  | "scan-completed"
+  | "pro-feature-blocked"
+  | "license-installed"
+  | "license-install-failed"
+  | "license-removed"
+  | "license-status-checked"
+  | "upgrade-opened"
+  | "review-opened"
+  | "support-opened";
+export type ActivityDestination = "upgrade" | "marketplace" | "openvsx" | "discussions" | "issues";
 
 export interface ScanLocation {
   filePath: string;
@@ -123,4 +136,49 @@ export interface ScanReport {
   suppressedFindings: Finding[];
   suppressionFilePath?: string;
   notices: ScanNotice[];
+}
+
+export interface ActivityEvent {
+  type: ActivityEventType;
+  recordedAt: string;
+  surface: ActivitySurface;
+  scanMode?: ActivityScanMode;
+  verdict?: Verdict;
+  durationMs?: number;
+  filesScanned?: number;
+  errors?: number;
+  warnings?: number;
+  info?: number;
+  suppressed?: number;
+  feature?: ProFeature;
+  licenseStatus?: LicenseStatus;
+  destination?: ActivityDestination;
+}
+
+export type ActivityEventInput = Omit<ActivityEvent, "recordedAt">;
+
+export interface ActivitySummary {
+  enabled: boolean;
+  filePath: string;
+  eventsRecorded: number;
+  firstRecordedAt?: string;
+  lastRecordedAt?: string;
+  scans: {
+    total: number;
+    workspace: number;
+    focused: number;
+    ci: number;
+    pass: number;
+    warning: number;
+    fail: number;
+    avgDurationMs?: number;
+  };
+  blockedFeatures: Record<ProFeature, number>;
+  upgradesOpened: number;
+  reviewsOpened: number;
+  supportOpens: number;
+  licenseInstalls: number;
+  licenseInstallFailures: number;
+  licenseRemovals: number;
+  licenseStatusChecks: number;
 }

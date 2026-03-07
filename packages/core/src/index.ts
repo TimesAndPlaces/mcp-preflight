@@ -1,4 +1,16 @@
 export {
+  exportActivitySnapshot,
+  formatActivitySummary,
+  getActivitySummary,
+  getDefaultActivityFilePath,
+  isActivityTrackingEnabled,
+  loadActivityLog,
+  recordActivity,
+  resetActivityLog,
+  resolveActivityFilePath,
+  summarizeActivity
+} from "./activity";
+export {
   formatReportAsHtml,
   formatReportAsJson,
   formatReportAsMarkdown,
@@ -20,6 +32,13 @@ export { evaluatePolicy, listPolicyPresets } from "./policy";
 export { PRODUCT_URLS } from "./product";
 export { scanWorkspace } from "./scanner";
 export type {
+  ActivityDestination,
+  ActivityEvent,
+  ActivityEventInput,
+  ActivityEventType,
+  ActivityScanMode,
+  ActivitySummary,
+  ActivitySurface,
   Finding,
   FindingSuppression,
   LicensePayload,

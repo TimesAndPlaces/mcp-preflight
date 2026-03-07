@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 - 2026-03-08
+- Added a local-only activity log with CLI and VS Code surfaces to inspect scan counts, blocked Pro features, and local license actions without a hosted backend.
+- Added CLI `activity`, `upgrade`, `review`, and `support` commands plus matching VS Code commands for review/help/upgrade flows.
+- Added a clearer public privacy note around local activity logging and opt-out controls.
+
 ## 0.1.1 - 2026-03-07
 - Added local MCP Preflight Pro license install and status flows for the CLI and VS Code extension.
 - Added gated Pro workflow surfaces for Markdown/HTML/SARIF reports, suppression files, CI mode, Git hooks, and policy presets.

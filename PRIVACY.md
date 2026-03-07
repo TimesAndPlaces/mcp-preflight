@@ -28,6 +28,18 @@ In the Lite product, local scanning should work without any MCP Preflight accoun
 
 The current Pro unlock path is also local. A signed license token can be stored on disk and verified on the machine without an MCP Preflight login flow.
 
+MCP Preflight now also keeps a small local activity log by default. That log is meant to help you inspect scan counts, blocked Pro features, and local license actions on your own machine.
+
+The activity log is local-only. It is not uploaded to an MCP Preflight service.
+
+It is designed to record product events such as:
+- scan completions
+- local license installs and status checks
+- blocked Pro workflow surfaces
+- upgrade, review, and support links opened from the product
+
+It is not meant to store workspace contents.
+
 ## Important limits
 - Your editor, extension marketplace, operating system, or package manager may still have their own telemetry or network behavior
 - Third-party MCP servers you choose to run are outside this privacy note
@@ -39,3 +51,8 @@ The goal is conservative behavior:
 - no hidden cloud scan
 - clear outputs
 - no surprise account requirement for the free scan flow
+- local activity is inspectable and optional
+
+## Local activity controls
+- Disable local activity logging with `MCP_PREFLIGHT_DISABLE_ACTIVITY=1`
+- Change the local activity file path with `MCP_PREFLIGHT_ACTIVITY_FILE=/path/to/activity-log.jsonl`
