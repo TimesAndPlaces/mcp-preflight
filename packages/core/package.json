@@ -1,0 +1,16 @@
+{
+  "name": "@mcp-preflight/core",
+  "version": "0.1.0",
+  "description": "Shared scanning engine for MCP Preflight.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1"
+  }
+}

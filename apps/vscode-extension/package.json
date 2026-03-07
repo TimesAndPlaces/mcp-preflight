@@ -1,0 +1,72 @@
+{
+  "name": "mcp-preflight-vscode",
+  "displayName": "MCP Preflight",
+  "description": "Local-first MCP security preflight scans for configs, prompts, and repo manifests.",
+  "version": "0.1.0",
+  "publisher": "mcp-preflight",
+  "homepage": "https://github.com/TimesAndPlaces/mcp-preflight",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TimesAndPlaces/mcp-preflight.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TimesAndPlaces/mcp-preflight/issues"
+  },
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#14213d",
+    "theme": "dark"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "vscode": "^1.97.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai-security",
+    "vscode-extension",
+    "prompt-injection",
+    "tool-poisoning",
+    "supply-chain-security",
+    "oauth"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "activationEvents": [
+    "onCommand:mcpPreflight.scanWorkspace",
+    "onCommand:mcpPreflight.scanCurrentFile",
+    "onCommand:mcpPreflight.showFixRecipes"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "mcpPreflight.scanWorkspace",
+        "title": "MCP Preflight: Scan Workspace"
+      },
+      {
+        "command": "mcpPreflight.scanCurrentFile",
+        "title": "MCP Preflight: Scan Current File"
+      },
+      {
+        "command": "mcpPreflight.showFixRecipes",
+        "title": "MCP Preflight: Show Fix Recipes"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/vscode": "^1.97.0"
+  }
+}

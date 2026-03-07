@@ -1,0 +1,16 @@
+{
+  "name": "@mcp-preflight/cli",
+  "version": "0.1.0",
+  "description": "CLI wrapper for MCP Preflight.",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-preflight": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {}
+}

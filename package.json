@@ -1,0 +1,28 @@
+{
+  "name": "mcp-preflight-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Local-first MCP security preflight scanner monorepo.",
+  "homepage": "https://github.com/TimesAndPlaces/mcp-preflight",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TimesAndPlaces/mcp-preflight.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TimesAndPlaces/mcp-preflight/issues"
+  },
+  "packageManager": "npm@10.9.4",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty false",
+    "scan": "node packages/cli/dist/index.js scan"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  }
+}
