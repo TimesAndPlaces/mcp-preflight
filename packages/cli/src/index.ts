@@ -9,6 +9,7 @@ import {
   getActivitySummary,
   evaluatePolicy,
   formatLicenseStatus,
+  formatProLicenseGuide,
   formatReportAsHtml,
   formatReportAsJson,
   formatReportAsMarkdown,
@@ -131,6 +132,9 @@ async function runLicenseCommand(args: string[]): Promise<void> {
   const [subcommand = "status"] = args;
 
   switch (subcommand) {
+    case "guide":
+      showLicenseGuide();
+      return;
     case "status":
       await showLicenseStatus(args.slice(1));
       return;
@@ -459,6 +463,10 @@ async function removeLicense(args: string[]): Promise<void> {
     licenseStatus: "missing"
   });
   process.stdout.write(`Removed local license file at ${removedPath}\n`);
+}
+
+function showLicenseGuide(): void {
+  process.stdout.write(`${formatProLicenseGuide()}\n`);
 }
 
 async function showActivityStatus(args: string[]): Promise<void> {
@@ -1060,6 +1068,7 @@ function printLicenseUsage(): void {
   process.stdout.write(
     [
       "Usage:",
+      "  mcp-preflight license guide",
       "  mcp-preflight license status [--license-file path]",
       "  mcp-preflight license install --token token [--license-file path]",
       "  mcp-preflight license install --from-file path [--license-file path]",

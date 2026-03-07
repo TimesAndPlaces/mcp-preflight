@@ -315,11 +315,11 @@ export function getProFeatureMessage(feature: ProFeature, license: ResolvedLicen
     case "valid":
       return `${label} are available.`;
     case "expired":
-      return `The installed MCP Preflight Pro license has expired, so ${label} are unavailable. Details: ${PRODUCT_URLS.upgrade}`;
+      return `The installed MCP Preflight Pro license has expired, so ${label} are unavailable. Buy and install details: ${PRODUCT_URLS.proLicenseGuide}`;
     case "invalid":
-      return `The installed MCP Preflight Pro license is invalid, so ${label} are unavailable. Details: ${PRODUCT_URLS.upgrade}`;
+      return `The installed MCP Preflight Pro license is invalid, so ${label} are unavailable. Buy and install details: ${PRODUCT_URLS.proLicenseGuide}`;
     default:
-      return `${label} require MCP Preflight Pro. Install a local Pro license to unlock them. Details: ${PRODUCT_URLS.upgrade}`;
+      return `${label} require MCP Preflight Pro. Install a local Pro license to unlock them. Buy and install details: ${PRODUCT_URLS.proLicenseGuide}`;
   }
 }
 
@@ -337,10 +337,24 @@ export function formatLicenseStatus(license: ResolvedLicense): string {
   }
 
   if (license.status === "missing") {
-    return "No local MCP Preflight Pro license is installed. Lite mode is active.";
+    return `No local MCP Preflight Pro license is installed. Lite mode is active.\nGuide: ${PRODUCT_URLS.proLicenseGuide}`;
   }
 
-  return license.reason ?? "The local MCP Preflight Pro license could not be used.";
+  return `${license.reason ?? "The local MCP Preflight Pro license could not be used."}\nGuide: ${PRODUCT_URLS.proLicenseGuide}`;
+}
+
+export function formatProLicenseGuide(): string {
+  return [
+    `Buy MCP Preflight Pro: ${PRODUCT_URLS.upgrade}`,
+    `Activation guide: ${PRODUCT_URLS.proLicenseGuide}`,
+    `License and payment help: ${PRODUCT_URLS.licenseSupport}`,
+    "",
+    "Install from a token file:",
+    "  mcp-preflight license install --from-file /path/to/license.token",
+    "",
+    "Check local status:",
+    "  mcp-preflight license status"
+  ].join("\n");
 }
 
 export function getDefaultLicenseFilePath(): string {

@@ -18,6 +18,7 @@ export {
   formatReportAsText
 } from "./formatters";
 export {
+  formatProLicenseGuide,
   formatLicenseStatus,
   getDefaultLicenseFilePath,
   getProFeatureLabel,

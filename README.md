@@ -26,6 +26,7 @@ This public repository stays intentionally narrow. It contains the Lite product 
 - Pro is unlocked with a local signed license token, not a hosted MCP Preflight account
 - The scanner does not need to phone home just to decide whether Pro is active on your machine
 - Buy Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
+- Activation and install: [Pro license guide](PRO_LICENSE.md)
 
 ## What it is not
 - Not a hosted scanner
@@ -35,6 +36,7 @@ This public repository stays intentionally narrow. It contains the Lite product 
 
 ## Read this next
 - [Privacy](PRIVACY.md)
+- [Pro license guide](PRO_LICENSE.md)
 - [Rule overview](RULES.md)
 - [Sample report](SAMPLE_REPORT.md)
 - [Audit notes](AUDITS.md)
@@ -47,6 +49,7 @@ This public repository stays intentionally narrow. It contains the Lite product 
 - `node packages/cli/dist/index.js scan /path/to/workspace`
 - `node packages/cli/dist/index.js activity status`
 - `node packages/cli/dist/index.js activity export --format json --output ./mcp-preflight-activity.json`
+- `node packages/cli/dist/index.js license guide`
 - `node packages/cli/dist/index.js license status`
 - `node packages/cli/dist/index.js license install --from-file /path/to/license.token`
 - `node packages/cli/dist/index.js ci /path/to/workspace --policy balanced`
@@ -79,4 +82,5 @@ If you want to store it somewhere else, set `MCP_PREFLIGHT_ACTIVITY_FILE=/path/t
 ## Support
 - Questions and feature requests: [GitHub Discussions](https://github.com/TimesAndPlaces/mcp-preflight/discussions)
 - Bugs: [GitHub Issues](https://github.com/TimesAndPlaces/mcp-preflight/issues)
+- License and payment help: `igorsv199@gmail.com`
 - Leave a review: [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode)

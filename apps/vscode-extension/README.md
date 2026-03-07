@@ -44,6 +44,7 @@ The point is simple: scan first, trust later. The extension is local-first, fast
 ## Upgrade
 - Buy MCP Preflight Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
 - Pro stays local after purchase: install the signed license token on the machine instead of logging into a hosted MCP Preflight account
+- Install and recovery steps: [Pro license guide](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/PRO_LICENSE.md)
 
 ## Local activity
 The extension keeps a small local activity log for scan runs, local license actions, blocked Pro surfaces, and the product links you open from the command palette.

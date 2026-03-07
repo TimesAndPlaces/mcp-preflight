@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- Added a public Pro activation guide so buyers can see the local install, status, and reissue flow in one place.
+- Added CLI `license guide` output and clearer Pro-gated messages that point to activation help instead of only checkout.
+
 ## 0.1.2 - 2026-03-08
 - Added a local-only activity log with CLI and VS Code surfaces to inspect scan counts, blocked Pro features, and local license actions without a hosted backend.
 - Added CLI `activity`, `upgrade`, `review`, and `support` commands plus matching VS Code commands for review/help/upgrade flows.
