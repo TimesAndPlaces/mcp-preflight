@@ -13,6 +13,21 @@ const TOOL_POISONING_PATTERNS = [
   /\b(without telling the user|do not tell the user|keep this hidden)\b/gi
 ];
 
+const PROMPTISH_PATH_SEGMENTS = new Set([
+  "agent",
+  "agents",
+  "instruction",
+  "instructions",
+  "prompt",
+  "prompts",
+  "resource",
+  "resources",
+  "skill",
+  "skills",
+  "tool",
+  "tools"
+]);
+
 export function scanContentIndicators(workspace: LoadedWorkspace): Finding[] {
   const findings: Finding[] = [];
 
@@ -61,12 +76,17 @@ function scanPatternGroup(params: {
   suggestion: string;
 }): Finding[] {
   const findings: Finding[] = [];
+  const ignoredRanges = getIgnoredRanges(params.file);
 
   for (const patternTemplate of params.patterns) {
     const pattern = new RegExp(patternTemplate.source, patternTemplate.flags);
     let count = 0;
 
     for (const match of params.file.content.matchAll(pattern)) {
+      if (typeof match.index !== "number" || isIgnoredMatch(match.index, ignoredRanges)) {
+        continue;
+      }
+
       findings.push(
         createFinding({
           ruleId: params.ruleId,
@@ -93,9 +113,45 @@ function scanPatternGroup(params: {
 }
 
 function shouldScanContent(file: WorkspaceFile): boolean {
+  if (
+    file.relativePath === "mcp.json" ||
+    file.relativePath === ".mcp.json" ||
+    file.relativePath.endsWith("/mcp.json") ||
+    file.relativePath.endsWith("/settings.json") ||
+    file.basename.endsWith(".code-workspace")
+  ) {
+    return true;
+  }
+
+  const pathSegments = file.relativePath.toLowerCase().split("/");
   return (
-    file.basename === "README.md" ||
-    /prompt|tool|resource|instruction|mcp/i.test(file.basename) ||
-    file.relativePath.endsWith("mcp.json")
+    /prompt|tool|resource|instruction|agent|skill|mcp/i.test(file.basename) ||
+    pathSegments.some((segment) => PROMPTISH_PATH_SEGMENTS.has(segment))
   );
+}
+
+function getIgnoredRanges(file: WorkspaceFile): Array<{ start: number; end: number }> {
+  if (file.extension !== ".md") {
+    return [];
+  }
+
+  const ranges: Array<{ start: number; end: number }> = [];
+  const fencedCodePattern = /```[\s\S]*?```/g;
+
+  for (const match of file.content.matchAll(fencedCodePattern)) {
+    if (typeof match.index !== "number") {
+      continue;
+    }
+
+    ranges.push({
+      start: match.index,
+      end: match.index + match[0].length
+    });
+  }
+
+  return ranges;
+}
+
+function isIgnoredMatch(index: number, ignoredRanges: Array<{ start: number; end: number }>): boolean {
+  return ignoredRanges.some((range) => index >= range.start && index < range.end);
 }

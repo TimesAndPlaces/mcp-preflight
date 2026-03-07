@@ -1,5 +1,9 @@
 export type Severity = "error" | "warning" | "info";
 export type Verdict = "pass" | "warning" | "fail";
+export type ProFeature = "reports" | "suppressions" | "ci" | "hooks" | "policy-presets";
+export type LicenseStatus = "missing" | "valid" | "invalid" | "expired";
+export type LicenseSource = "direct" | "env-token" | "env-file" | "default-file" | "explicit-file";
+export type PolicyPreset = "balanced" | "strict";
 
 export interface ScanLocation {
   filePath: string;
@@ -43,6 +47,9 @@ export interface ScanOptions {
   includeSuppressedFindings: boolean;
   suppressionsFileName: string;
   suppressionsFilePath?: string;
+  focusFilePaths?: string[];
+  licenseToken?: string;
+  licenseFilePath?: string;
 }
 
 export interface ScanSummary {
@@ -67,6 +74,45 @@ export interface LoadedSuppressions {
   diagnosticFindings: Finding[];
 }
 
+export interface ScanNotice {
+  code: string;
+  severity: "warning" | "info";
+  message: string;
+  suggestion?: string;
+}
+
+export interface LicensePayload {
+  product: "mcp-preflight";
+  edition: "pro";
+  licenseId: string;
+  customer?: string;
+  issuedAt: string;
+  expiresAt?: string;
+  updatesUntil?: string;
+  features?: ProFeature[];
+}
+
+export interface ResolvedLicense {
+  status: LicenseStatus;
+  tier: "lite" | "pro";
+  featureSet: ProFeature[];
+  source: LicenseSource;
+  installPath?: string;
+  licenseId?: string;
+  customer?: string;
+  issuedAt?: string;
+  expiresAt?: string;
+  updatesUntil?: string;
+  reason?: string;
+}
+
+export interface PolicyEvaluation {
+  preset: PolicyPreset;
+  failOn: "error" | "warning";
+  passed: boolean;
+  message: string;
+}
+
 export interface ScanReport {
   productName: "MCP Preflight";
   workspacePath: string;
@@ -76,4 +122,5 @@ export interface ScanReport {
   findings: Finding[];
   suppressedFindings: Finding[];
   suppressionFilePath?: string;
+  notices: ScanNotice[];
 }

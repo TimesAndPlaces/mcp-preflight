@@ -26,10 +26,12 @@ MCP Preflight itself is intended to work without sending your workspace to a hos
 
 In the Lite product, local scanning should work without any MCP Preflight account or remote upload step.
 
+The current Pro unlock path is also local. A signed license token can be stored on disk and verified on the machine without an MCP Preflight login flow.
+
 ## Important limits
 - Your editor, extension marketplace, operating system, or package manager may still have their own telemetry or network behavior
 - Third-party MCP servers you choose to run are outside this privacy note
-- If future paid update delivery or license checks are added, they should be described clearly and separately
+- If future paid update delivery changes this behavior, it should be described clearly and separately
 
 ## Design stance
 The goal is conservative behavior:

@@ -204,9 +204,7 @@ function isUnpinnedDependencySpec(versionSpec: string): boolean {
     normalized.startsWith("github:") ||
     normalized.startsWith("git+") ||
     normalized.startsWith("http://") ||
-    normalized.startsWith("https://") ||
-    normalized.startsWith("file:") ||
-    normalized.startsWith("workspace:*")
+    normalized.startsWith("https://")
   );
 }
 

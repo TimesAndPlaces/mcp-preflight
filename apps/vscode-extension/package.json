@@ -2,7 +2,7 @@
   "name": "mcp-preflight-vscode",
   "displayName": "MCP Preflight",
   "description": "Local-first MCP security preflight scans for configs, prompts, and repo manifests.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "mcp-preflight",
   "homepage": "https://github.com/TimesAndPlaces/mcp-preflight",
   "repository": {
@@ -12,6 +12,7 @@
   "bugs": {
     "url": "https://github.com/TimesAndPlaces/mcp-preflight/issues"
   },
+  "qna": "https://github.com/TimesAndPlaces/mcp-preflight/discussions",
   "icon": "media/icon.png",
   "galleryBanner": {
     "color": "#14213d",
@@ -43,7 +44,9 @@
   "activationEvents": [
     "onCommand:mcpPreflight.scanWorkspace",
     "onCommand:mcpPreflight.scanCurrentFile",
-    "onCommand:mcpPreflight.showFixRecipes"
+    "onCommand:mcpPreflight.showFixRecipes",
+    "onCommand:mcpPreflight.installLicense",
+    "onCommand:mcpPreflight.showLicenseStatus"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -59,6 +62,14 @@
       {
         "command": "mcpPreflight.showFixRecipes",
         "title": "MCP Preflight: Show Fix Recipes"
+      },
+      {
+        "command": "mcpPreflight.installLicense",
+        "title": "MCP Preflight: Install Pro License"
+      },
+      {
+        "command": "mcpPreflight.showLicenseStatus",
+        "title": "MCP Preflight: Show License Status"
       }
     ]
   },

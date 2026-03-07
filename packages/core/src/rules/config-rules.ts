@@ -20,12 +20,17 @@ interface ServerContext {
   basePath: ConfigPath;
 }
 
-const MCP_CONFIG_PATHS = [
+const MCP_CONFIG_SUFFIXES = [
   ".vscode/mcp.json",
-  ".cursor/mcp.json",
-  ".windsurf/mcp.json",
   "mcp.json",
-  ".mcp.json"
+  ".mcp.json",
+  ".cursor/mcp.json",
+  ".windsurf/mcp.json"
+];
+const MCP_SETTINGS_SUFFIXES = [
+  ".vscode/settings.json",
+  ".cursor/settings.json",
+  ".windsurf/settings.json"
 ];
 
 const SHELL_WRAPPERS = new Set(["sh", "bash", "zsh", "cmd", "powershell", "pwsh"]);
@@ -34,6 +39,7 @@ const NETWORK_FLAGS = new Set(["--network", "--allow-network", "--egress", "--al
 const ENV_INHERITANCE_FLAGS = ["inheritEnv", "inheritEnvironment", "forwardAllEnv", "passEnvironment"];
 const PASS_THROUGH_ENV_KEYS = ["passThroughEnv", "forwardEnv", "allowedEnv", "allowEnv"];
 const EPHEMERAL_LAUNCHERS = new Set(["npx", "bunx", "uvx"]);
+const AUTH_CONFIG_KEYS = ["auth", "authentication", "authorization"];
 const SENSITIVE_ENV_NAMES = [
   "OPENAI_API_KEY",
   "ANTHROPIC_API_KEY",
@@ -48,10 +54,8 @@ const SENSITIVE_ENV_NAMES = [
 export function scanMcpConfigurationRisks(workspace: LoadedWorkspace): Finding[] {
   const findings: Finding[] = [];
 
-  for (const configPath of MCP_CONFIG_PATHS) {
-    const file = workspace.fileMap.get(configPath);
-
-    if (!file) {
+  for (const file of workspace.files) {
+    if (!isPotentialMcpConfigFile(file)) {
       continue;
     }
 
@@ -93,6 +97,7 @@ export function scanMcpConfigurationRisks(workspace: LoadedWorkspace): Finding[]
       findings.push(...scanTokenPassthrough(context));
       findings.push(...scanEnvironmentInheritance(context));
       findings.push(...scanTransportAndAuth(context));
+      findings.push(...scanExplicitRemoteAuthDisablement(context));
       findings.push(...scanScopeRisks(context));
     }
   }
@@ -206,8 +211,28 @@ function scanEnvironmentInheritance(context: ServerContext): Finding[] {
     const value = context.serverConfig[key];
     const values = Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
     const wildcardIndex = values.findIndex((entry) => entry === "*");
+    const sensitiveEntries = values
+      .map((entry, index) => ({ entry, index }))
+      .filter(({ entry }) => SENSITIVE_ENV_NAMES.includes(entry.toUpperCase()));
 
     if (wildcardIndex < 0) {
+      for (const { entry, index } of sensitiveEntries) {
+        findings.push(
+          createFinding({
+            ruleId: "token-passthrough",
+            title: "MCP server forwards a sensitive host credential by name",
+            description: `Server "${context.serverName}" forwards "${entry}" through ${key}. Passing named host credentials directly into the MCP server weakens scope minimization.`,
+            severity: "warning",
+            category: "scope-minimization",
+            suggestion: "Avoid forwarding broad host credentials by name. Prefer a narrower token or an auth broker dedicated to this server.",
+            file: context.file,
+            evidence: `${key}=["${entry}"]`,
+            location: getContextLocation(context, [key, index], [key]),
+            tags: ["lite", "mcp", "credentials"]
+          })
+        );
+      }
+
       continue;
     }
 
@@ -332,7 +357,12 @@ function scanTransportAndAuth(context: ServerContext): Finding[] {
     );
   }
 
-  if (!url.startsWith("http://") && !credentialsInUrl && !hasAuthHints(context.serverConfig)) {
+  if (
+    !url.startsWith("http://") &&
+    !credentialsInUrl &&
+    !remoteTargetSeverity &&
+    !hasAuthHints(context.serverConfig)
+  ) {
     findings.push(
       createFinding({
         ruleId: "remote-auth-review",
@@ -344,6 +374,40 @@ function scanTransportAndAuth(context: ServerContext): Finding[] {
         file: context.file,
         evidence: url,
         location,
+        tags: ["lite", "mcp", "auth"]
+      })
+    );
+  }
+
+  return findings;
+}
+
+function scanExplicitRemoteAuthDisablement(context: ServerContext): Finding[] {
+  const findings: Finding[] = [];
+  const remoteEndpoint = getRemoteEndpoint(context.serverConfig);
+
+  if (!remoteEndpoint) {
+    return findings;
+  }
+
+  for (const key of AUTH_CONFIG_KEYS) {
+    const value = context.serverConfig[key];
+
+    if (!looksLikeDisabledAuthConfig(value)) {
+      continue;
+    }
+
+    findings.push(
+      createFinding({
+        ruleId: "remote-auth-disabled",
+        title: "Remote MCP server explicitly disables authentication",
+        description: `Server "${context.serverName}" appears to disable authentication via ${key}. Remote MCP servers should not rely on unauthenticated access by default.`,
+        severity: "warning",
+        category: "auth",
+        suggestion: "Review the remote auth setup and avoid explicit no-auth mode unless the endpoint is tightly isolated and intentionally public.",
+        file: context.file,
+        evidence: `${key}=${String(value)}`,
+        location: getContextLocation(context, [key]),
         tags: ["lite", "mcp", "auth"]
       })
     );
@@ -403,33 +467,27 @@ function collectServerContexts(
   tree: Node | undefined,
   root: Record<string, unknown>
 ): ServerContext[] {
+  const contexts = new Map<string, ServerContext>();
+
   if (isRecord(root.servers)) {
-    return Object.entries(root.servers).flatMap(([serverName, serverConfig]) =>
-      isRecord(serverConfig)
-        ? [
-            {
-              file,
-              tree,
-              serverName,
-              serverConfig,
-              basePath: ["servers", serverName]
-            }
-          ]
-        : []
+    addServerContexts(contexts, file, tree, root.servers, ["servers"]);
+  }
+
+  if (looksLikeServerConfig(root)) {
+    contexts.set(
+      "default",
+      {
+        file,
+        tree,
+        serverName: "default",
+        serverConfig: root,
+        basePath: []
+      }
     );
   }
 
-  return looksLikeServerConfig(root)
-    ? [
-        {
-          file,
-          tree,
-          serverName: "default",
-          serverConfig: root,
-          basePath: []
-        }
-      ]
-    : [];
+  collectNestedServerContexts(contexts, file, tree, root, [], false);
+  return [...contexts.values()];
 }
 
 function getRemoteEndpoint(config: Record<string, unknown>): { url: string; path: string } | undefined {
@@ -445,11 +503,112 @@ function getRemoteEndpoint(config: Record<string, unknown>): { url: string; path
 }
 
 function hasAuthHints(config: Record<string, unknown>): boolean {
-  return Object.keys(config).some((key) => /auth|token|apikey|apiKey|header|authorization/i.test(key));
+  return hasAuthHintsRecursive(config, 0);
 }
 
 function looksLikeServerConfig(value: Record<string, unknown>): boolean {
   return typeof value.command === "string" || typeof value.url === "string" || Array.isArray(value.args);
+}
+
+function collectNestedServerContexts(
+  contexts: Map<string, ServerContext>,
+  file: LoadedWorkspace["files"][number],
+  tree: Node | undefined,
+  current: Record<string, unknown>,
+  currentPath: ConfigPath,
+  underMcpBranch: boolean
+): void {
+  for (const [key, value] of Object.entries(current)) {
+    if (!isRecord(value)) {
+      continue;
+    }
+
+    const nextPath = [...currentPath, key];
+    const nextUnderMcpBranch = underMcpBranch || keyLooksLikeMcpBranch(key);
+
+    if (shouldTreatValueAsServerMap(key, nextUnderMcpBranch)) {
+      addServerContexts(contexts, file, tree, value, nextPath);
+      continue;
+    }
+
+    collectNestedServerContexts(contexts, file, tree, value, nextPath, nextUnderMcpBranch);
+  }
+}
+
+function addServerContexts(
+  contexts: Map<string, ServerContext>,
+  file: LoadedWorkspace["files"][number],
+  tree: Node | undefined,
+  serverMap: Record<string, unknown>,
+  basePath: ConfigPath
+): void {
+  for (const [serverName, serverConfig] of Object.entries(serverMap)) {
+    if (!isRecord(serverConfig)) {
+      continue;
+    }
+
+    contexts.set(
+      [...basePath, serverName].join("/"),
+      {
+        file,
+        tree,
+        serverName,
+        serverConfig,
+        basePath: [...basePath, serverName]
+      }
+    );
+  }
+}
+
+function shouldTreatValueAsServerMap(key: string, underMcpBranch: boolean): boolean {
+  const normalizedKey = key.toLowerCase();
+  return (
+    normalizedKey === "servers" && underMcpBranch ||
+    normalizedKey === "mcpservers" ||
+    normalizedKey.endsWith("mcp.servers")
+  );
+}
+
+function keyLooksLikeMcpBranch(key: string): boolean {
+  return /(^|[.\-_])mcp($|[.\-_])/i.test(key);
+}
+
+function hasAuthHintsRecursive(value: unknown, depth: number): boolean {
+  if (depth > 3) {
+    return false;
+  }
+
+  if (Array.isArray(value)) {
+    return value.some((item) => hasAuthHintsRecursive(item, depth + 1));
+  }
+
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  for (const [key, nestedValue] of Object.entries(value)) {
+    if (/auth|token|apikey|apiKey|header|authorization/i.test(key)) {
+      return true;
+    }
+
+    if (hasAuthHintsRecursive(nestedValue, depth + 1)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function looksLikeDisabledAuthConfig(value: unknown): boolean {
+  if (typeof value === "boolean") {
+    return value === false;
+  }
+
+  if (typeof value === "string") {
+    return /^(none|disabled|off|false)$/i.test(value.trim());
+  }
+
+  return false;
 }
 
 function looksOverbroadPath(value: string): boolean {
@@ -491,6 +650,21 @@ function locateJsonPath(
 
   const node = findNodeAtLocation(tree, path);
   return node ? locateMatch(file, node.offset) : undefined;
+}
+
+function isPotentialMcpConfigFile(file: LoadedWorkspace["files"][number]): boolean {
+  if (file.basename.endsWith(".code-workspace")) {
+    return true;
+  }
+
+  return (
+    MCP_CONFIG_SUFFIXES.some(
+      (candidate) => file.relativePath === candidate || file.relativePath.endsWith(`/${candidate}`)
+    ) ||
+    MCP_SETTINGS_SUFFIXES.some(
+      (candidate) => file.relativePath === candidate || file.relativePath.endsWith(`/${candidate}`)
+    )
+  );
 }
 
 function getSensitiveRemoteTargetSeverity(remoteUrl: string): "error" | "warning" | undefined {

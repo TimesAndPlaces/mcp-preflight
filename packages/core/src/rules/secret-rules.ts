@@ -21,6 +21,16 @@ const SECRET_PATTERNS = [
 ];
 
 const PRIVATE_KEY_PATTERN = /-----BEGIN (?:RSA |OPENSSH |EC |DSA )?PRIVATE KEY-----/g;
+const PLACEHOLDER_SECRET_PATTERNS = [
+  /changeme/i,
+  /dummy/i,
+  /example/i,
+  /placeholder/i,
+  /replace[-_ ]?me/i,
+  /sample/i,
+  /test[-_ ]?(key|token|secret)?/i,
+  /your[-_ ]?(api[-_ ]?key|key|secret|token)/i
+];
 
 export function scanSecretExposure(workspace: LoadedWorkspace): Finding[] {
   const findings: Finding[] = [];
@@ -35,6 +45,10 @@ export function scanSecretExposure(workspace: LoadedWorkspace): Finding[] {
       let count = 0;
 
       for (const match of file.content.matchAll(regex)) {
+        if (pattern.label === "Generic secret assignment" && isPlaceholderSecret(match[0])) {
+          continue;
+        }
+
         findings.push(
           createFinding({
             ruleId: "exposed-secrets",
@@ -92,4 +106,9 @@ function isSecretCandidate(file: WorkspaceFile): boolean {
     file.extension === ".md" ||
     file.extension === ".txt"
   );
+}
+
+function isPlaceholderSecret(value: string): boolean {
+  const normalizedValue = value.trim();
+  return PLACEHOLDER_SECRET_PATTERNS.some((pattern) => pattern.test(normalizedValue));
 }

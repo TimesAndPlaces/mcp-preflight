@@ -14,6 +14,15 @@ export function formatReportAsText(report: ScanReport): string {
   if (report.suppressionFilePath) {
     lines.push(`Suppressions file: ${report.suppressionFilePath}`);
   }
+  if (report.notices.length > 0) {
+    lines.push("Notices:");
+    for (const notice of report.notices) {
+      lines.push(`- ${notice.message}`);
+      if (notice.suggestion) {
+        lines.push(`  ${notice.suggestion}`);
+      }
+    }
+  }
   lines.push("");
 
   if (report.findings.length === 0) {
@@ -58,6 +67,17 @@ export function formatReportAsMarkdown(report: ScanReport): string {
 
   if (report.suppressionFilePath) {
     sections.push(`- Suppressions: \`${report.suppressionFilePath}\``);
+  }
+  if (report.notices.length > 0) {
+    sections.push("");
+    sections.push("## Notices");
+    sections.push("");
+    for (const notice of report.notices) {
+      sections.push(`- ${notice.message}`);
+      if (notice.suggestion) {
+        sections.push(`  ${notice.suggestion}`);
+      }
+    }
   }
 
   sections.push("");
@@ -138,6 +158,18 @@ export function formatReportAsHtml(report: ScanReport): string {
           ${
             report.suppressionFilePath
               ? `<p><strong>Suppressions:</strong> ${escapeHtml(report.suppressionFilePath)}</p>`
+              : ""
+          }
+          ${
+            report.notices.length > 0
+              ? `<div><strong>Notices:</strong><ul>${report.notices
+                  .map(
+                    (notice) =>
+                      `<li>${escapeHtml(notice.message)}${
+                        notice.suggestion ? ` ${escapeHtml(notice.suggestion)}` : ""
+                      }</li>`
+                  )
+                  .join("")}</ul></div>`
               : ""
           }
         </section>

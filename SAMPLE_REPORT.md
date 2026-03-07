@@ -50,5 +50,6 @@ This is a fake report that shows the tone and structure of a local scan result. 
   Commit the lockfile so installs are more predictable and easier to review.
 
 ## Notes
-- Real output can be rendered as text, JSON, Markdown, HTML, or SARIF.
+- Lite output is text or JSON.
+- Markdown, HTML, and SARIF are part of the Pro export surface.
 - The Lite product is meant to stay readable without a dashboard.

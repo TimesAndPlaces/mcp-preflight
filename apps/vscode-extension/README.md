@@ -10,11 +10,14 @@ The point is simple: scan first, trust later. The extension is local-first, fast
 - Problems panel diagnostics
 - fix guidance in plain language
 - no required login for the Lite scan flow
+- a local Pro license command when you want to unlock export and workflow features
 
 ## Commands
 - `MCP Preflight: Scan Workspace`
 - `MCP Preflight: Scan Current File`
 - `MCP Preflight: Show Fix Recipes`
+- `MCP Preflight: Install Pro License`
+- `MCP Preflight: Show License Status`
 
 ## What it checks today
 - hardcoded secrets and private key material
@@ -29,11 +32,17 @@ The point is simple: scan first, trust later. The extension is local-first, fast
 ## Why people use it
 - local scan by default
 - no hosted MCP Preflight account required for the Lite scan
+- Pro unlock stays local too, through a signed license token on the machine
 - MCP-specific checks instead of a broad platform surface
 - findings that explain what looked risky and what to fix next
+
+## Upgrade
+- Buy MCP Preflight Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
+- Pro stays local after purchase: install the signed license token on the machine instead of logging into a hosted MCP Preflight account
 
 ## Read more
 - [Privacy note](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/PRIVACY.md)
 - [Rule overview](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/RULES.md)
 - [Sample report](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/SAMPLE_REPORT.md)
+- [Audit notes](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/AUDITS.md)
 - [Security reporting](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/SECURITY.md)
