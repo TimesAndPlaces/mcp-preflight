@@ -18,3 +18,4 @@ scripts/release/
 *.tsbuildinfo
 *.vsix
 .DS_Store
+tmp/

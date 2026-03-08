@@ -30,13 +30,8 @@ a:hover { color: var(--accent); }
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 0.8rem;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, #163852 0%, #225c88 100%);
-  color: #f8f5ed;
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
+  display: block;
+  flex: 0 0 auto;
   box-shadow: var(--shadow);
 }
 .brand-copy strong, .hero h1, .section h2, .card h3, .page-title h1, .page-card h2 {

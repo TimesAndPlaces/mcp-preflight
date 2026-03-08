@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.1.5 - 2026-03-08
+- Promoted the new blue trust-first braces logo to the main MCP Preflight mark across the VS Code extension and public website.
+- Replaced the site favicon and header badge so the public web surface matches the extension identity.
+
 ## 0.1.4 - 2026-03-08
 - Replaced the malformed extension icon with a cleaner marketplace-ready mark that stays legible at small sizes.
 
