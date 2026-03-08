@@ -39,7 +39,7 @@ If you would rather use the editor flow, install the extension from the [VS Code
 - Pro is unlocked with a local signed license token, not a hosted MCP Preflight account
 - The scanner does not need to phone home just to decide whether Pro is active on your machine
 - Buy Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
-- Activation and install: [Pro license guide](https://mcppreflight.com/pro/)
+- Activation and install: [Pro guide](https://mcppreflight.com/pro/)
 
 ## What it is not
 - Not a hosted scanner
@@ -49,10 +49,10 @@ If you would rather use the editor flow, install the extension from the [VS Code
 
 ## Read this next
 - [Privacy](PRIVACY.md)
-- [Pro license guide](https://mcppreflight.com/pro/)
+- [Pro guide](https://mcppreflight.com/pro/)
 - [Rule overview](RULES.md)
-- [Example report](SAMPLE_REPORT.md)
-- [Guides](GUIDES.md)
+- [Example report](EXAMPLE_REPORT.md)
+- [Guides](guides/)
 - [Security reporting](SECURITY.md)
 
 ## Commands
