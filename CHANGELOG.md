@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.12 - 2026-03-08
+- Rebuilt the public site around a denser monochrome visual system with tighter spacing, hairline borders, and a more developer-first layout.
+- Reworked the extension overview and sidebar to use a flatter, more compact UI instead of the previous glossy dashboard treatment.
+- Tightened the shared visual language across the homepage, Pro page, guide pages, and support pages so the public surface feels more consistent and serious.
+
 ## 0.1.11 - 2026-03-08
 - Tightened the public homepage and GitHub docs so the product reads more like a practical developer tool and less like a careful product brief.
 - Simplified the root README install matrix and the extension/CLI package READMEs.

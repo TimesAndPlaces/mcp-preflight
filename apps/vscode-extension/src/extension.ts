@@ -646,152 +646,261 @@ function renderOverviewHtml(
 
   return `
     <html>
-      <body class="${isSidebar ? "sidebar" : "panel"}" style="font-family: Segoe UI, sans-serif; padding: ${isSidebar ? "12px" : "20px"}; color: #f5f7fa; background: linear-gradient(180deg, #0f172a 0%, #111827 100%);">
+      <body class="${isSidebar ? "sidebar" : "panel"}">
         <style>
-          body { margin: 0; }
-          h1, h2, h3, p { margin: 0; }
-          .layout { display: grid; gap: 16px; }
-          .hero { padding: 18px; border-radius: 16px; background: linear-gradient(135deg, rgba(8, 34, 53, 0.95) 0%, rgba(15, 23, 42, 0.96) 100%); border: 1px solid rgba(125, 211, 252, 0.14); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28); }
-          .hero-top { display: grid; grid-template-columns: ${isSidebar ? "1fr" : "auto 1fr auto"}; gap: 14px; align-items: center; }
-          .brand-mark { width: ${isSidebar ? "52px" : "64px"}; height: ${isSidebar ? "52px" : "64px"}; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, rgba(125, 211, 252, 0.28), rgba(15, 23, 42, 0.08) 70%); border: 1px solid rgba(125, 211, 252, 0.18); }
-          .cards { display: grid; grid-template-columns: ${isSidebar ? "1fr" : "repeat(auto-fit, minmax(240px, 1fr))"}; gap: 16px; }
-          .card { padding: 16px; border-radius: 14px; background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(255, 255, 255, 0.08); }
-          .eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #93c5fd; margin-bottom: 8px; }
-          .title { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
-          .muted { color: #cbd5e1; line-height: 1.5; }
-          .stat { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
-          .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
-          button {
-            appearance: none;
-            border: 0;
-            border-radius: 999px;
-            padding: 10px 14px;
-            background: #fca311;
-            color: #111827;
-            font-weight: 600;
-            cursor: pointer;
+          :root {
+            color-scheme: dark;
+            --bg: #0a0a0b;
+            --surface: #121316;
+            --surface-strong: #16171b;
+            --line: #26282e;
+            --line-strong: #383b43;
+            --ink: #f3f4f6;
+            --ink-soft: #b4b8c0;
+            --ink-faint: #7f858f;
           }
-          button.secondary { background: rgba(255, 255, 255, 0.1); color: #f5f7fa; }
-          .meta { margin-top: 12px; font-size: 13px; color: #93a4b8; line-height: 1.5; }
+          body {
+            margin: 0;
+            padding: ${isSidebar ? "10px" : "16px"};
+            font-family: Inter, "Segoe UI", sans-serif;
+            color: var(--ink);
+            background:
+              radial-gradient(circle at top, rgba(255, 255, 255, 0.04), transparent 18rem),
+              linear-gradient(180deg, #09090a 0%, #0b0b0d 100%);
+          }
+          h1, h2, h3, p, ul { margin: 0; }
+          .layout { display: grid; gap: 10px; }
+          .hero,
+          .card {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background:
+              radial-gradient(circle at top left, rgba(255, 255, 255, 0.03), transparent 12rem),
+              linear-gradient(180deg, rgba(22, 23, 27, 0.98), rgba(14, 15, 18, 0.98));
+          }
+          .hero {
+            padding: ${isSidebar ? "14px" : "16px"};
+          }
+          .hero-top {
+            display: grid;
+            grid-template-columns: ${isSidebar ? "1fr" : "auto 1fr auto"};
+            gap: 12px;
+            align-items: start;
+          }
+          .identity {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px;
+            align-items: start;
+          }
+          .brand-mark {
+            width: ${isSidebar ? "42px" : "48px"};
+            height: ${isSidebar ? "42px" : "48px"};
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--line);
+          }
+          .cards {
+            display: grid;
+            grid-template-columns: ${isSidebar ? "1fr" : "repeat(auto-fit, minmax(220px, 1fr))"};
+            gap: 10px;
+          }
+          .card {
+            padding: 14px;
+          }
+          .eyebrow,
+          .summary-label,
+          .tier-chip,
           .pill {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 10px;
+            width: fit-content;
+            padding: 4px 8px;
+            border: 1px solid var(--line);
             border-radius: 999px;
-            background: ${getVerdictBackground(report?.verdict)};
-            color: ${getVerdictForeground(report?.verdict)};
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-          }
-          .tier-chip {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 12px;
-            border-radius: 999px;
-            background: ${license.status === "valid" ? "rgba(16, 185, 129, 0.16)" : "rgba(125, 211, 252, 0.14)"};
-            color: ${license.status === "valid" ? "#bbf7d0" : "#bfdbfe"};
-            font-size: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
           }
+          .summary-label,
+          .eyebrow {
+            color: #d2d6dd;
+          }
+          .tier-chip {
+            justify-self: ${isSidebar ? "start" : "end"};
+            color: ${license.status === "valid" ? "#d8eadc" : "#dde1e8"};
+            border-color: ${license.status === "valid" ? "rgba(128, 160, 136, 0.28)" : "var(--line)"};
+            background: ${license.status === "valid" ? "rgba(128, 160, 136, 0.1)" : "rgba(255, 255, 255, 0.03)"};
+          }
           .hero-copy h1 {
-            font-size: ${isSidebar ? "22px" : "26px"};
-            line-height: 1.2;
-            margin-bottom: 8px;
+            margin-top: 8px;
+            font-size: ${isSidebar ? "20px" : "24px"};
+            line-height: 1.04;
+            letter-spacing: -0.04em;
           }
           .subcopy {
-            margin-top: 10px;
-            color: #dbe7f3;
-            line-height: 1.5;
+            margin-top: 8px;
+            color: var(--ink-soft);
+            line-height: 1.45;
+            max-width: 48ch;
+            font-size: 13px;
           }
-          .mini-grid {
-            margin-top: 14px;
+          .toolbar,
+          button {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+          }
+          .toolbar {
+            margin-top: 12px;
+          }
+          button {
+            appearance: none;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 8px 11px;
+            background: #f3f4f6;
+            color: #0a0a0b;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+          }
+          button.secondary {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--ink);
+          }
+          button:hover {
+            border-color: var(--line-strong);
+          }
+          .metric-grid {
+            margin-top: 12px;
             display: grid;
-            grid-template-columns: ${isSidebar ? "1fr" : "repeat(4, minmax(0, 1fr))"};
+            grid-template-columns: ${isSidebar ? "repeat(2, minmax(0, 1fr))" : "repeat(4, minmax(0, 1fr))"};
+            gap: 8px;
+          }
+          .metric {
+            padding: 10px 11px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.025);
+          }
+          .metric strong {
+            display: block;
+            font-size: 16px;
+            letter-spacing: -0.03em;
+          }
+          .metric span {
+            display: block;
+            margin-top: 4px;
+            font-size: 11px;
+            color: var(--ink-faint);
+          }
+          .card-head {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
             gap: 10px;
           }
-          .mini-stat {
-            padding: 10px 12px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+          .stat {
+            margin-top: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.04;
+            letter-spacing: -0.04em;
           }
-          .mini-stat strong {
-            display: block;
-            font-size: 18px;
+          .muted {
+            margin-top: 8px;
+            color: var(--ink-soft);
+            line-height: 1.45;
+            font-size: 13px;
           }
-          .mini-stat span {
+          .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+          }
+          .meta {
+            margin-top: 10px;
+            color: var(--ink-faint);
+            line-height: 1.45;
             font-size: 12px;
-            color: #9fb3c8;
+          }
+          .pill {
+            margin-top: 10px;
+            margin-bottom: 0;
+            color: ${getVerdictForeground(report?.verdict)};
+            background: ${getVerdictBackground(report?.verdict)};
+            border-color: ${getVerdictBorder(report?.verdict)};
           }
           .trust-list {
             list-style: none;
             margin: 10px 0 0;
             padding: 0;
             display: grid;
-            gap: 8px;
+            gap: 0;
           }
           .trust-list li {
-            color: #d7e2ee;
-            padding-left: 18px;
-            position: relative;
+            padding: 9px 0;
+            border-top: 1px solid var(--line);
+            color: var(--ink-soft);
+            font-size: 13px;
           }
-          .trust-list li::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 8px;
-            width: 8px;
-            height: 8px;
-            border-radius: 999px;
-            background: #37d4c3;
-            box-shadow: 0 0 0 4px rgba(55, 212, 195, 0.14);
+          .trust-list li:first-child {
+            border-top: 0;
           }
-          .hero-actions {
-            margin-top: 16px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+          @media (max-width: 640px) {
+            .hero-top,
+            .identity {
+              grid-template-columns: 1fr;
+            }
+            .metric-grid,
+            .cards {
+              grid-template-columns: 1fr;
+            }
           }
         </style>
         <div class="layout">
           <section class="hero">
             <div class="hero-top">
-              <div class="brand-mark" aria-hidden="true">
-                ${renderBrandMarkSvg()}
-              </div>
-              <div class="hero-copy">
-                <div class="eyebrow">MCP Preflight</div>
-                <h1>${isSidebar ? "Review your MCP setup before you run it." : "Review your MCP setup before you run it."}</h1>
-                <p class="subcopy">See the latest scan, license status, and quick actions without leaving VS Code or Cursor.</p>
+              <div class="identity">
+                <div class="brand-mark" aria-hidden="true">
+                  ${renderBrandMarkSvg()}
+                </div>
+                <div class="hero-copy">
+                  <div class="summary-label">MCP Preflight</div>
+                  <h1>Review MCP setup before first run.</h1>
+                  <p class="subcopy">Latest scan status, local license state, and the next actions for this editor profile.</p>
+                </div>
               </div>
               <div class="tier-chip">${escapeHtml(license.status === "valid" ? "Pro active" : "Lite active")}</div>
             </div>
-            <div class="hero-actions">
+            <div class="toolbar">
               <button data-command="scanWorkspace">Scan workspace</button>
               <button class="secondary" data-command="scanCurrentFile">Scan current file</button>
-              <button class="secondary" data-command="refresh">${isSidebar ? "Refresh" : "Refresh overview"}</button>
+              <button class="secondary" data-command="refresh">Refresh</button>
             </div>
-            <div class="mini-grid">
-              <div class="mini-stat">
+            <div class="metric-grid">
+              <div class="metric">
                 <strong>${activity.scans.total}</strong>
                 <span>local scans</span>
               </div>
-              <div class="mini-stat">
+              <div class="metric">
                 <strong>${report ? report.summary.errors + report.summary.warnings + report.summary.info : 0}</strong>
                 <span>latest findings</span>
               </div>
-              <div class="mini-stat">
+              <div class="metric">
                 <strong>${license.status === "valid" ? "Pro" : "Lite"}</strong>
                 <span>current tier</span>
               </div>
-              <div class="mini-stat">
+              <div class="metric">
                 <strong>v${escapeHtml(params.version)}</strong>
                 <span>extension build</span>
               </div>
@@ -799,8 +908,10 @@ function renderOverviewHtml(
           </section>
           <div class="cards">
             <section class="card">
-              <div class="eyebrow">Latest scan</div>
-              <div class="pill">${escapeHtml(report?.verdict ?? "idle")}</div>
+              <div class="card-head">
+                <div class="eyebrow">Latest scan</div>
+                <div class="pill">${escapeHtml(report?.verdict ?? "idle")}</div>
+              </div>
               <div class="stat">${escapeHtml(reportSummary.title)}</div>
               <p class="muted">${escapeHtml(reportSummary.detail)}</p>
               <div class="actions">
@@ -819,8 +930,8 @@ function renderOverviewHtml(
             </section>
             <section class="card">
               <div class="eyebrow">Local mode</div>
-              <div class="stat">Runs locally</div>
-              <p class="muted">MCP Preflight scans local files. Lite needs no account. Pro uses a signed local token.</p>
+              <div class="stat">Local-first</div>
+              <p class="muted">The scanner reads local files. Lite needs no account. Pro uses a signed token on this machine.</p>
               <ul class="trust-list">${trustList}</ul>
             </section>
             <section class="card">
@@ -835,14 +946,14 @@ function renderOverviewHtml(
             <section class="card">
               <div class="eyebrow">Quick links</div>
               <div class="stat">Next actions</div>
-              <p class="muted">Open the sidebar, get help, leave a review, or compare Pro.</p>
+              <p class="muted">Open help, leave a review, or compare Lite and Pro.</p>
               <div class="actions">
                 <button data-command="openSidebar">Open sidebar</button>
                 <button data-command="upgradeToPro">Upgrade</button>
                 <button class="secondary" data-command="leaveReview">Review</button>
                 <button class="secondary" data-command="getHelp">Help</button>
               </div>
-              <div class="meta">Support stays async through GitHub Discussions and Issues. Lite stays local-first.</div>
+              <div class="meta">Support stays async through GitHub Discussions and Issues.</div>
             </section>
           </div>
         </div>
@@ -959,26 +1070,38 @@ function getActivityMetaText(activity: ActivitySummary): string {
 
 function getVerdictBackground(verdict: ScanReport["verdict"] | undefined): string {
   if (verdict === "fail") {
-    return "rgba(239, 68, 68, 0.18)";
+    return "rgba(120, 42, 42, 0.14)";
   }
 
   if (verdict === "warning") {
-    return "rgba(245, 158, 11, 0.18)";
+    return "rgba(118, 92, 40, 0.14)";
   }
 
-  return "rgba(16, 185, 129, 0.18)";
+  return "rgba(62, 88, 67, 0.14)";
 }
 
 function getVerdictForeground(verdict: ScanReport["verdict"] | undefined): string {
   if (verdict === "fail") {
-    return "#fecaca";
+    return "#e7c1c1";
   }
 
   if (verdict === "warning") {
-    return "#fde68a";
+    return "#e4d2ab";
   }
 
-  return "#bbf7d0";
+  return "#d1dfd4";
+}
+
+function getVerdictBorder(verdict: ScanReport["verdict"] | undefined): string {
+  if (verdict === "fail") {
+    return "rgba(198, 98, 98, 0.22)";
+  }
+
+  if (verdict === "warning") {
+    return "rgba(194, 152, 72, 0.22)";
+  }
+
+  return "rgba(118, 153, 124, 0.22)";
 }
 
 function renderFixRecipeHtml(report: ScanReport | undefined): string {
