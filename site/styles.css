@@ -32,6 +32,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   position: relative;
   color: var(--ink);
   font-family: "IBM Plex Sans", sans-serif;
@@ -51,8 +52,8 @@ body::before {
   opacity: 1;
   background:
     linear-gradient(180deg, rgba(4, 10, 15, 0) 0%, rgba(4, 10, 15, 0.55) 100%),
-    repeating-linear-gradient(90deg, transparent 0 46px, rgba(142, 164, 178, 0.055) 46px 47px),
-    repeating-linear-gradient(0deg, transparent 0 46px, rgba(142, 164, 178, 0.055) 46px 47px);
+    repeating-linear-gradient(90deg, transparent 0 46px, rgba(142, 164, 178, 0.03) 46px 47px),
+    repeating-linear-gradient(0deg, transparent 0 46px, rgba(142, 164, 178, 0.03) 46px 47px);
 }
 
 body::after {
@@ -214,7 +215,7 @@ pre {
 }
 
 .hero-grid {
-  grid-template-columns: minmax(0, 1.12fr) minmax(21rem, 0.88fr);
+  grid-template-columns: minmax(0, 1.06fr) minmax(22rem, 0.94fr);
 }
 
 .hero-copy,
@@ -244,11 +245,11 @@ pre {
 }
 
 .hero-copy {
-  padding: 2rem;
+  padding: 1.85rem;
 }
 
 .home-hero .hero-copy {
-  padding: 2.3rem;
+  padding: 2rem;
 }
 
 .kicker,
@@ -278,7 +279,9 @@ pre {
 }
 
 .hero h1 {
-  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-size: clamp(2.9rem, 6.2vw, 5rem);
+  letter-spacing: -0.04em;
+  max-width: 11ch;
 }
 
 .page-title h1 {
@@ -297,27 +300,64 @@ pre {
   font-size: 1.14rem;
 }
 
-.hero-command-row {
+.hero-route-list {
   display: flex;
   gap: 0.65rem;
   flex-wrap: wrap;
   margin-top: 1rem;
 }
 
-.prompt-chip {
+.hero-route {
   display: inline-flex;
   align-items: center;
+  gap: 0.55rem;
+  max-width: 100%;
   min-height: 2.2rem;
-  padding: 0.48rem 0.72rem;
-  border-radius: 0.9rem;
+  padding: 0.42rem 0.56rem;
+  border-radius: 0.95rem;
   border: 1px solid rgba(138, 182, 204, 0.12);
   background: rgba(4, 10, 15, 0.34);
   color: #c5d8e3;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.8rem;
-  line-height: 1.35;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
-  white-space: nowrap;
+}
+
+.hero-route span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.46rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #8de7db;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-route code {
+  overflow-wrap: anywhere;
+  background: transparent;
+  padding: 0;
+  color: #d5f7f1;
+  font-size: 0.81rem;
+}
+
+.hero-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.hero-links a {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hero-links a:hover {
+  color: var(--ink);
 }
 
 .highlight {
@@ -378,7 +418,7 @@ pre {
   display: flex;
   gap: 0.7rem;
   flex-wrap: wrap;
-  margin-top: 1rem;
+  margin-top: 1.1rem;
 }
 
 .channel-row {
@@ -427,7 +467,7 @@ pre {
   display: grid;
   gap: 1rem;
   height: 100%;
-  padding: 1.35rem;
+  padding: 1.2rem;
   border-radius: var(--radius-xl);
   border: 1px solid rgba(138, 182, 204, 0.14);
   color: #eef5f7;
@@ -450,11 +490,11 @@ pre {
 
 .decision-list {
   display: grid;
-  gap: 0.8rem;
+  gap: 0.75rem;
 }
 
 .decision-item {
-  padding: 0.95rem 1rem;
+  padding: 0.9rem 0.95rem;
   border-radius: 1rem;
   border: 1px solid rgba(138, 182, 204, 0.12);
   background: rgba(255, 255, 255, 0.035);
@@ -470,7 +510,7 @@ pre {
 .decision-item strong {
   color: #fff;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 1rem;
+  font-size: 0.98rem;
   line-height: 1.1;
 }
 
@@ -482,9 +522,9 @@ pre {
 }
 
 .decision-item p {
-  margin: 0.55rem 0 0.25rem;
+  margin: 0.48rem 0 0.2rem;
   color: rgba(238, 245, 247, 0.88);
-  font-size: 0.94rem;
+  font-size: 0.9rem;
 }
 
 .decision-item small {
@@ -518,10 +558,10 @@ pre {
   border: 1px solid rgba(13, 123, 114, 0.28);
 }
 
-.decision-footer {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
+.decision-note {
+  margin: 0.2rem 0 0;
+  color: rgba(238, 245, 247, 0.68);
+  font-size: 0.88rem;
 }
 
 .scan-window {
@@ -656,7 +696,7 @@ pre {
 }
 
 .section {
-  padding: 1.2rem 0;
+  padding: 1.45rem 0;
 }
 
 .section-head {
@@ -664,7 +704,7 @@ pre {
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.15rem;
 }
 
 .section-head h2 {
@@ -755,7 +795,7 @@ pre {
 .path-card,
 .signal-card,
 .finding-frame {
-  padding: 1.45rem;
+  padding: 1.35rem;
 }
 
 .path-card.featured {
@@ -1062,7 +1102,8 @@ pre {
   .action-row,
   .link-row,
   .channel-row,
-  .hero-command-row {
+  .hero-route-list,
+  .hero-links {
     flex-direction: column;
     align-items: stretch;
   }
@@ -1082,7 +1123,12 @@ pre {
     width: 100%;
   }
 
-  .prompt-chip {
+  .hero-route {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hero-route code {
     white-space: normal;
   }
 

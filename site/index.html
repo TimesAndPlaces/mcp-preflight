@@ -6,7 +6,7 @@
   <title>MCP Preflight | Check an MCP server before you trust it</title>
   <meta name="description" content="MCP Preflight is a local-first MCP security scanner for configs, prompts, and repo manifests.">
   <link rel="canonical" href="https://mcppreflight.com/">
-  <link rel="stylesheet" href="/styles.css?v=20260308-4">
+  <link rel="stylesheet" href="/styles.css?v=20260308-5">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -35,9 +35,15 @@
           <p class="kicker">Local-first MCP preflight</p>
           <h1>Check an MCP server <span class="highlight">before you trust it.</span></h1>
           <p class="lead">Before you run a new MCP server or ship an agent workflow, run one scan and get a deterministic verdict with plain-language fixes.</p>
-          <div class="hero-command-row">
-            <span class="prompt-chip">Repo quickstart: npm install && npm run quickstart</span>
-            <span class="prompt-chip">VS Code: MCP Preflight: Scan Workspace</span>
+          <div class="hero-route-list">
+            <div class="hero-route">
+              <span>Repo</span>
+              <code>npm install && npm run quickstart</code>
+            </div>
+            <div class="hero-route">
+              <span>VS Code</span>
+              <code>MCP Preflight: Scan Workspace</code>
+            </div>
           </div>
           <div class="action-row">
             <a class="button" href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">Install for VS Code</a>
@@ -46,13 +52,11 @@
           </div>
           <div class="status-row">
             <span class="pill"><strong>Lite</strong> local scan, no account required</span>
-            <span class="pill"><strong>Deterministic</strong> readable findings, not mystery scores</span>
-            <span class="pill"><strong>Trust stance</strong> no hosted scan backend</span>
+            <span class="pill"><strong>Readable</strong> findings with clear next steps</span>
           </div>
-          <div class="channel-row">
-            <span class="channel-pill">VS Code Marketplace</span>
-            <span class="channel-pill">Open VSX</span>
-            <span class="channel-pill">GitHub Releases</span>
+          <div class="hero-links">
+            <a href="https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode">Open VSX</a>
+            <a href="https://github.com/TimesAndPlaces/mcp-preflight/releases">GitHub Releases</a>
           </div>
         </article>
         <aside class="hero-side">
@@ -84,11 +88,7 @@
                 <small>Prefer a pinned install or reviewed local binary.</small>
               </article>
             </div>
-            <div class="decision-footer">
-              <span class="scan-tag">what looked risky</span>
-              <span class="scan-tag">why it matters</span>
-              <span class="scan-tag">what to change next</span>
-            </div>
+            <p class="decision-note">Every finding answers the same three questions: what looked risky, why it matters, and what to change next.</p>
           </section>
         </aside>
       </div>
