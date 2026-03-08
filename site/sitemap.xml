@@ -2,9 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://mcppreflight.com/</loc></url>
   <url><loc>https://mcppreflight.com/privacy/</loc></url>
+  <url><loc>https://mcppreflight.com/support/</loc></url>
+  <url><loc>https://mcppreflight.com/terms/</loc></url>
+  <url><loc>https://mcppreflight.com/refunds/</loc></url>
   <url><loc>https://mcppreflight.com/rules/</loc></url>
   <url><loc>https://mcppreflight.com/example-report/</loc></url>
   <url><loc>https://mcppreflight.com/pro/</loc></url>
   <url><loc>https://mcppreflight.com/guides/</loc></url>
+  <url><loc>https://mcppreflight.com/guides/official-filesystem-server-setup/</loc></url>
+  <url><loc>https://mcppreflight.com/guides/secure-mcp-json/</loc></url>
+  <url><loc>https://mcppreflight.com/guides/tool-poisoning-language/</loc></url>
   <url><loc>https://mcppreflight.com/security/</loc></url>
 </urlset>

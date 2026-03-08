@@ -22,14 +22,14 @@ This page shows an example local scan result. The paths, values, and findings be
 - Suggested fix:
   Move credentials out of the URL. Use a safer auth mechanism or environment-based secret injection with the smallest possible scope.
 
-### 2. Ephemeral launcher used for MCP server startup
+### 2. Floating ephemeral launcher used for MCP server startup
 - Severity: `warning`
 - Rule: `ephemeral-mcp-launcher`
 - Location: `.vscode/mcp.json:14:7`
 - Why it was flagged:
-  The server is launched through `npx`, which makes the exact code you run harder to pin and review.
+  The server is launched through `npx` without an exact package version, which makes the exact code you run harder to pin and review.
 - Suggested fix:
-  Prefer a pinned install or a reviewed local binary instead of an ephemeral package runner.
+  Prefer a pinned install or a reviewed local binary instead of a floating ephemeral launcher.
 
 ### 3. Prompt injection language in tool description
 - Severity: `warning`

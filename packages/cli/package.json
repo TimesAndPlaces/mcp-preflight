@@ -1,7 +1,7 @@
 {
   "name": "mcp-preflight",
-  "version": "0.1.8",
-  "description": "Local-first MCP security preflight scanner for MCP servers, configs, and prompts.",
+  "version": "0.1.9",
+  "description": "Local-first static MCP security preflight scanner for configs, prompts, and repo manifests.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -37,6 +37,6 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "mcp-preflight-core": "0.1.8"
+    "mcp-preflight-core": "0.1.9"
   }
 }

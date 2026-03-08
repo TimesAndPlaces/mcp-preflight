@@ -19,7 +19,7 @@ Looks for hardcoded API keys, tokens, and private key material in common config 
 Flags MCP setups that forward too much of the host environment into a server process.
 
 ### Unsafe launch patterns
-Flags shell wrappers, risky bootstrap commands, and ephemeral package runners such as `npx`, `bunx`, `uvx`, or `dlx` when they are being used to launch MCP servers.
+Flags shell wrappers, risky bootstrap commands, and floating or opaque package-launch patterns such as unpinned `npx`, `bunx`, `uvx`, or `dlx` setups.
 
 ### Remote MCP configuration risks
 Flags insecure transport, credentials embedded in URLs, and remote targets that appear to point at localhost, metadata endpoints, or other sensitive internal destinations.

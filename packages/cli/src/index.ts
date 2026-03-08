@@ -99,10 +99,6 @@ async function runScanCommand(args: string[]): Promise<void> {
     await assertProFeature(license, "reports");
   }
 
-  if (config.scanOptions.suppressionsFilePath || config.scanOptions.includeSuppressedFindings) {
-    await assertProFeature(license, "suppressions");
-  }
-
   const startedAt = Date.now();
   const report = await scanWorkspace(config.workspacePath, config.scanOptions);
   const output = renderReport(report, config.format);
@@ -190,10 +186,6 @@ async function runCiCommand(args: string[]): Promise<void> {
 
   if (config.policy !== "balanced") {
     await assertProFeature(license, "policy-presets");
-  }
-
-  if (config.scanOptions.suppressionsFilePath || config.scanOptions.includeSuppressedFindings) {
-    await assertProFeature(license, "suppressions");
   }
 
   const startedAt = Date.now();

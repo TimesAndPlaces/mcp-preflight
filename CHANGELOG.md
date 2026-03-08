@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 0.1.9 - 2026-03-08
+- Removed the Pro gate from local suppression files so Lite users can calibrate noisy findings without paying first.
+- Recalibrated ephemeral launcher findings to distinguish unpinned quickstart-style launchers from exact-version pinned launchers.
+- Tightened the public promise around static MCP setup and workflow review instead of overselling dynamic server inspection.
+- Added a canonical install matrix plus clearer support, terms, and refund surfaces across the repo and website.
+- Moved the published guide content onto `mcppreflight.com` so the domain can carry more of the trust and SEO surface directly.
+
 ## 0.1.8 - 2026-03-08
 - Added a dedicated MCP Preflight activity-bar sidebar so the extension has a visible, branded surface in VS Code and Cursor.
 - Added a richer Lite or Pro overview with visible trust cues, local activity, quick actions, and a one-time onboarding prompt.

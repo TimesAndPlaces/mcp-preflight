@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MCP Preflight | Check an MCP server before you trust it</title>
-  <meta name="description" content="MCP Preflight is a local-first MCP security scanner for configs, prompts, and repo manifests.">
+  <title>MCP Preflight | Static preflight for MCP setup and workflow trust</title>
+  <meta name="description" content="MCP Preflight is a local-first static MCP security scanner for configs, prompts, and repo manifests.">
   <link rel="canonical" href="https://mcppreflight.com/">
-  <link rel="stylesheet" href="/styles.css?v=20260308-5">
+  <link rel="stylesheet" href="/styles.css?v=20260308-6">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -33,8 +33,8 @@
       <div class="hero-grid">
         <article class="hero-copy">
           <p class="kicker">Local-first MCP preflight</p>
-          <h1>Check an MCP server <span class="highlight">before you trust it.</span></h1>
-          <p class="lead">Before you run a new MCP server or ship an agent workflow, run one scan and get a deterministic verdict with plain-language fixes.</p>
+          <h1>Review MCP setup <span class="highlight">before first trust.</span></h1>
+          <p class="lead">Scan MCP config, prompt text, and repo manifests locally before you run a new server or ship an agent workflow. The core scan is static: it reviews setup and workflow risk without connecting to the server.</p>
           <div class="hero-route-list">
             <div class="hero-route">
               <span>CLI</span>
@@ -81,11 +81,11 @@
               </article>
               <article class="decision-item">
                 <header>
-                  <strong>Ephemeral launcher hides what actually runs</strong>
+                  <strong>Floating ephemeral launcher deserves review</strong>
                   <span class="severity severity-warning">warning</span>
                 </header>
                 <p><code>npx @example/filesystem-server --path /</code></p>
-                <small>Prefer a pinned install or reviewed local binary.</small>
+                <small>This pattern is common in quickstarts. Pin the package version or move to a reviewed local install before daily use.</small>
               </article>
             </div>
             <p class="decision-note">Every finding answers the same three questions: what looked risky, why it matters, and what to change next.</p>
@@ -98,13 +98,13 @@
       <div class="section-head">
         <div>
           <p class="eyebrow">Choose your path</p>
-          <h2>Start where you already work.</h2>
-          <p>MCP Preflight is the same narrow product through three entry points: extension, CLI, and Pro unlock.</p>
+          <h2>Install paths that are live today.</h2>
+          <p>MCP Preflight is available three ways right now: extension, published npm CLI, and a standalone GitHub Release bundle.</p>
         </div>
       </div>
       <div class="path-grid">
         <article class="path-card featured">
-          <p class="path-label">VS Code</p>
+          <p class="path-label">VS Code live</p>
           <h3>One click from the editor</h3>
           <p>Open the overview, scan the workspace or current file, and jump straight to the findings.</p>
           <ul>
@@ -118,7 +118,7 @@
           </div>
         </article>
         <article class="path-card">
-          <p class="path-label">CLI</p>
+          <p class="path-label">npm live</p>
           <h3>Quickstart in minutes</h3>
           <p>Install once, run it anywhere, and scan the workspace in front of you.</p>
           <pre>npm install -g mcp-preflight
@@ -128,16 +128,12 @@ mcp-preflight scan /path/to/workspace</pre>
           </div>
         </article>
         <article class="path-card">
-          <p class="path-label">Pro</p>
-          <h3>Unlock workflow surfaces, not a hosted account</h3>
-          <p>Pro adds export and gating features through a local signed token, not a dashboard.</p>
-          <ul>
-            <li>Markdown, HTML, and SARIF reports</li>
-            <li>CI mode and Git hooks</li>
-            <li>policy presets and suppressions</li>
-          </ul>
+          <p class="path-label">Release bundle live</p>
+          <h3>Single-file CLI from GitHub Releases</h3>
+          <p>Use the standalone bundle if you want the CLI as one downloaded file instead of a global install.</p>
+          <pre>node mcp-preflight.js scan /path/to/workspace</pre>
           <div class="action-row">
-            <a class="button-secondary" href="/pro/">Read the Pro guide</a>
+            <a class="button-secondary" href="https://github.com/TimesAndPlaces/mcp-preflight/releases">Browse releases</a>
           </div>
         </article>
       </div>
@@ -162,7 +158,7 @@ mcp-preflight scan /path/to/workspace</pre>
         </article>
         <article class="signal-card">
           <h3>Environment and scope leakage</h3>
-          <p>Broad filesystem paths, blanket environment inheritance, named token passthrough, and unsafe launchers.</p>
+          <p>Broad filesystem paths, blanket environment inheritance, named token passthrough, and floating or opaque launchers.</p>
         </article>
         <article class="signal-card">
           <h3>Repo predictability</h3>
@@ -225,6 +221,7 @@ mcp-preflight scan /path/to/workspace</pre>
             <li>quick local scan</li>
             <li>text and JSON output</li>
             <li>workspace and current-file scan</li>
+            <li>local suppression files</li>
             <li>no account required</li>
             <li>no network required by default</li>
           </ul>
@@ -234,8 +231,8 @@ mcp-preflight scan /path/to/workspace</pre>
           <h3>Reports, hooks, CI, and presets</h3>
           <ul>
             <li>Markdown, HTML, and SARIF reports</li>
-            <li>suppressions and policy presets</li>
             <li>CI mode and Git hooks</li>
+            <li>policy presets</li>
             <li>signed local license token</li>
             <li>one-time purchase at $39</li>
           </ul>
@@ -265,6 +262,9 @@ mcp-preflight scan /path/to/workspace</pre>
       <div class="footer-links">
         <a href="/">Home</a>
         <a href="/privacy/">Privacy</a>
+        <a href="/support/">Support</a>
+        <a href="/terms/">Terms</a>
+        <a href="/refunds/">Refunds</a>
         <a href="/rules/">Rules</a>
         <a href="/example-report/">Example report</a>
         <a href="/guides/">Guides</a>

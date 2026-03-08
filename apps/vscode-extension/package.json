@@ -1,8 +1,8 @@
 {
   "name": "mcp-preflight-vscode",
   "displayName": "MCP Preflight",
-  "description": "Local-first MCP security preflight scans for configs, prompts, and repo manifests.",
-  "version": "0.1.8",
+  "description": "Local-first static MCP security preflight scans for configs, prompts, and repo manifests.",
+  "version": "0.1.9",
   "publisher": "mcp-preflight",
   "homepage": "https://mcppreflight.com",
   "repository": {
@@ -123,7 +123,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "mcp-preflight-core": "0.1.8"
+    "mcp-preflight-core": "0.1.9"
   },
   "devDependencies": {
     "@types/vscode": "^1.97.0"

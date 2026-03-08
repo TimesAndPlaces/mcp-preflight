@@ -7,6 +7,9 @@ export const PRODUCT_URLS = {
   openvsx: "https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode",
   upgrade: "https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00",
   proLicenseGuide: "https://mcppreflight.com/pro/",
-  licenseSupport: "mailto:igorsv199@gmail.com?subject=MCP%20Preflight%20Pro%20license",
+  support: "https://mcppreflight.com/support/",
+  terms: "https://mcppreflight.com/terms/",
+  refunds: "https://mcppreflight.com/refunds/",
+  licenseSupport: "https://mcppreflight.com/support/",
   guides: "https://mcppreflight.com/guides/"
 } as const;

@@ -15,7 +15,6 @@ import type {
 
 export const ALL_PRO_FEATURES: ProFeature[] = [
   "reports",
-  "suppressions",
   "ci",
   "hooks",
   "policy-presets"

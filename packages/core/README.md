@@ -12,3 +12,4 @@ Source and docs:
 
 - Website: https://mcppreflight.com
 - Repository: https://github.com/TimesAndPlaces/mcp-preflight
+- Support: https://mcppreflight.com/support/

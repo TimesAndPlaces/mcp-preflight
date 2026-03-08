@@ -1,7 +1,5 @@
-import { access } from "node:fs/promises";
 import path from "node:path";
 
-import { hasProFeature, resolveLicense } from "./license";
 import { runAllRules } from "./rules";
 import type { ScanOptions, ScanReport, ScanSummary, Verdict } from "./types";
 import { applySuppressions, loadSuppressions } from "./suppressions";
@@ -21,29 +19,15 @@ export async function scanWorkspace(
 ): Promise<ScanReport> {
   const options = { ...DEFAULT_OPTIONS, ...partialOptions };
   const workspace = await loadWorkspace(workspacePath, options);
-  const license = await resolveLicense(options);
   const rawFindings = runAllRules(workspace);
   const notices: ScanReport["notices"] = [];
-  const suppressionsEnabled = options.useSuppressions && hasProFeature(license, "suppressions");
   const suppressionFilePath = resolveSuppressionFilePath(workspace.workspacePath, options);
-  const loadedSuppressions = suppressionsEnabled
+  const loadedSuppressions = options.useSuppressions
     ? await loadSuppressions(workspace.workspacePath, options)
     : {
         suppressions: [],
         diagnosticFindings: []
       };
-
-  if (!suppressionsEnabled && options.useSuppressions && (await shouldShowSuppressionNotice(options, suppressionFilePath))) {
-    notices.push({
-      code: "pro-suppressions-required",
-      severity: "info",
-      message:
-        license.status === "missing"
-          ? "Lite mode ignored local suppression rules because suppression files are a Pro feature."
-          : "The local Pro license could not unlock suppression files, so suppression rules were ignored.",
-      suggestion: "Install a valid MCP Preflight Pro license to apply suppression files locally."
-    });
-  }
 
   const { findings: unsuppressedFindings, suppressedFindings } = applySuppressions(
     rawFindings,
@@ -67,7 +51,7 @@ export async function scanWorkspace(
     summary,
     findings,
     suppressedFindings,
-    suppressionFilePath: suppressionsEnabled ? loadedSuppressions.filePath : undefined,
+    suppressionFilePath: options.useSuppressions ? loadedSuppressions.filePath : undefined,
     notices
   };
 }
@@ -91,20 +75,4 @@ function resolveSuppressionFilePath(
   return options.suppressionsFilePath
     ? path.resolve(options.suppressionsFilePath)
     : path.join(workspacePath, options.suppressionsFileName);
-}
-
-async function shouldShowSuppressionNotice(
-  options: Pick<ScanOptions, "includeSuppressedFindings" | "suppressionsFilePath">,
-  suppressionFilePath: string
-): Promise<boolean> {
-  if (options.includeSuppressedFindings || options.suppressionsFilePath) {
-    return true;
-  }
-
-  try {
-    await access(suppressionFilePath);
-    return true;
-  } catch {
-    return false;
-  }
 }

@@ -1,8 +1,10 @@
 # MCP Preflight
 
-MCP Preflight helps you catch risky MCP configs before you run them.
+MCP Preflight helps you catch risky MCP setup and workflow choices before first trust.
 
 The point is simple: scan first, trust later. The extension is local-first, fast to run, and written for people who want a clear answer instead of a dashboard.
+
+The core scan is static. It reviews local config, prompt text, and repo signals without connecting to the server during the default scan.
 
 ## Fast start
 1. Install MCP Preflight from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode).
@@ -72,4 +74,7 @@ That log stays on the machine unless you choose to export or share it yourself.
 - [Rule overview](https://mcppreflight.com/rules/)
 - [Example report](https://mcppreflight.com/example-report/)
 - [Guides](https://mcppreflight.com/guides/)
+- [Support](https://mcppreflight.com/support/)
+- [Terms](https://mcppreflight.com/terms/)
+- [Refunds](https://mcppreflight.com/refunds/)
 - [Security reporting](https://mcppreflight.com/security/)

@@ -110,29 +110,36 @@ function scanEphemeralLaunchers(context: ServerContext): Finding[] {
   const command = typeof context.serverConfig.command === "string" ? context.serverConfig.command : "";
   const args = asStringArray(context.serverConfig.args);
   const joined = [command, ...args].join(" ").trim();
-  const firstArg = args[0];
   const usesEphemeralLauncher =
     EPHEMERAL_LAUNCHERS.has(command.toLowerCase()) ||
-    (command.toLowerCase() === "pnpm" && firstArg === "dlx") ||
-    (command.toLowerCase() === "yarn" && firstArg === "dlx") ||
-    (command.toLowerCase() === "npm" && firstArg === "exec");
+    (command.toLowerCase() === "pnpm" && args[0] === "dlx") ||
+    (command.toLowerCase() === "yarn" && args[0] === "dlx") ||
+    (command.toLowerCase() === "npm" && args[0] === "exec");
 
   if (!usesEphemeralLauncher) {
     return findings;
   }
 
-  const location = firstArg && !EPHEMERAL_LAUNCHERS.has(command.toLowerCase())
-    ? getContextLocation(context, ["args", 0], ["command"])
+  const launcherTarget = resolveEphemeralLauncherTarget(command, args);
+  const usesPinnedVersion = hasExactPackageVersion(launcherTarget.packageSpec);
+  const location = launcherTarget.argIndex !== undefined
+    ? getContextLocation(context, ["args", launcherTarget.argIndex], ["command"])
     : getContextLocation(context, ["command"]);
 
   findings.push(
     createFinding({
-      ruleId: "ephemeral-mcp-launcher",
-      title: "MCP server uses an ephemeral package launcher",
-      description: `Server "${context.serverName}" is launched through an on-demand package runner. That increases supply-chain drift and makes the exact executable harder to verify.`,
-      severity: "warning",
+      ruleId: usesPinnedVersion ? "pinned-ephemeral-mcp-launcher" : "ephemeral-mcp-launcher",
+      title: usesPinnedVersion
+        ? "MCP server uses a pinned ephemeral package launcher"
+        : "MCP server uses an unpinned ephemeral package launcher",
+      description: usesPinnedVersion
+        ? `Server "${context.serverName}" is launched through an on-demand package runner with an exact package version. That is easier to review than a floating quickstart, but it still leaves less local audit trail than a reviewed local install or binary.`
+        : `Server "${context.serverName}" is launched through an on-demand package runner without an exact package version. Quickstarts often use this pattern, but daily use increases supply-chain drift and makes the exact executable harder to verify.`,
+      severity: usesPinnedVersion ? "info" : "warning",
       category: "supply-chain",
-      suggestion: "Pin the server package to an exact version and prefer a reviewed local install or binary over an ephemeral launcher.",
+      suggestion: usesPinnedVersion
+        ? "Keep the package pinned to an exact version and review what that version does. For steadier workflows, prefer a reviewed local install or binary."
+        : "Pin the server package to an exact version or switch to a reviewed local install or binary before trusting it in a daily workflow.",
       file: context.file,
       evidence: joined,
       location,
@@ -141,6 +148,73 @@ function scanEphemeralLaunchers(context: ServerContext): Finding[] {
   );
 
   return findings;
+}
+
+function resolveEphemeralLauncherTarget(
+  command: string,
+  args: string[]
+): { packageSpec?: string; argIndex?: number } {
+  const lowerCommand = command.toLowerCase();
+  let startIndex = 0;
+
+  if ((lowerCommand === "pnpm" || lowerCommand === "yarn") && args[0] === "dlx") {
+    startIndex = 1;
+  } else if (lowerCommand === "npm" && args[0] === "exec") {
+    startIndex = 1;
+  }
+
+  for (let index = startIndex; index < args.length; index += 1) {
+    const value = args[index];
+
+    if (!value || value === "--") {
+      break;
+    }
+
+    if (value === "--package" || value === "-p") {
+      const packageSpec = args[index + 1];
+      return packageSpec ? { packageSpec, argIndex: index + 1 } : {};
+    }
+
+    if (value.startsWith("-")) {
+      continue;
+    }
+
+    return {
+      packageSpec: value,
+      argIndex: index
+    };
+  }
+
+  return {};
+}
+
+function hasExactPackageVersion(packageSpec: string | undefined): boolean {
+  if (!packageSpec) {
+    return false;
+  }
+
+  const versionSeparator = findVersionSeparator(packageSpec);
+
+  if (versionSeparator < 0) {
+    return false;
+  }
+
+  const version = packageSpec.slice(versionSeparator + 1);
+  return /^v?\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(version);
+}
+
+function findVersionSeparator(packageSpec: string): number {
+  if (packageSpec.startsWith("@")) {
+    const slashIndex = packageSpec.indexOf("/");
+
+    if (slashIndex < 0) {
+      return -1;
+    }
+
+    return packageSpec.indexOf("@", slashIndex + 1);
+  }
+
+  return packageSpec.indexOf("@");
 }
 
 function scanUnsafeShellWrappers(context: ServerContext): Finding[] {

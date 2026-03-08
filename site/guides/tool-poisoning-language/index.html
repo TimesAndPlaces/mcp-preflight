@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tool poisoning language | MCP Preflight Guide</title>
+  <meta name="description" content="How to read MCP tool descriptions that look harmless until you inspect the wording closely.">
+  <link rel="canonical" href="https://mcppreflight.com/guides/tool-poisoning-language/">
+  <link rel="stylesheet" href="/styles.css?v=20260308-6">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <a class="brand" href="/">
+        <img class="brand-mark" src="/favicon.svg" alt="" aria-hidden="true">
+        <span class="brand-copy"><strong>MCP Preflight</strong><span>Local MCP security scanner</span></span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/guides/">Guides</a>
+        <a href="/rules/">Rules</a>
+        <a href="/pro/">Pro</a>
+        <a href="https://github.com/TimesAndPlaces/mcp-preflight">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main class="shell page">
+    <section class="page-title">
+      <p class="kicker">Guide</p>
+      <h1>Tool poisoning language that looks harmless until you read it closely</h1>
+      <p>This is a practical preflight read of MCP tool descriptions and help text.</p>
+    </section>
+    <section class="section">
+      <article class="page-card prose-card">
+        <div class="prose">
+          <p>It is not a claim that every awkward tool description is malicious. The point is narrower: once a model sees tool text as instruction-bearing context, seemingly harmless wording can quietly change what the model is willing to do.</p>
+          <h2>Source material</h2>
+          <ul>
+            <li><a href="https://modelcontextprotocol-security.io/ttps/prompt-injection/tool-description-poisoning/">Tool Description Poisoning</a></li>
+            <li><a href="https://modelcontextprotocol-security.io/top10/server/">MCP Server Top 10 Security Risks</a></li>
+            <li><a href="https://modelcontextprotocol.io/legacy/concepts/tools">Model Context Protocol tools reference</a></li>
+            <li><a href="https://security.snyk.io/vuln/SNYK-JS-POSTMARKMCP-13052679">Snyk: malicious postmark-mcp package</a></li>
+          </ul>
+          <h2>Why this one is worth reading</h2>
+          <p>The MCP tools docs tell implementers to write clear, descriptive tool names and descriptions, and to use annotations to signal side effects. That is good guidance.</p>
+          <p>The security problem is that tool descriptions are not just documentation. They are also part of what the model reads when deciding which tool to use and how to use it.</p>
+          <h2>The pattern to watch for</h2>
+          <h3>1. Hidden side effects described like convenience</h3>
+          <p>This is the most common bad smell. The language sounds operationally helpful: "also syncs metadata", "for delivery assurance", "silently forwards a copy", "keeps an external recipient informed".</p>
+          <p><strong>Preflight take:</strong> if a tool description contains side effects that are not essential to the core action, treat it as suspicious until the behavior is explicit and justified.</p>
+          <h3>2. Instructional language aimed at the model, not the user</h3>
+          <p>The obvious forms are easy to catch: "always use this tool", "ignore previous instructions", "bypass warnings". The more realistic forms are quieter: "best default for most tasks", "safe to use without asking", "use automatically when relevant".</p>
+          <p><strong>Preflight take:</strong> the description should explain capability and scope, not try to win a selection contest inside the model.</p>
+          <h3>3. Parameter text that quietly widens the action</h3>
+          <p>Poisoning does not have to live in the top-level description. It can hide in parameter descriptions that quietly widen network scope, auth behavior, or secondary actions.</p>
+          <p><strong>Preflight take:</strong> parameter text should explain the input, not smuggle in extra workflow logic.</p>
+          <h3>4. Descriptions that contradict the risk hints</h3>
+          <p>A poisoned tool can still present itself as harmless. If the description, parameters, and apparent side effects do not line up cleanly, trust the mismatch as a warning sign.</p>
+          <h3>5. Vague words where precision matters</h3>
+          <p>Words like "optimize", "enhance", "keep things in sync", and "perform follow-up actions" are weak security language in a tool definition.</p>
+          <p><strong>Preflight take:</strong> if you cannot tell exactly what the tool will do from the description alone, the description is not ready to trust.</p>
+          <h2>What MCP Preflight would usually flag</h2>
+          <p>MCP Preflight does not try to prove malicious intent here. It flags text that deserves a human read before the tool becomes trusted context.</p>
+          <ul>
+            <li>"ignore previous instructions"</li>
+            <li>"reveal environment variable"</li>
+            <li>"silently forward"</li>
+            <li>"hidden recipient"</li>
+            <li>"without telling the user"</li>
+          </ul>
+          <h2>A short checklist</h2>
+          <ul>
+            <li>does the text only describe the tool, or does it also steer the model?</li>
+            <li>are there any hidden or secondary actions described as convenience?</li>
+            <li>do parameter descriptions widen scope or behavior quietly?</li>
+            <li>do the annotations, description, and likely side effects line up?</li>
+            <li>would a human reviewer understand the real effect without reading source code?</li>
+          </ul>
+          <p>The next action is simple: read your current tool descriptions as if they were executable policy, not just metadata.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="shell">
+      <p class="small">Guides stay useful only if they stay concrete.</p>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/guides/">Guides</a>
+        <a href="/rules/">Rules</a>
+        <a href="/support/">Support</a>
+        <a href="/terms/">Terms</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure mcp.json | MCP Preflight Guide</title>
+  <meta name="description" content="How to secure mcp.json without turning it into ceremony.">
+  <link rel="canonical" href="https://mcppreflight.com/guides/secure-mcp-json/">
+  <link rel="stylesheet" href="/styles.css?v=20260308-6">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <a class="brand" href="/">
+        <img class="brand-mark" src="/favicon.svg" alt="" aria-hidden="true">
+        <span class="brand-copy"><strong>MCP Preflight</strong><span>Local MCP security scanner</span></span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/guides/">Guides</a>
+        <a href="/rules/">Rules</a>
+        <a href="/pro/">Pro</a>
+        <a href="https://github.com/TimesAndPlaces/mcp-preflight">GitHub</a>
+      </nav>
+    </div>
+  </header>
+  <main class="shell page">
+    <section class="page-title">
+      <p class="kicker">Guide</p>
+      <h1>How to secure <code>mcp.json</code> without turning it into ceremony</h1>
+      <p>This is a practical preflight read of the current <code>mcp.json</code> model in VS Code and the MCP security guidance around it.</p>
+    </section>
+    <section class="section">
+      <article class="page-card prose-card">
+        <div class="prose">
+          <p>It is not a vulnerability claim. The point is simpler than that: most bad MCP setups are not dramatic exploits. They are small convenience choices that quietly widen trust.</p>
+          <h2>Source material</h2>
+          <ul>
+            <li><a href="https://code.visualstudio.com/docs/copilot/customization/mcp-servers">VS Code: Add and manage MCP servers</a></li>
+            <li><a href="https://code.visualstudio.com/docs/copilot/reference/mcp-configuration">VS Code: MCP configuration reference</a></li>
+            <li><a href="https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices">Model Context Protocol: Security Best Practices</a></li>
+            <li><a href="https://modelcontextprotocol.io/docs/tutorials/security/authorization">Model Context Protocol: Understanding Authorization in MCP</a></li>
+          </ul>
+          <h2>The common mistake</h2>
+          <p>A rushed <code>mcp.json</code> usually goes wrong in one of three ways:</p>
+          <ul>
+            <li>it puts secrets directly in the file</li>
+            <li>it makes a local server broader than it needs to be</li>
+            <li>it treats a quick-start example as if it were a production-ready daily setup</li>
+          </ul>
+          <h2>What a low-ceremony safe setup looks like</h2>
+          <h3>1. Put the server in the right place</h3>
+          <p>VS Code supports <code>mcp.json</code> in your workspace and in your user profile. That is not just an organizational choice. It changes where the server runs and who inherits it.</p>
+          <ul>
+            <li>Workspace config is the right place for team-shared server definitions that really belong with the repo</li>
+            <li>User-profile config is better for personal or machine-specific servers that should not quietly follow the repo around</li>
+          </ul>
+          <p><strong>Preflight take:</strong> if a server is personal, host-specific, or secret-heavy, do not drop it into shared workspace config just because that is the first file you found.</p>
+          <h3>2. Keep secrets out of the file</h3>
+          <p>VS Code is very direct about this: avoid hardcoding sensitive information like API keys. Use input variables or environment files instead.</p>
+          <p><strong>Preflight take:</strong> if a token appears directly in <code>mcp.json</code>, the config is already too trusting.</p>
+          <h3>3. Keep local servers narrow</h3>
+          <p>The MCP security guidance treats local servers as a serious trust boundary because they run on the same machine as the client and can have direct access to the local system.</p>
+          <ul>
+            <li>small path scope instead of whole-home-directory access</li>
+            <li>explicit environment variables instead of broad forwarding</li>
+            <li>reviewed commands instead of opaque wrapper chains</li>
+            <li>only the network access the server actually needs</li>
+          </ul>
+          <p>If you are on macOS or Linux, VS Code now supports <code>sandboxEnabled</code> plus filesystem and network rules in <code>mcp.json</code>. That is one of the easiest high-value hardening moves available today.</p>
+          <p><strong>Preflight take:</strong> the safest local MCP config is the one that feels slightly constrained, not the one that can touch everything.</p>
+          <h3>4. Keep remote auth explicit</h3>
+          <p>The MCP docs are equally clear on the remote side: token passthrough is a forbidden anti-pattern, MCP servers must not accept tokens that were not explicitly issued for the MCP server, and authorization endpoints must be served over HTTPS.</p>
+          <p><strong>Preflight take:</strong> remote MCP auth should look boring and explicit. If it looks clever, review it again.</p>
+          <h3>5. Treat trust prompts as real review points</h3>
+          <p>VS Code asks you to trust a server when you add or change one in workspace configuration and start it for the first time. That is useful, but it is not a substitute for reading the config.</p>
+          <p><strong>Preflight take:</strong> read the command, args, URL, headers, and scope before the first start. Do not outsource that judgment to the existence of a dialog box.</p>
+          <h2>What MCP Preflight would usually flag in a rushed <code>mcp.json</code></h2>
+          <ul>
+            <li>raw credentials or secrets in config</li>
+            <li>token passthrough or auth-review patterns on remote servers</li>
+            <li>insecure <code>http://</code> remote URLs that are not obviously local</li>
+            <li>ephemeral launchers in day-to-day setups</li>
+            <li>broad environment inheritance</li>
+            <li>local servers with write or network scope that is much wider than the task</li>
+            <li>missing sandboxing where a constrained local setup would be possible</li>
+          </ul>
+          <h2>A short checklist</h2>
+          <ul>
+            <li>should this server live in workspace config or only in my user profile?</li>
+            <li>did I keep secrets out of the file?</li>
+            <li>is the command pinned and understandable?</li>
+            <li>is the local path and network scope narrower than "whatever works"?</li>
+            <li>is remote auth explicit and HTTPS-based where it should be?</li>
+            <li>am I actually reading the config, or just clicking through startup?</li>
+          </ul>
+          <p>The next action is simple: open your current <code>mcp.json</code> and read it like a permission grant, not like a convenience file.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="shell">
+      <p class="small">Guides stay useful only if they stay concrete.</p>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/guides/">Guides</a>
+        <a href="/rules/">Rules</a>
+        <a href="/support/">Support</a>
+        <a href="/terms/">Terms</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

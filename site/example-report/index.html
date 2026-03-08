@@ -6,7 +6,7 @@
   <title>Example Report | MCP Preflight</title>
   <meta name="description" content="An example MCP Preflight report that shows structure, tone, and finding detail.">
   <link rel="canonical" href="https://mcppreflight.com/example-report/">
-  <link rel="stylesheet" href="/styles.css?v=20260308-5">
+  <link rel="stylesheet" href="/styles.css?v=20260308-6">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -55,9 +55,9 @@
         <p>The remote MCP URL contains what looks like a username or token. Move credentials out of the URL and use a safer auth mechanism or environment-based secret injection with the smallest possible scope.</p>
       </article>
       <article class="page-card">
-        <h2>Ephemeral launcher used for MCP server startup</h2>
+        <h2>Floating ephemeral launcher used for MCP server startup</h2>
         <p><strong>Severity:</strong> <code>warning</code><br><strong>Rule:</strong> <code>ephemeral-mcp-launcher</code><br><strong>Location:</strong> <code>.vscode/mcp.json:14:7</code></p>
-        <p>The server is launched through <code>npx</code>, which makes the exact code you run harder to pin and review. Prefer a pinned install or a reviewed local binary instead.</p>
+        <p>The server is launched through <code>npx</code> without an exact package version, which makes the exact code you run harder to pin and review. Prefer a pinned install or a reviewed local binary instead.</p>
       </article>
       <article class="page-card">
         <h2>Prompt injection language in tool description</h2>
@@ -76,7 +76,7 @@
         <h2>Use the example to judge the tone, then try the real scan.</h2>
         <p>The report should make the scanner feel legible before you ever buy Pro or wire it into CI.</p>
         <div class="action-row">
-          <a class="button" href="https://github.com/TimesAndPlaces/mcp-preflight#fast-start">Try the quickstart</a>
+          <a class="button" href="https://github.com/TimesAndPlaces/mcp-preflight#get-started">Try the quickstart</a>
           <a class="button-secondary" href="/rules/">Read the rule overview</a>
         </div>
       </div>
@@ -88,6 +88,9 @@
       <div class="footer-links">
         <a href="/">Home</a>
         <a href="/privacy/">Privacy</a>
+        <a href="/support/">Support</a>
+        <a href="/terms/">Terms</a>
+        <a href="/refunds/">Refunds</a>
         <a href="/rules/">Rules</a>
         <a href="/guides/">Guides</a>
         <a href="/pro/">Pro</a>

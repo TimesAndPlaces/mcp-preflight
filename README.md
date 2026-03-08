@@ -1,12 +1,22 @@
 # MCP Preflight
 
-MCP Preflight is the fast local check you run before you trust a new MCP server or ship an agent workflow.
+MCP Preflight is the fast local static preflight you run before you trust a new MCP setup or ship an agent workflow.
 
 It reads common MCP config files, tool descriptions, prompt resources, and repo manifests, then explains risky patterns in plain language so you can fix them before they become a bigger problem.
+
+The core scan is static. It reviews local setup and workflow risk without connecting to the server or exercising tools during the default scan.
 
 Website: [mcppreflight.com](https://mcppreflight.com)
 
 This repo contains the Lite product code, public docs, and release paths people need to evaluate MCP Preflight. Internal planning and maintainer admin work are kept private.
+
+## Install paths live today
+
+| Surface | Status | Best for | Install |
+| --- | --- | --- | --- |
+| VS Code extension | Live | Fastest editor path | [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode) |
+| npm CLI | Live | Fastest terminal path | `npm install -g mcp-preflight` |
+| GitHub Release CLI | Live | Single-file bundle | Download `mcp-preflight.js` from [GitHub Releases](https://github.com/TimesAndPlaces/mcp-preflight/releases) |
 
 ## Get started
 Choose the path that matches how you want to try MCP Preflight.
@@ -78,7 +88,7 @@ Use this path if you want to inspect the code, try the bundled example workspace
 - tool descriptions and prompt resources
 - repo manifests and dependency signals
 - obvious secret-bearing files such as `.env`
-- risky patterns such as embedded credentials, token passthrough, unsafe launchers, insecure remote targets, prompt injection, and tool poisoning
+- risky patterns such as embedded credentials, token passthrough, floating ephemeral launchers, insecure remote targets, prompt injection, and tool poisoning
 
 ## Why people use it
 - It runs locally by default
@@ -88,8 +98,8 @@ Use this path if you want to inspect the code, try the bundled example workspace
 - The activity log stays local too, so you can inspect usage without sending workspace data to a backend
 
 ## Lite and Pro
-- Lite is the fast local scan: text and JSON output, workspace scan, file scan, and the core MCP checks
-- Pro unlocks the export and workflow surfaces: Markdown, HTML, and SARIF reports, suppression files, CI mode, Git hooks, and policy presets
+- Lite is the fast local scan: text and JSON output, workspace scan, file scan, the core MCP checks, and local suppression files
+- Pro unlocks the export and workflow surfaces: Markdown, HTML, and SARIF reports, CI mode, Git hooks, and policy presets
 - Pro is unlocked with a local signed license token, not a hosted MCP Preflight account
 - The scanner does not need to phone home just to decide whether Pro is active on your machine
 - Buy Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
@@ -104,6 +114,9 @@ Use this path if you want to inspect the code, try the bundled example workspace
 ## Read this next
 - [Privacy](PRIVACY.md)
 - [Pro guide](https://mcppreflight.com/pro/)
+- [Support](SUPPORT.md)
+- [Terms](TERMS.md)
+- [Refunds](REFUNDS.md)
 - [Rule overview](RULES.md)
 - [Example report](EXAMPLE_REPORT.md)
 - [Guides](guides/)
@@ -155,7 +168,7 @@ If you want to store it somewhere else, set `MCP_PREFLIGHT_ACTIVITY_FILE=/path/t
 - `apps/vscode-extension`: VS Code integration
 
 ## Support
+- Questions, bugs, license help, and reissue guidance: [Support](https://mcppreflight.com/support/)
 - Questions and feature requests: [GitHub Discussions](https://github.com/TimesAndPlaces/mcp-preflight/discussions)
 - Bugs: [GitHub Issues](https://github.com/TimesAndPlaces/mcp-preflight/issues)
-- License and payment help: `igorsv199@gmail.com`
 - Leave a review: [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode)

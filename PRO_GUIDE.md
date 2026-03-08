@@ -4,7 +4,6 @@ MCP Preflight Pro is a one-time purchase that unlocks the local export and workf
 
 ## What you get
 - Markdown, HTML, and SARIF reports
-- suppression files
 - CI mode
 - Git hooks
 - policy presets
@@ -20,6 +19,13 @@ MCP Preflight Pro is a one-time purchase that unlocks the local export and workf
 - MCP Preflight does not need a hosted account just to decide whether Pro is active
 
 ## Install from the CLI
+If you installed the published CLI from npm:
+
+```bash
+mcp-preflight license install --from-file /path/to/license.token
+mcp-preflight license status
+```
+
 If you are running from the source checkout:
 
 ```bash
@@ -44,5 +50,7 @@ node mcp-preflight.js license status
 - Keep the `license.token` file somewhere you can find again.
 - If you lose it or move to another machine, contact license support with the same checkout email or Stripe payment reference and the token can be reissued.
 
-## License and payment help
-- `igorsv199@gmail.com`
+## Commercial terms
+- Support: [mcppreflight.com/support/](https://mcppreflight.com/support/)
+- Terms: [mcppreflight.com/terms/](https://mcppreflight.com/terms/)
+- Refunds: [mcppreflight.com/refunds/](https://mcppreflight.com/refunds/)

@@ -1,8 +1,8 @@
 {
   "name": "mcp-preflight-workspace",
   "private": true,
-  "version": "0.1.8",
-  "description": "Local-first MCP security preflight scanner monorepo.",
+  "version": "0.1.9",
+  "description": "Local-first static MCP security preflight scanner monorepo.",
   "homepage": "https://mcppreflight.com",
   "repository": {
     "type": "git",

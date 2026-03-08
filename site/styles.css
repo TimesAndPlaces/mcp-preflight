@@ -942,6 +942,40 @@ pre {
   max-width: 44rem;
 }
 
+.prose-card {
+  padding: 1.7rem;
+}
+
+.prose {
+  display: grid;
+  gap: 1rem;
+}
+
+.prose h2,
+.prose h3 {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Space Grotesk", sans-serif;
+  line-height: 1.15;
+}
+
+.prose h2 {
+  font-size: 1.55rem;
+}
+
+.prose h3 {
+  font-size: 1.1rem;
+}
+
+.prose p,
+.prose ul {
+  margin: 0;
+}
+
+.prose ul {
+  padding-left: 1.1rem;
+}
+
 .cta-band {
   display: grid;
   gap: 0.9rem;
