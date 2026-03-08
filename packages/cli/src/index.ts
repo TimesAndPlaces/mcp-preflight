@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { chmod, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -30,7 +32,7 @@ import {
   type ResolvedLicense,
   type ScanOptions,
   type ScanReport
-} from "@mcp-preflight/core";
+} from "mcp-preflight-core";
 
 type Format = "text" | "json" | "markdown" | "sarif" | "html";
 type CiFormat = "text" | "json";

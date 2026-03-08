@@ -62,9 +62,10 @@
     <section class="split section">
       <article class="page-card">
         <p class="eyebrow">CLI install</p>
-        <h2>Install from the source checkout</h2>
-        <pre>node packages/cli/dist/index.js license install --from-file /path/to/license.token
-node packages/cli/dist/index.js license status</pre>
+        <h2>Install into the npm CLI</h2>
+        <pre>npm install -g mcp-preflight
+mcp-preflight license install --from-file /path/to/license.token
+mcp-preflight license status</pre>
         <p style="margin-top: 1rem;">If you use the standalone CLI bundle from GitHub Releases, run the same commands against <code>mcp-preflight.js</code>.</p>
       </article>
       <article class="page-card">

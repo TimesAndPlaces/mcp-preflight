@@ -1,16 +1,42 @@
 {
-  "name": "@mcp-preflight/cli",
+  "name": "mcp-preflight",
   "version": "0.1.7",
-  "description": "CLI wrapper for MCP Preflight.",
+  "description": "Local-first MCP security preflight scanner for MCP servers, configs, and prompts.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "mcp-preflight": "dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
+  "homepage": "https://mcppreflight.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimesAndPlaces/mcp-preflight.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/TimesAndPlaces/mcp-preflight/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "security",
+    "cli",
+    "ai-security",
+    "prompt-injection",
+    "tool-poisoning"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsc -b"
   },
-  "dependencies": {}
+  "dependencies": {
+    "mcp-preflight-core": "0.1.7"
+  }
 }

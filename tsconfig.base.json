@@ -16,7 +16,7 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@mcp-preflight/core": [
+      "mcp-preflight-core": [
         "packages/core/src/index"
       ]
     }

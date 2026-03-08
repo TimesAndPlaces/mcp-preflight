@@ -1,12 +1,33 @@
 {
-  "name": "@mcp-preflight/core",
+  "name": "mcp-preflight-core",
   "version": "0.1.7",
   "description": "Shared scanning engine for MCP Preflight.",
+  "homepage": "https://mcppreflight.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimesAndPlaces/mcp-preflight.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/TimesAndPlaces/mcp-preflight/issues"
+  },
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "security",
+    "scanner",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsc -b"
   },

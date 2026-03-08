@@ -19,8 +19,35 @@ This is the fastest way to try it.
 3. Run `MCP Preflight: Scan Workspace`.
 4. Read the findings in the overview and Problems panel.
 
-### 2. Standalone CLI from GitHub Releases
-Use this if you want the CLI without building the repo first.
+### 2. CLI from npm
+Use this if you want the fastest terminal install.
+
+1. Install:
+
+```bash
+npm install -g mcp-preflight
+```
+
+2. Run:
+
+```bash
+mcp-preflight scan /path/to/workspace
+```
+
+3. If you want help, run:
+
+```bash
+mcp-preflight --help
+```
+
+You can also try it without a global install:
+
+```bash
+npx mcp-preflight scan /path/to/workspace
+```
+
+### 3. Standalone CLI from GitHub Releases
+Use this if you want the CLI as a single downloaded file.
 
 1. Download `mcp-preflight.js` from the latest [GitHub Release](https://github.com/TimesAndPlaces/mcp-preflight/releases).
 2. Run:
@@ -35,7 +62,7 @@ node mcp-preflight.js scan /path/to/workspace
 node mcp-preflight.js --help
 ```
 
-### 3. Run from this repository
+### 4. Run from this repository
 Use this path if you want to inspect the code, try the bundled example workspace, or work on the project itself.
 
 1. Clone the repository.
@@ -44,15 +71,6 @@ Use this path if you want to inspect the code, try the bundled example workspace
 4. Run `npm run scan -- /path/to/your/workspace`.
 
 `npm run quickstart` scans the bundled example workspace in [`demo/example-findings-workspace`](demo/example-findings-workspace) so you can see a representative finding set before scanning your own project.
-
-### Important note about npm
-MCP Preflight is not currently published as a global npm package.
-
-That means these are **not** the right install paths today:
-- `npx mcp-preflight`
-- `npm install -g mcp-preflight`
-
-Use the VS Code extension, the standalone CLI from GitHub Releases, or this repository checkout.
 
 ## What it checks
 - `.vscode/mcp.json` and other common MCP config locations
@@ -95,18 +113,24 @@ If you are running from this repository:
 - `npm run quickstart` shows a real scan against the bundled example workspace
 - `npm run scan -- /path/to/workspace` scans your own workspace
 
-If you are using the built CLI directly:
+If you are using the npm-installed CLI:
+- `mcp-preflight scan /path/to/workspace`
+- `mcp-preflight scan /path/to/workspace --format json`
+- `mcp-preflight scan /path/to/workspace --no-exit-code`
+- `mcp-preflight --help`
+
+If you are using the GitHub Release bundle directly:
 - `node mcp-preflight.js scan /path/to/workspace`
 - `node mcp-preflight.js scan /path/to/workspace --format json`
 - `node mcp-preflight.js scan /path/to/workspace --no-exit-code`
 - `node mcp-preflight.js --help`
 
 Pro-only CLI surfaces:
-- `node mcp-preflight.js license guide`
-- `node mcp-preflight.js license status`
-- `node mcp-preflight.js license install --from-file /path/to/license.token`
-- `node mcp-preflight.js ci /path/to/workspace --policy balanced`
-- `node mcp-preflight.js hooks install /path/to/repo --hook pre-push`
+- `mcp-preflight license guide`
+- `mcp-preflight license status`
+- `mcp-preflight license install --from-file /path/to/license.token`
+- `mcp-preflight ci /path/to/workspace --policy balanced`
+- `mcp-preflight hooks install /path/to/repo --hook pre-push`
 
 ## Local activity
 MCP Preflight keeps a small local activity log so you can answer practical questions like:

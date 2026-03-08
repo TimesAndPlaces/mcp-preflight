@@ -17,5 +17,6 @@ samples/
 scripts/release/
 *.tsbuildinfo
 *.vsix
+*.tgz
 .DS_Store
 tmp/

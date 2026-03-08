@@ -97,7 +97,9 @@
   "scripts": {
     "build": "tsc -b"
   },
-  "dependencies": {},
+  "dependencies": {
+    "mcp-preflight-core": "0.1.7"
+  },
   "devDependencies": {
     "@types/vscode": "^1.97.0"
   }

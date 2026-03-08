@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-import type { ActivitySummary, Finding, ResolvedLicense, ScanReport } from "@mcp-preflight/core";
+import type { ActivitySummary, Finding, ResolvedLicense, ScanReport } from "mcp-preflight-core";
 import {
   formatActivitySummary,
   formatLicenseStatus,
@@ -10,7 +10,7 @@ import {
   recordActivity,
   resolveLicense,
   scanWorkspace
-} from "@mcp-preflight/core";
+} from "mcp-preflight-core";
 
 let latestReport: ScanReport | undefined;
 let latestLicense: ResolvedLicense | undefined;
