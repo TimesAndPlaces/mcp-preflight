@@ -22,7 +22,7 @@ If you want to see MCP Preflight work before you point it at your own repo:
 
 `npm run quickstart` scans the intentionally risky demo workspace in [`demo/quickstart-workspace`](demo/quickstart-workspace). It is there to make the first run obvious, not to model a real setup, so the command prints findings but does not fail your shell.
 
-If you would rather use the editor flow, install the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode), then run `MCP Preflight: Scan Workspace`.
+If you would rather use the editor flow, install the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode), open the MCP Preflight overview from the status bar, then run a workspace scan or current-file scan from there.
 
 ## Why people use it
 - It runs locally by default

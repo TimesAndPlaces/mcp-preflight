@@ -42,6 +42,7 @@
     }
   },
   "activationEvents": [
+    "onCommand:mcpPreflight.openOverview",
     "onCommand:mcpPreflight.scanWorkspace",
     "onCommand:mcpPreflight.scanCurrentFile",
     "onCommand:mcpPreflight.showFixRecipes",
@@ -55,6 +56,10 @@
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "mcpPreflight.openOverview",
+        "title": "MCP Preflight: Open Overview"
+      },
       {
         "command": "mcpPreflight.scanWorkspace",
         "title": "MCP Preflight: Scan Workspace"

@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Added a VS Code overview panel that puts the latest scan, local activity, license state, and upgrade/review/help actions in one editor surface.
+- Changed the VS Code status item to open the overview instead of only triggering another scan.
 - Added a bundled quickstart workspace so first-time users can see real MCP findings before scanning their own repo.
 - Added a `npm run quickstart` path and simplified the public install instructions around the fastest first scan.
 - Added a non-failing local scan option so demo and exploratory scans can print findings without looking like a broken command.

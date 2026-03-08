@@ -7,8 +7,9 @@ The point is simple: scan first, trust later. The extension is local-first, fast
 ## Fast start
 1. Install MCP Preflight from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode).
 2. Open the repo or workspace you want to review.
-3. Run `MCP Preflight: Scan Workspace` from the command palette.
-4. If you only want a safe trial run first, use the bundled demo workspace in the public repo and scan that.
+3. Click the MCP Preflight status item or run `MCP Preflight: Open Overview`.
+4. From the overview, run a workspace scan or current-file scan.
+5. If you only want a safe trial run first, use the bundled demo workspace in the public repo and scan that.
 
 You do not need an MCP Preflight account for Lite. The scan runs locally.
 
@@ -21,6 +22,7 @@ You do not need an MCP Preflight account for Lite. The scan runs locally.
 - a local Pro license command when you want to unlock export and workflow features
 
 ## Commands
+- `MCP Preflight: Open Overview`
 - `MCP Preflight: Scan Workspace`
 - `MCP Preflight: Scan Current File`
 - `MCP Preflight: Show Fix Recipes`
@@ -32,6 +34,8 @@ You do not need an MCP Preflight account for Lite. The scan runs locally.
 - `MCP Preflight: Get Help`
 
 If you are reviewing one config file instead of a whole repo, run `MCP Preflight: Scan Current File`.
+
+The overview panel keeps the latest scan result, local activity summary, license state, and upgrade/review/help links in one place.
 
 ## What it checks today
 - hardcoded secrets and private key material
