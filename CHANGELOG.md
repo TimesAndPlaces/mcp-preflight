@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.1.7 - 2026-03-08
+- Removed the extension `galleryBanner` metadata so dark marketplace surfaces stop framing the transparent logo with the old banner treatment.
+
 ## 0.1.6 - 2026-03-08
 - Removed the dark outer field from the MCP Preflight logo and promoted the circle-only mark across the extension and public site.
 

@@ -2,7 +2,7 @@
   "name": "mcp-preflight-vscode",
   "displayName": "MCP Preflight",
   "description": "Local-first MCP security preflight scans for configs, prompts, and repo manifests.",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "publisher": "mcp-preflight",
   "homepage": "https://mcppreflight.com",
   "repository": {
@@ -14,10 +14,6 @@
   },
   "qna": "https://github.com/TimesAndPlaces/mcp-preflight/discussions",
   "icon": "media/icon.png",
-  "galleryBanner": {
-    "color": "#14213d",
-    "theme": "dark"
-  },
   "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "vscode": "^1.97.0"
