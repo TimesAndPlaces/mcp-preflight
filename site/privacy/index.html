@@ -19,15 +19,16 @@
       <nav class="nav">
         <a href="/">Home</a>
         <a href="/rules/">Rules</a>
+        <a href="/guides/">Guides</a>
         <a href="/pro/">Pro</a>
-        <a href="/security/">Security</a>
+        <a href="https://github.com/TimesAndPlaces/mcp-preflight">GitHub</a>
       </nav>
     </div>
   </header>
   <main class="shell page">
     <section class="page-title">
       <p class="kicker">Privacy</p>
-      <h1>Local by default means local by default.</h1>
+      <h1>Local by default should mean local by default.</h1>
       <p>This note explains what MCP Preflight reads, what it stores locally, and what it does not send to a hosted service.</p>
     </section>
     <section class="page-grid">
@@ -52,11 +53,11 @@
       </article>
       <article class="page-card">
         <h2>What it sends</h2>
-        <p>MCP Preflight is intended to work without sending your workspace to a hosted MCP Preflight backend. The current Pro unlock path is also local: a signed license token can be stored on disk and verified on the machine without a hosted login flow.</p>
+        <p>MCP Preflight is built to work without sending your workspace to a hosted MCP Preflight backend. The current Pro unlock path is also local: a signed license token can be stored on disk and verified on the machine without a hosted login flow.</p>
       </article>
       <article class="page-card">
         <h2>Local activity</h2>
-        <p>MCP Preflight keeps a small local activity log by default so you can inspect scan counts, blocked Pro surfaces, and local license actions on your own machine. The log is local-only. It is not uploaded to an MCP Preflight service and it does not store workspace contents.</p>
+        <p>MCP Preflight keeps a small local activity log by default so you can inspect scan counts, blocked Pro surfaces, and local license actions on your own machine. The log is local-only. It does not store workspace contents.</p>
         <ul>
           <li>Disable activity logging with <code>MCP_PREFLIGHT_DISABLE_ACTIVITY=1</code></li>
           <li>Change the activity file path with <code>MCP_PREFLIGHT_ACTIVITY_FILE=/path/to/activity-log.jsonl</code></li>
@@ -70,7 +71,24 @@
           <li>If future paid update delivery changes this behavior, it should be described clearly and separately.</li>
         </ul>
       </article>
+      <article class="page-card">
+        <h2>Why this matters</h2>
+        <p>The product is easier to trust when the behavior is explicit: local scan first, readable output, and no surprise account requirement for the free path.</p>
+      </article>
     </section>
   </main>
+  <footer class="footer">
+    <div class="shell">
+      <p class="small">Privacy matters here because the scanner is meant to be trusted before it is automated.</p>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/rules/">Rules</a>
+        <a href="/guides/">Guides</a>
+        <a href="/example-report/">Example report</a>
+        <a href="/pro/">Pro</a>
+        <a href="/security/">Security</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

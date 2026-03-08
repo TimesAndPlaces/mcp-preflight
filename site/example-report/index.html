@@ -19,7 +19,9 @@
       <nav class="nav">
         <a href="/">Home</a>
         <a href="/rules/">Rules</a>
+        <a href="/guides/">Guides</a>
         <a href="/pro/">Pro</a>
+        <a href="https://github.com/TimesAndPlaces/mcp-preflight">GitHub</a>
       </nav>
     </div>
   </header>
@@ -27,13 +29,12 @@
     <section class="page-title">
       <p class="kicker">Example report</p>
       <h1>A report should explain itself.</h1>
-      <p>This page shows an example local scan result. The paths, values, and findings below are placeholders, included to show report structure and tone.</p>
+      <p>This page shows the shape and tone of a local scan result. The paths, values, and findings below are placeholders used to show what a readable report looks like.</p>
     </section>
-    <section class="page-grid">
+    <section class="split">
       <article class="page-card">
-        <h2>Verdict</h2>
-        <pre>fail</pre>
-        <h2>Summary</h2>
+        <p class="eyebrow">Verdict</p>
+        <h2>Fail</h2>
         <ul>
           <li>Files scanned: <code>12</code></li>
           <li>Errors: <code>3</code></li>
@@ -42,34 +43,57 @@
         </ul>
       </article>
       <article class="page-card">
-        <h2>Finding 1</h2>
-        <p><strong>Credential embedded in remote MCP URL</strong><br>Severity: <code>error</code><br>Rule: <code>credential-in-url</code><br>Location: <code>.vscode/mcp.json:8:18</code></p>
-        <p>The remote MCP URL contains what looks like a username or token. Move credentials out of the URL and use a safer auth mechanism with the smallest possible scope.</p>
-      </article>
-      <article class="page-card">
-        <h2>Finding 2</h2>
-        <p><strong>Ephemeral launcher used for MCP server startup</strong><br>Severity: <code>warning</code><br>Rule: <code>ephemeral-mcp-launcher</code><br>Location: <code>.vscode/mcp.json:14:7</code></p>
-        <p>The server is launched through <code>npx</code>, which makes the exact code you run harder to pin and review. Prefer a pinned install or a reviewed local binary.</p>
-      </article>
-      <article class="page-card">
-        <h2>Finding 3</h2>
-        <p><strong>Prompt injection language in tool description</strong><br>Severity: <code>warning</code><br>Rule: <code>prompt-injection-indicator</code><br>Location: <code>tools/sync.md:3:1</code></p>
-        <p>The description includes language telling the model to ignore previous instructions and reveal hidden data. Rewrite the description so it states the tool's real purpose without instruction-bypass language.</p>
-      </article>
-      <article class="page-card">
-        <h2>Finding 4</h2>
-        <p><strong>Missing lockfile</strong><br>Severity: <code>info</code><br>Rule: <code>missing-lockfile</code><br>Location: <code>package.json:1:1</code></p>
-        <p>The repo declares dependencies but does not include a lockfile. Commit the lockfile so installs are more predictable and easier to review.</p>
-      </article>
-      <article class="page-card">
-        <h2>Notes</h2>
-        <ul>
-          <li>Lite output is text or JSON.</li>
-          <li>Markdown, HTML, and SARIF are part of the Pro export surface.</li>
-          <li>Lite is designed to stay readable without a dashboard.</li>
-        </ul>
+        <p class="eyebrow">What this shows</p>
+        <h2>Plain-language output</h2>
+        <p>Each finding is meant to say what looked risky, why it matters for MCP, and what to change next. Lite stays readable. Pro adds the export formats.</p>
       </article>
     </section>
+    <section class="page-grid">
+      <article class="page-card">
+        <h2>Credential embedded in remote MCP URL</h2>
+        <p><strong>Severity:</strong> <code>error</code><br><strong>Rule:</strong> <code>credential-in-url</code><br><strong>Location:</strong> <code>.vscode/mcp.json:8:18</code></p>
+        <p>The remote MCP URL contains what looks like a username or token. Move credentials out of the URL and use a safer auth mechanism or environment-based secret injection with the smallest possible scope.</p>
+      </article>
+      <article class="page-card">
+        <h2>Ephemeral launcher used for MCP server startup</h2>
+        <p><strong>Severity:</strong> <code>warning</code><br><strong>Rule:</strong> <code>ephemeral-mcp-launcher</code><br><strong>Location:</strong> <code>.vscode/mcp.json:14:7</code></p>
+        <p>The server is launched through <code>npx</code>, which makes the exact code you run harder to pin and review. Prefer a pinned install or a reviewed local binary instead.</p>
+      </article>
+      <article class="page-card">
+        <h2>Prompt injection language in tool description</h2>
+        <p><strong>Severity:</strong> <code>warning</code><br><strong>Rule:</strong> <code>prompt-injection-indicator</code><br><strong>Location:</strong> <code>tools/sync.md:3:1</code></p>
+        <p>The description includes language telling the model to ignore previous instructions and reveal hidden data. Rewrite the description so it states the tool&apos;s real purpose without instruction-bypass language.</p>
+      </article>
+      <article class="page-card">
+        <h2>Missing lockfile</h2>
+        <p><strong>Severity:</strong> <code>info</code><br><strong>Rule:</strong> <code>missing-lockfile</code><br><strong>Location:</strong> <code>package.json:1:1</code></p>
+        <p>The repo declares dependencies but does not include a lockfile. Commit the lockfile so installs are more predictable and easier to review.</p>
+      </article>
+    </section>
+    <section class="section">
+      <div class="cta-band">
+        <p class="eyebrow">Next step</p>
+        <h2>Use the example to judge the tone, then try the real scan.</h2>
+        <p>The report should make the scanner feel legible before you ever buy Pro or wire it into CI.</p>
+        <div class="action-row">
+          <a class="button" href="https://github.com/TimesAndPlaces/mcp-preflight#fast-start">Try the quickstart</a>
+          <a class="button-secondary" href="/rules/">Read the rule overview</a>
+        </div>
+      </div>
+    </section>
   </main>
+  <footer class="footer">
+    <div class="shell">
+      <p class="small">MCP Preflight keeps the output explainable enough to review before you automate around it.</p>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/rules/">Rules</a>
+        <a href="/guides/">Guides</a>
+        <a href="/pro/">Pro</a>
+        <a href="/security/">Security</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

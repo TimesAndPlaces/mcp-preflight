@@ -18,9 +18,10 @@
       </a>
       <nav class="nav">
         <a href="/">Home</a>
-        <a href="/privacy/">Privacy</a>
-        <a href="/example-report/">Example report</a>
         <a href="/guides/">Guides</a>
+        <a href="/example-report/">Example report</a>
+        <a href="/pro/">Pro</a>
+        <a href="https://github.com/TimesAndPlaces/mcp-preflight">GitHub</a>
       </nav>
     </div>
   </header>
@@ -28,7 +29,7 @@
     <section class="page-title">
       <p class="kicker">Rule overview</p>
       <h1>Readable rules beat mysterious scores.</h1>
-      <p>Each finding answers three questions: what looked risky, why it matters for MCP, and what you should change next.</p>
+      <p>Each finding should answer three questions: what looked risky, why it matters for MCP, and what you should change next.</p>
     </section>
     <section class="cards">
       <article class="card"><h3>Secrets and credentials</h3><p>Looks for hardcoded API keys, tokens, and private key material in common config and text files.</p></article>
@@ -42,16 +43,30 @@
       <article class="card"><h3>Broken config and broken suppressions</h3><p>Flags invalid <code>mcp.json</code> content and malformed suppression files so you do not silently trust a broken setup.</p></article>
     </section>
     <section class="section">
-      <article class="page-card">
-        <h2>What this scanner does not claim</h2>
+      <div class="cta-band">
+        <p class="eyebrow">Limits</p>
+        <h2>This is a preflight scanner, not a total security claim.</h2>
         <ul>
           <li>It is not a malware sandbox.</li>
           <li>It is not a runtime gateway.</li>
           <li>It is not a complete vulnerability scanner.</li>
           <li>It will not catch every malicious server.</li>
         </ul>
-      </article>
+      </div>
     </section>
   </main>
+  <footer class="footer">
+    <div class="shell">
+      <p class="small">The rule page exists so people can understand the scanner before they automate around it.</p>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/guides/">Guides</a>
+        <a href="/example-report/">Example report</a>
+        <a href="/pro/">Pro</a>
+        <a href="/security/">Security</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
