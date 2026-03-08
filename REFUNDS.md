@@ -14,7 +14,7 @@ The first step is usually reissue, install help, or clarifying the intended work
 
 ## How to ask
 
-- License and payment help: `igorsv199@gmail.com`
+- License and payment help: `support@mcppreflight.com`
 - Support page: [mcppreflight.com/support/](https://mcppreflight.com/support/)
 
 Site version: [mcppreflight.com/refunds/](https://mcppreflight.com/refunds/)
