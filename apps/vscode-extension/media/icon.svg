@@ -5,16 +5,17 @@
       <stop offset="1" stop-color="#2E6FD2"/>
     </linearGradient>
   </defs>
-  <rect x="8" y="8" width="240" height="240" rx="52" fill="#101C30"/>
-  <circle cx="128" cy="128" r="76" fill="url(#discTrust1)"/>
-  <circle cx="128" cy="128" r="62" fill="#D8E8FF" opacity="0.94"/>
+  <circle cx="128" cy="128" r="114" fill="url(#discTrust1)"/>
+  <circle cx="128" cy="128" r="92" fill="#D8E8FF" opacity="0.94"/>
 
-  <path d="M99 82H143L161 100V174H99V82Z" fill="#FFFFFF"/>
-  <path d="M143 82V100H161" fill="#DCE6F2"/>
+  <g transform="translate(128 128) scale(1.18) translate(-128 -128)">
+    <path d="M99 82H143L161 100V174H99V82Z" fill="#FFFFFF"/>
+    <path d="M143 82V100H161" fill="#DCE6F2"/>
 
-  <path d="M123 108C115 108 113 113 113 120V124C113 129 110 132 106 132C110 132 113 135 113 140V144C113 151 115 156 123 156" stroke="#173B67" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M137 108C145 108 147 113 147 120V124C147 129 150 132 154 132C150 132 147 135 147 140V144C147 151 145 156 137 156" stroke="#173B67" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M123 108C115 108 113 113 113 120V124C113 129 110 132 106 132C110 132 113 135 113 140V144C113 151 115 156 123 156" stroke="#173B67" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M137 108C145 108 147 113 147 120V124C147 129 150 132 154 132C150 132 147 135 147 140V144C147 151 145 156 137 156" stroke="#173B67" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <circle cx="151" cy="151" r="21" fill="#1A8F78"/>
-  <path d="M142 151L149 158L162 144" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="151" cy="151" r="21" fill="#1A8F78"/>
+    <path d="M142 151L149 158L162 144" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 </svg>
