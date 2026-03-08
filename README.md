@@ -16,8 +16,9 @@ This is the fastest way to try it.
 
 1. Install MCP Preflight from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode).
 2. Open the repo or workspace you want to review.
-3. Run `MCP Preflight: Scan Workspace`.
-4. Read the findings in the overview and Problems panel.
+3. Open the MCP Preflight sidebar from the activity bar or click the MCP Preflight status item.
+4. Run `MCP Preflight: Scan Workspace`.
+5. Read the findings in the sidebar, overview, and Problems panel.
 
 ### 2. CLI from npm
 Use this if you want the fastest terminal install.

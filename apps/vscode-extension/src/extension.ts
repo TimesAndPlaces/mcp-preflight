@@ -15,9 +15,14 @@ import {
 let latestReport: ScanReport | undefined;
 let latestLicense: ResolvedLicense | undefined;
 let overviewPanel: vscode.WebviewPanel | undefined;
+let overviewSidebarView: vscode.WebviewView | undefined;
 let activeContext: vscode.ExtensionContext | undefined;
 let activeOutput: vscode.OutputChannel | undefined;
 let activeStatusBar: vscode.StatusBarItem | undefined;
+
+const SIDEBAR_VIEW_ID = "mcpPreflight.overviewView";
+const SIDEBAR_CONTAINER_COMMAND = "workbench.view.extension.mcpPreflight";
+const ONBOARDING_VERSION_KEY = "mcpPreflight.onboardingVersion";
 
 export function activate(context: vscode.ExtensionContext): void {
   const diagnostics = vscode.languages.createDiagnosticCollection("mcp-preflight");
@@ -29,12 +34,40 @@ export function activate(context: vscode.ExtensionContext): void {
   activeStatusBar = statusBar;
 
   statusBar.name = "MCP Preflight";
-  statusBar.command = "mcpPreflight.openOverview";
+  statusBar.command = "mcpPreflight.openSidebar";
   updateStatusBar(statusBar);
   statusBar.show();
 
   context.subscriptions.push(diagnostics, output, statusBar);
   context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      SIDEBAR_VIEW_ID,
+      {
+        resolveWebviewView(view) {
+          overviewSidebarView = view;
+          view.webview.options = {
+            enableScripts: true
+          };
+          registerOverviewMessageBridge(view.webview, context, output, statusBar);
+          view.onDidDispose(() => {
+            if (overviewSidebarView === view) {
+              overviewSidebarView = undefined;
+            }
+          });
+          void refreshOverviewSurfaces(context, output, statusBar);
+        }
+      },
+      {
+        webviewOptions: {
+          retainContextWhenHidden: true
+        }
+      }
+    )
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("mcpPreflight.openSidebar", async () => {
+      await openSidebar(context, output, statusBar);
+    }),
     vscode.commands.registerCommand("mcpPreflight.openOverview", async () => {
       await openOverviewPanel(context, output, statusBar);
     }),
@@ -66,6 +99,8 @@ export function activate(context: vscode.ExtensionContext): void {
       await getHelp(output);
     })
   );
+
+  void maybeShowOnboarding(context, output, statusBar);
 }
 
 export function deactivate(): void {}
@@ -107,18 +142,18 @@ async function runWorkspaceScan(
   publishDiagnostics(report, diagnostics);
   renderOutput(report, output);
   updateStatusBar(statusBar, report);
-  await refreshOverviewPanel(context, output, statusBar);
+  await refreshOverviewSurfaces(context, output, statusBar);
   const elapsedMs = Date.now() - startedAt;
 
   void vscode.window
     .showInformationMessage(
       `MCP Preflight scanned ${report.summary.filesScanned} files in ${formatDuration(elapsedMs)}: ${report.summary.errors} errors, ${report.summary.warnings} warnings, ${report.summary.suppressed} suppressed.`,
-      "Overview",
+      "Sidebar",
       "Fix Recipes"
     )
     .then((selection) => {
-      if (selection === "Overview") {
-        void openOverviewPanel(context, output, statusBar);
+      if (selection === "Sidebar") {
+        void openSidebar(context, output, statusBar);
       } else if (selection === "Fix Recipes") {
         showFixRecipes();
       }
@@ -166,7 +201,7 @@ async function runCurrentFileScan(
   publishDiagnostics(report, diagnostics, editor.document.uri.fsPath);
   renderOutput(report, output, editor.document.uri.fsPath);
   updateStatusBar(statusBar, report);
-  await refreshOverviewPanel(context, output, statusBar);
+  await refreshOverviewSurfaces(context, output, statusBar);
   const elapsedMs = Date.now() - startedAt;
   const fileFindings = report.findings.filter(
     (finding) => finding.location?.filePath === editor.document.uri.fsPath
@@ -175,12 +210,12 @@ async function runCurrentFileScan(
   void vscode.window
     .showInformationMessage(
       `MCP Preflight found ${fileFindings.length} findings for ${editor.document.fileName.split(/[\\/]/).at(-1)} in ${formatDuration(elapsedMs)}.`,
-      "Overview",
+      "Sidebar",
       "Fix Recipes"
     )
     .then((selection) => {
-      if (selection === "Overview") {
-        void openOverviewPanel(context, output, statusBar);
+      if (selection === "Sidebar") {
+        void openSidebar(context, output, statusBar);
       } else if (selection === "Fix Recipes") {
         showFixRecipes();
       }
@@ -306,10 +341,10 @@ async function promptForLicenseInstall(
     output.clear();
     output.appendLine(formatLicenseDetails(license));
     output.show(true);
-    await refreshOverviewPanel(context, output, statusBar);
-    void vscode.window.showInformationMessage("MCP Preflight Pro was activated on this machine.", "Overview").then((selection) => {
-      if (selection === "Overview") {
-        void openOverviewPanel(context, output, statusBar);
+    await refreshOverviewSurfaces(context, output, statusBar);
+    void vscode.window.showInformationMessage("MCP Preflight Pro was activated on this machine.", "Sidebar").then((selection) => {
+      if (selection === "Sidebar") {
+        void openSidebar(context, output, statusBar);
       }
     });
   } catch (error) {
@@ -339,7 +374,7 @@ async function showLicenseStatus(
   output.clear();
   output.appendLine(formatLicenseDetails(license));
   output.show(true);
-  await openOverviewPanel(context, output, statusBar);
+  await openSidebar(context, output, statusBar);
 }
 
 async function showLocalActivitySummary(
@@ -351,7 +386,7 @@ async function showLocalActivitySummary(
   output.clear();
   output.appendLine(formatActivitySummary(summary));
   output.show(true);
-  await openOverviewPanel(context, output, statusBar);
+  await openSidebar(context, output, statusBar);
 }
 
 async function leaveReview(output: vscode.OutputChannel): Promise<void> {
@@ -408,6 +443,106 @@ async function getHelp(output: vscode.OutputChannel): Promise<void> {
   await openProductPage(output, selection.destination, selection.url, "support-opened");
 }
 
+async function openSidebar(
+  context: vscode.ExtensionContext,
+  output: vscode.OutputChannel,
+  statusBar: vscode.StatusBarItem
+): Promise<void> {
+  activeContext = context;
+  activeOutput = output;
+  activeStatusBar = statusBar;
+
+  try {
+    await vscode.commands.executeCommand(SIDEBAR_CONTAINER_COMMAND);
+  } catch {
+    await openOverviewPanel(context, output, statusBar);
+    return;
+  }
+
+  await refreshOverviewSurfaces(context, output, statusBar);
+}
+
+async function maybeShowOnboarding(
+  context: vscode.ExtensionContext,
+  output: vscode.OutputChannel,
+  statusBar: vscode.StatusBarItem
+): Promise<void> {
+  const currentVersion = String(context.extension.packageJSON.version ?? "unknown");
+  const lastShownVersion = context.globalState.get<string>(ONBOARDING_VERSION_KEY);
+
+  if (lastShownVersion === currentVersion) {
+    return;
+  }
+
+  await context.globalState.update(ONBOARDING_VERSION_KEY, currentVersion);
+
+  const selection = await vscode.window.showInformationMessage(
+    "MCP Preflight adds a local sidebar with scan status, Lite or Pro state, and quick actions.",
+    "Open Sidebar",
+    "Scan Workspace"
+  );
+
+  if (selection === "Open Sidebar") {
+    await openSidebar(context, output, statusBar);
+    return;
+  }
+
+  if (selection === "Scan Workspace") {
+    await vscode.commands.executeCommand("mcpPreflight.scanWorkspace");
+  }
+}
+
+function registerOverviewMessageBridge(
+  webview: vscode.Webview,
+  context: vscode.ExtensionContext,
+  output: vscode.OutputChannel,
+  statusBar: vscode.StatusBarItem
+): void {
+  webview.onDidReceiveMessage(async (message: unknown) => {
+    if (!isOverviewMessage(message)) {
+      return;
+    }
+
+    switch (message.command) {
+      case "refresh":
+        await refreshOverviewSurfaces(context, output, statusBar);
+        return;
+      case "scanWorkspace":
+        await vscode.commands.executeCommand("mcpPreflight.scanWorkspace");
+        return;
+      case "scanCurrentFile":
+        await vscode.commands.executeCommand("mcpPreflight.scanCurrentFile");
+        return;
+      case "showFixRecipes":
+        await vscode.commands.executeCommand("mcpPreflight.showFixRecipes");
+        return;
+      case "installLicense":
+        await vscode.commands.executeCommand("mcpPreflight.installLicense");
+        return;
+      case "showLicenseStatus":
+        await vscode.commands.executeCommand("mcpPreflight.showLicenseStatus");
+        return;
+      case "showLocalActivity":
+        await vscode.commands.executeCommand("mcpPreflight.showLocalActivity");
+        return;
+      case "upgradeToPro":
+        await vscode.commands.executeCommand("mcpPreflight.upgradeToPro");
+        return;
+      case "leaveReview":
+        await vscode.commands.executeCommand("mcpPreflight.leaveReview");
+        return;
+      case "getHelp":
+        await vscode.commands.executeCommand("mcpPreflight.getHelp");
+        return;
+      case "openSidebar":
+        await openSidebar(context, output, statusBar);
+        return;
+      default:
+        return;
+    }
+  });
+}
+
 async function openOverviewPanel(
   context: vscode.ExtensionContext,
   output: vscode.OutputChannel,
@@ -431,54 +566,15 @@ async function openOverviewPanel(
       overviewPanel = undefined;
     });
 
-    overviewPanel.webview.onDidReceiveMessage(async (message: unknown) => {
-      if (!isOverviewMessage(message)) {
-        return;
-      }
-
-      switch (message.command) {
-        case "refresh":
-          await refreshOverviewPanel(context, output, statusBar);
-          return;
-        case "scanWorkspace":
-          await vscode.commands.executeCommand("mcpPreflight.scanWorkspace");
-          return;
-        case "scanCurrentFile":
-          await vscode.commands.executeCommand("mcpPreflight.scanCurrentFile");
-          return;
-        case "showFixRecipes":
-          await vscode.commands.executeCommand("mcpPreflight.showFixRecipes");
-          return;
-        case "installLicense":
-          await vscode.commands.executeCommand("mcpPreflight.installLicense");
-          return;
-        case "showLicenseStatus":
-          await vscode.commands.executeCommand("mcpPreflight.showLicenseStatus");
-          return;
-        case "showLocalActivity":
-          await vscode.commands.executeCommand("mcpPreflight.showLocalActivity");
-          return;
-        case "upgradeToPro":
-          await vscode.commands.executeCommand("mcpPreflight.upgradeToPro");
-          return;
-        case "leaveReview":
-          await vscode.commands.executeCommand("mcpPreflight.leaveReview");
-          return;
-        case "getHelp":
-          await vscode.commands.executeCommand("mcpPreflight.getHelp");
-          return;
-        default:
-          return;
-      }
-    });
+    registerOverviewMessageBridge(overviewPanel.webview, context, output, statusBar);
   } else {
     overviewPanel.reveal(vscode.ViewColumn.Beside, true);
   }
 
-  await refreshOverviewPanel(context, output, statusBar);
+  await refreshOverviewSurfaces(context, output, statusBar);
 }
 
-async function refreshOverviewPanel(
+async function refreshOverviewSurfaces(
   context: vscode.ExtensionContext,
   output: vscode.OutputChannel,
   statusBar: vscode.StatusBarItem
@@ -487,28 +583,50 @@ async function refreshOverviewPanel(
   activeOutput = output;
   activeStatusBar = statusBar;
 
-  if (!overviewPanel) {
-    return;
-  }
-
   const [license, activity] = await Promise.all([resolveLicense(), getActivitySummary()]);
   latestLicense = license;
   updateStatusBar(statusBar, latestReport);
-  overviewPanel.title = license.status === "valid" ? "MCP Preflight Overview - Pro" : "MCP Preflight Overview";
-  overviewPanel.webview.html = renderOverviewHtml({
-    license,
-    activity,
-    report: latestReport
-  });
+
+  if (overviewPanel) {
+    overviewPanel.title = license.status === "valid" ? "MCP Preflight Overview - Pro" : "MCP Preflight Overview";
+    overviewPanel.webview.html = renderOverviewHtml(
+      {
+        license,
+        activity,
+        report: latestReport,
+        version: String(context.extension.packageJSON.version ?? "unknown")
+      },
+      "panel"
+    );
+  }
+
+  if (overviewSidebarView) {
+    overviewSidebarView.title = "Overview";
+    overviewSidebarView.description = license.status === "valid" ? "Pro active" : "Lite active";
+    overviewSidebarView.webview.html = renderOverviewHtml(
+      {
+        license,
+        activity,
+        report: latestReport,
+        version: String(context.extension.packageJSON.version ?? "unknown")
+      },
+      "sidebar"
+    );
+  }
 }
 
-function renderOverviewHtml(params: {
+function renderOverviewHtml(
+  params: {
   license: ResolvedLicense;
   activity: ActivitySummary;
   report?: ScanReport;
-}): string {
+  version: string;
+},
+  surface: "panel" | "sidebar"
+): string {
   const { license, activity, report } = params;
   const reportSummary = getReportOverview(report);
+  const isSidebar = surface === "sidebar";
   const licenseActions =
     license.status === "valid"
       ? `<button data-command="showLicenseStatus">Refresh license status</button>`
@@ -517,16 +635,26 @@ function renderOverviewHtml(params: {
     activity.eventsRecorded === 0
       ? "No local activity has been recorded yet."
       : `${activity.scans.total} scans, ${activity.upgradesOpened} upgrade opens, ${activity.reviewsOpened} review opens, ${activity.supportOpens} help opens.`;
+  const trustList = [
+    "Local by default",
+    "No account required for Lite",
+    "Signed local token for Pro",
+    "Readable findings and quick actions"
+  ]
+    .map((item) => `<li>${escapeHtml(item)}</li>`)
+    .join("");
 
   return `
     <html>
-      <body style="font-family: Segoe UI, sans-serif; padding: 20px; color: #f5f7fa; background: linear-gradient(180deg, #0f172a 0%, #111827 100%);">
+      <body class="${isSidebar ? "sidebar" : "panel"}" style="font-family: Segoe UI, sans-serif; padding: ${isSidebar ? "12px" : "20px"}; color: #f5f7fa; background: linear-gradient(180deg, #0f172a 0%, #111827 100%);">
         <style>
           body { margin: 0; }
           h1, h2, h3, p { margin: 0; }
           .layout { display: grid; gap: 16px; }
-          .hero { padding: 20px; border-radius: 16px; background: rgba(20, 33, 61, 0.92); border: 1px solid rgba(255, 255, 255, 0.08); }
-          .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+          .hero { padding: 18px; border-radius: 16px; background: linear-gradient(135deg, rgba(8, 34, 53, 0.95) 0%, rgba(15, 23, 42, 0.96) 100%); border: 1px solid rgba(125, 211, 252, 0.14); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28); }
+          .hero-top { display: grid; grid-template-columns: ${isSidebar ? "1fr" : "auto 1fr auto"}; gap: 14px; align-items: center; }
+          .brand-mark { width: ${isSidebar ? "52px" : "64px"}; height: ${isSidebar ? "52px" : "64px"}; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, rgba(125, 211, 252, 0.28), rgba(15, 23, 42, 0.08) 70%); border: 1px solid rgba(125, 211, 252, 0.18); }
+          .cards { display: grid; grid-template-columns: ${isSidebar ? "1fr" : "repeat(auto-fit, minmax(240px, 1fr))"}; gap: 16px; }
           .card { padding: 16px; border-radius: 14px; background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(255, 255, 255, 0.08); }
           .eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #93c5fd; margin-bottom: 8px; }
           .title { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
@@ -559,16 +687,114 @@ function renderOverviewHtml(params: {
             text-transform: uppercase;
             margin-bottom: 10px;
           }
+          .tier-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: ${license.status === "valid" ? "rgba(16, 185, 129, 0.16)" : "rgba(125, 211, 252, 0.14)"};
+            color: ${license.status === "valid" ? "#bbf7d0" : "#bfdbfe"};
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+          }
+          .hero-copy h1 {
+            font-size: ${isSidebar ? "22px" : "26px"};
+            line-height: 1.2;
+            margin-bottom: 8px;
+          }
+          .subcopy {
+            margin-top: 10px;
+            color: #dbe7f3;
+            line-height: 1.5;
+          }
+          .mini-grid {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: ${isSidebar ? "1fr" : "repeat(4, minmax(0, 1fr))"};
+            gap: 10px;
+          }
+          .mini-stat {
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+          }
+          .mini-stat strong {
+            display: block;
+            font-size: 18px;
+          }
+          .mini-stat span {
+            font-size: 12px;
+            color: #9fb3c8;
+          }
+          .trust-list {
+            list-style: none;
+            margin: 10px 0 0;
+            padding: 0;
+            display: grid;
+            gap: 8px;
+          }
+          .trust-list li {
+            color: #d7e2ee;
+            padding-left: 18px;
+            position: relative;
+          }
+          .trust-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #37d4c3;
+            box-shadow: 0 0 0 4px rgba(55, 212, 195, 0.14);
+          }
+          .hero-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+          }
         </style>
         <div class="layout">
           <section class="hero">
-            <div class="eyebrow">MCP Preflight</div>
-            <div class="title">Local-first MCP review, without the dashboard.</div>
-            <p class="muted">Use this panel to see your latest scan, check whether Pro is active on this machine, review local activity, and jump to the next action without digging through separate commands.</p>
-            <div class="actions">
+            <div class="hero-top">
+              <div class="brand-mark" aria-hidden="true">
+                ${renderBrandMarkSvg()}
+              </div>
+              <div class="hero-copy">
+                <div class="eyebrow">MCP Preflight</div>
+                <h1>${isSidebar ? "Visible local trust signals in the editor." : "Local-first MCP review, visible where you work."}</h1>
+                <p class="subcopy">See what the extension is doing, what Lite already gives you, and whether Pro is active on this machine without leaving VS Code or Cursor.</p>
+              </div>
+              <div class="tier-chip">${escapeHtml(license.status === "valid" ? "Pro active" : "Lite active")}</div>
+            </div>
+            <div class="hero-actions">
               <button data-command="scanWorkspace">Scan workspace</button>
               <button class="secondary" data-command="scanCurrentFile">Scan current file</button>
-              <button class="secondary" data-command="refresh">Refresh overview</button>
+              <button class="secondary" data-command="refresh">${isSidebar ? "Refresh" : "Refresh overview"}</button>
+            </div>
+            <div class="mini-grid">
+              <div class="mini-stat">
+                <strong>${activity.scans.total}</strong>
+                <span>local scans</span>
+              </div>
+              <div class="mini-stat">
+                <strong>${report ? report.summary.errors + report.summary.warnings + report.summary.info : 0}</strong>
+                <span>latest findings</span>
+              </div>
+              <div class="mini-stat">
+                <strong>${license.status === "valid" ? "Pro" : "Lite"}</strong>
+                <span>current tier</span>
+              </div>
+              <div class="mini-stat">
+                <strong>v${escapeHtml(params.version)}</strong>
+                <span>extension build</span>
+              </div>
             </div>
           </section>
           <div class="cards">
@@ -592,6 +818,12 @@ function renderOverviewHtml(params: {
               <div class="meta">${escapeHtml(getLicenseMetaText(license))}</div>
             </section>
             <section class="card">
+              <div class="eyebrow">Trust stance</div>
+              <div class="stat">What installed</div>
+              <p class="muted">A local scanner with a visible editor surface, not a hidden background process and not a hosted dashboard.</p>
+              <ul class="trust-list">${trustList}</ul>
+            </section>
+            <section class="card">
               <div class="eyebrow">Local activity</div>
               <div class="stat">${activity.scans.total}</div>
               <p class="muted">${escapeHtml(activitySummary)}</p>
@@ -603,8 +835,9 @@ function renderOverviewHtml(params: {
             <section class="card">
               <div class="eyebrow">Quick links</div>
               <div class="stat">Next actions</div>
-              <p class="muted">Open checkout, ask for help, or leave a review without leaving the editor flow.</p>
+              <p class="muted">Open checkout, ask for help, leave a review, or jump back to the sidebar when you want a visible product surface.</p>
               <div class="actions">
+                <button data-command="openSidebar">Open sidebar</button>
                 <button data-command="upgradeToPro">Upgrade</button>
                 <button class="secondary" data-command="leaveReview">Review</button>
                 <button class="secondary" data-command="getHelp">Help</button>
@@ -841,7 +1074,7 @@ function updateStatusBar(statusBar: vscode.StatusBarItem, report?: ScanReport): 
 
   if (!report) {
     statusBar.text = `$(shield) MCP Preflight${licenseLabel}`;
-    statusBar.tooltip = "Open MCP Preflight overview";
+    statusBar.tooltip = "Open the MCP Preflight sidebar";
     statusBar.backgroundColor = undefined;
     return;
   }
@@ -858,7 +1091,7 @@ function updateStatusBar(statusBar: vscode.StatusBarItem, report?: ScanReport): 
     `Suppressed: ${report.summary.suppressed}`,
     latestLicense ? `License: ${latestLicense.status.toUpperCase()}` : undefined,
     "",
-    "Click to open the MCP Preflight overview."
+    "Click to open the MCP Preflight sidebar."
   ]
     .filter((line): line is string => Boolean(line))
     .join("\n");
@@ -906,8 +1139,31 @@ async function openProductPage(
   output.show(true);
 
   if (activeContext && activeOutput && activeStatusBar) {
-    await refreshOverviewPanel(activeContext, activeOutput, activeStatusBar);
+    await refreshOverviewSurfaces(activeContext, activeOutput, activeStatusBar);
   }
+}
+
+function renderBrandMarkSvg(): string {
+  return `
+    <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MCP Preflight">
+      <defs>
+        <linearGradient id="mcp-preflight-brand-ring" x1="8" y1="8" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#b6fbff" />
+          <stop offset="1" stop-color="#4cc9b0" />
+        </linearGradient>
+        <linearGradient id="mcp-preflight-brand-mark" x1="12" y1="10" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#1f5a84" />
+          <stop offset="1" stop-color="#2cc2a7" />
+        </linearGradient>
+      </defs>
+      <circle cx="22" cy="22" r="18" fill="#eff9ff" />
+      <circle cx="22" cy="22" r="17" fill="none" stroke="url(#mcp-preflight-brand-ring)" stroke-width="2" />
+      <path d="M17.5 14.4C15.4 15.8 14 18.6 14 22C14 25.4 15.4 28.2 17.5 29.6" fill="none" stroke="url(#mcp-preflight-brand-mark)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M26.5 14.4C28.6 15.8 30 18.6 30 22C30 25.4 28.6 28.2 26.5 29.6" fill="none" stroke="url(#mcp-preflight-brand-mark)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M22 15.8V28.2" fill="none" stroke="#1b4c76" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M18.8 22.4L21.1 24.7L26.1 19.7" fill="none" stroke="#f0a746" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `;
 }
 
 function isOverviewMessage(value: unknown): value is { command: string } {

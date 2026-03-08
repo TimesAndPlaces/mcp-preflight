@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.8 - 2026-03-08
+- Added a dedicated MCP Preflight activity-bar sidebar so the extension has a visible, branded surface in VS Code and Cursor.
+- Added a richer Lite or Pro overview with visible trust cues, local activity, quick actions, and a one-time onboarding prompt.
+- Made the sidebar the default surface from the status bar and post-scan prompts while keeping the wider overview panel available.
+
 ## 0.1.7 - 2026-03-08
 - Removed the extension `galleryBanner` metadata so dark marketplace surfaces stop framing the transparent logo with the old banner treatment.
 

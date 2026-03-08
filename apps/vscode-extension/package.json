@@ -2,7 +2,7 @@
   "name": "mcp-preflight-vscode",
   "displayName": "MCP Preflight",
   "description": "Local-first MCP security preflight scans for configs, prompts, and repo manifests.",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "publisher": "mcp-preflight",
   "homepage": "https://mcppreflight.com",
   "repository": {
@@ -38,7 +38,10 @@
     }
   },
   "activationEvents": [
+    "onStartupFinished",
+    "onView:mcpPreflight.overviewView",
     "onCommand:mcpPreflight.openOverview",
+    "onCommand:mcpPreflight.openSidebar",
     "onCommand:mcpPreflight.scanWorkspace",
     "onCommand:mcpPreflight.scanCurrentFile",
     "onCommand:mcpPreflight.showFixRecipes",
@@ -52,6 +55,10 @@
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "mcpPreflight.openSidebar",
+        "title": "MCP Preflight: Open Sidebar"
+      },
       {
         "command": "mcpPreflight.openOverview",
         "title": "MCP Preflight: Open Overview"
@@ -92,13 +99,31 @@
         "command": "mcpPreflight.getHelp",
         "title": "MCP Preflight: Get Help"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "mcpPreflight",
+          "title": "MCP Preflight",
+          "icon": "media/activity-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "mcpPreflight": [
+        {
+          "type": "webview",
+          "id": "mcpPreflight.overviewView",
+          "name": "Overview"
+        }
+      ]
+    }
   },
   "scripts": {
     "build": "tsc -b"
   },
   "dependencies": {
-    "mcp-preflight-core": "0.1.7"
+    "mcp-preflight-core": "0.1.8"
   },
   "devDependencies": {
     "@types/vscode": "^1.97.0"
