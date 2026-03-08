@@ -1,9 +1,9 @@
 # Rules
 
-This file explains the current checks in normal language.
+This page explains the current checks in plain language.
 
 ## How to read a finding
-Each finding tries to answer three questions:
+Each finding answers three questions:
 - What looked risky?
 - Why does that matter for MCP?
 - What should you change next?

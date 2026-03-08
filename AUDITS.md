@@ -1,8 +1,8 @@
 # Audit Notes
 
-These notes are part of the public trust surface for MCP Preflight.
+These notes show how to review real MCP setups before you trust them.
 
-They are meant to be practical preflight reads, not accusations and not vulnerability claims. The goal is to show how a careful developer can review a real MCP setup before trusting it.
+They are practical preflight reads, not accusations and not vulnerability claims.
 
 ## Published notes
 - [Quick preflight read: the official filesystem reference server setup](audits/2026-03-07-official-filesystem-server-setup.md)

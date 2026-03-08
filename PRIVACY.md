@@ -1,6 +1,6 @@
 # Privacy
 
-This is the plain-language version of how `MCP Preflight` is meant to behave.
+This note explains what `MCP Preflight` reads, what it stores locally, and what it does not send to a hosted service.
 
 ## Short version
 - The Lite product is designed to run locally.
@@ -28,7 +28,7 @@ In the Lite product, local scanning should work without any MCP Preflight accoun
 
 The current Pro unlock path is also local. A signed license token can be stored on disk and verified on the machine without an MCP Preflight login flow.
 
-MCP Preflight now also keeps a small local activity log by default. That log is meant to help you inspect scan counts, blocked Pro features, and local license actions on your own machine.
+MCP Preflight now also keeps a small local activity log by default. That log helps you inspect scan counts, blocked Pro features, and local license actions on your own machine.
 
 The activity log is local-only. It is not uploaded to an MCP Preflight service.
 
@@ -38,7 +38,7 @@ It is designed to record product events such as:
 - blocked Pro workflow surfaces
 - upgrade, review, and support links opened from the product
 
-It is not meant to store workspace contents.
+It does not store workspace contents.
 
 ## Important limits
 - Your editor, extension marketplace, operating system, or package manager may still have their own telemetry or network behavior

@@ -6,7 +6,7 @@ It reads common MCP config files, tool descriptions, prompt resources, and repo 
 
 Website: [mcppreflight.com](https://mcppreflight.com)
 
-This public repository stays intentionally narrow. It contains the Lite product code and the user-facing materials people need to evaluate it. Internal planning, private operating notes, and maintainer admin work stay out of the public repo on purpose.
+This repo contains the Lite product code, public docs, and release paths people need to evaluate MCP Preflight. Internal planning and maintainer admin work are kept private.
 
 ## What it checks
 - `.vscode/mcp.json` and other common MCP config locations
@@ -30,7 +30,7 @@ If you would rather use the editor flow, install the extension from the [VS Code
 - It runs locally by default
 - The Lite scan does not require an account
 - It is built for MCP preflight review, not a broad security platform
-- Findings are meant to be readable by developers, not just auditors
+- Findings are written to be readable by developers, not just auditors
 - The activity log stays local too, so you can inspect usage without sending workspace data to a backend
 
 ## Lite and Pro

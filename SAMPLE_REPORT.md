@@ -52,4 +52,4 @@ This is a fake report that shows the tone and structure of a local scan result. 
 ## Notes
 - Lite output is text or JSON.
 - Markdown, HTML, and SARIF are part of the Pro export surface.
-- The Lite product is meant to stay readable without a dashboard.
+- Lite is designed to stay readable without a dashboard.
