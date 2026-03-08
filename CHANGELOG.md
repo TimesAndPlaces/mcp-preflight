@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.13 - 2026-03-08
+- Rebuilt the homepage around a denser product-first bento layout with tighter geometry, less decorative chrome, and a more developer-tool presentation.
+- Replaced the shared site styling with smaller radii, hairline borders, reduced gradients, and a more consistent dark workstation feel across secondary pages.
+- Reworked the VS Code overview surface into a compact operator console with clearer scan, license, and activity sections instead of the previous summary-card layout.
+
 ## 0.1.12 - 2026-03-08
 - Rebuilt the public site around a denser monochrome visual system with tighter spacing, hairline borders, and a more developer-first layout.
 - Reworked the extension overview and sidebar to use a flatter, more compact UI instead of the previous glossy dashboard treatment.

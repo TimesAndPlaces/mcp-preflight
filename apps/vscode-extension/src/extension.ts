@@ -477,7 +477,7 @@ async function maybeShowOnboarding(
   await context.globalState.update(ONBOARDING_VERSION_KEY, currentVersion);
 
   const selection = await vscode.window.showInformationMessage(
-    "Welcome. Open the sidebar to scan the workspace, check the latest result, or install a Pro token.",
+    "Welcome. Open the sidebar to review the latest scan, check your license, or run a scan.",
     "Open Sidebar",
     "Scan Workspace"
   );
@@ -650,108 +650,122 @@ function renderOverviewHtml(
         <style>
           :root {
             color-scheme: dark;
-            --bg: #0a0a0b;
-            --surface: #121316;
-            --surface-strong: #16171b;
-            --line: #26282e;
-            --line-strong: #383b43;
-            --ink: #f3f4f6;
-            --ink-soft: #b4b8c0;
-            --ink-faint: #7f858f;
+            --bg: #09090b;
+            --surface: #101215;
+            --surface-strong: #14161a;
+            --surface-inline: rgba(255, 255, 255, 0.035);
+            --line: rgba(255, 255, 255, 0.08);
+            --line-strong: rgba(255, 255, 255, 0.14);
+            --ink: #f4f6f8;
+            --ink-soft: #b7bcc5;
+            --ink-faint: #7f8793;
           }
           body {
             margin: 0;
-            padding: ${isSidebar ? "10px" : "16px"};
+            padding: ${isSidebar ? "10px" : "14px"};
             font-family: Inter, "Segoe UI", sans-serif;
             color: var(--ink);
             background:
               radial-gradient(circle at top, rgba(255, 255, 255, 0.04), transparent 18rem),
-              linear-gradient(180deg, #09090a 0%, #0b0b0d 100%);
+              linear-gradient(180deg, #09090a 0%, #0b0c0e 100%);
           }
           h1, h2, h3, p, ul { margin: 0; }
-          .layout { display: grid; gap: 10px; }
-          .hero,
-          .card {
+          .frame { display: grid; gap: 10px; }
+          .surface {
             border: 1px solid var(--line);
-            border-radius: 14px;
+            border-radius: 12px;
             background:
               radial-gradient(circle at top left, rgba(255, 255, 255, 0.03), transparent 12rem),
-              linear-gradient(180deg, rgba(22, 23, 27, 0.98), rgba(14, 15, 18, 0.98));
+              linear-gradient(180deg, rgba(18, 20, 24, 0.98), rgba(13, 14, 17, 0.98));
           }
-          .hero {
-            padding: ${isSidebar ? "14px" : "16px"};
+          .masthead,
+          .module {
+            padding: ${isSidebar ? "12px" : "14px"};
           }
-          .hero-top {
+          .masthead-top {
             display: grid;
-            grid-template-columns: ${isSidebar ? "1fr" : "auto 1fr auto"};
-            gap: 12px;
+            grid-template-columns: ${isSidebar ? "1fr" : "1fr auto"};
+            gap: 10px;
             align-items: start;
           }
-          .identity {
+          .brand {
             display: grid;
             grid-template-columns: auto 1fr;
             gap: 12px;
             align-items: start;
           }
           .brand-mark {
-            width: ${isSidebar ? "42px" : "48px"};
-            height: ${isSidebar ? "42px" : "48px"};
-            border-radius: 12px;
+            width: ${isSidebar ? "38px" : "42px"};
+            height: ${isSidebar ? "38px" : "42px"};
+            border-radius: 10px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.025);
             border: 1px solid var(--line);
           }
-          .cards {
+          .module-grid {
             display: grid;
-            grid-template-columns: ${isSidebar ? "1fr" : "repeat(auto-fit, minmax(220px, 1fr))"};
+            grid-template-columns: ${isSidebar ? "1fr" : "minmax(0, 1.2fr) minmax(0, 0.9fr)"};
             gap: 10px;
           }
-          .card {
-            padding: 14px;
+          .stack {
+            display: grid;
+            gap: 10px;
           }
           .eyebrow,
-          .summary-label,
-          .tier-chip,
-          .pill {
+          .mode-chip,
+          .module-label,
+          .badge,
+          .inline-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
             width: fit-content;
+            max-width: 100%;
             padding: 4px 8px;
             border: 1px solid var(--line);
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.03);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.09em;
             text-transform: uppercase;
           }
-          .summary-label,
-          .eyebrow {
-            color: #d2d6dd;
+          .eyebrow,
+          .module-label {
+            color: #d6dae2;
           }
-          .tier-chip {
-            justify-self: ${isSidebar ? "start" : "end"};
+          .mode-chip,
+          .inline-badge {
             color: ${license.status === "valid" ? "#d8eadc" : "#dde1e8"};
             border-color: ${license.status === "valid" ? "rgba(128, 160, 136, 0.28)" : "var(--line)"};
             background: ${license.status === "valid" ? "rgba(128, 160, 136, 0.1)" : "rgba(255, 255, 255, 0.03)"};
           }
-          .hero-copy h1 {
+          .badge {
+            color: ${getVerdictForeground(report?.verdict)};
+            background: ${getVerdictBackground(report?.verdict)};
+            border-color: ${getVerdictBorder(report?.verdict)};
+          }
+          .masthead-copy h1 {
             margin-top: 8px;
-            font-size: ${isSidebar ? "20px" : "24px"};
-            line-height: 1.04;
+            font-size: ${isSidebar ? "20px" : "22px"};
+            line-height: 1.02;
             letter-spacing: -0.04em;
           }
-          .subcopy {
-            margin-top: 8px;
+          .masthead-copy p,
+          .module-copy,
+          .module-foot,
+          .meta-copy {
             color: var(--ink-soft);
             line-height: 1.45;
-            max-width: 48ch;
-            font-size: 13px;
+            font-size: 12px;
+          }
+          .masthead-copy p {
+            margin-top: 8px;
+            max-width: 52ch;
           }
           .toolbar,
+          .button-row,
           button {
             display: flex;
             gap: 8px;
@@ -764,7 +778,7 @@ function renderOverviewHtml(
             appearance: none;
             border: 1px solid var(--line);
             border-radius: 10px;
-            padding: 8px 11px;
+            padding: 7px 10px;
             background: #f3f4f6;
             color: #0a0a0b;
             font-size: 12px;
@@ -779,182 +793,221 @@ function renderOverviewHtml(
           button:hover {
             border-color: var(--line-strong);
           }
-          .metric-grid {
+          .stat-grid {
             margin-top: 12px;
             display: grid;
             grid-template-columns: ${isSidebar ? "repeat(2, minmax(0, 1fr))" : "repeat(4, minmax(0, 1fr))"};
             gap: 8px;
           }
-          .metric {
-            padding: 10px 11px;
+          .stat {
+            padding: 10px;
             border-radius: 10px;
             border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.025);
+            background: var(--surface-inline);
           }
-          .metric strong {
+          .stat strong {
             display: block;
-            font-size: 16px;
+            font-size: 15px;
             letter-spacing: -0.03em;
           }
-          .metric span {
+          .stat span {
             display: block;
             margin-top: 4px;
-            font-size: 11px;
+            font-size: 10px;
             color: var(--ink-faint);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
           }
-          .card-head {
+          .module-head {
             display: flex;
-            align-items: start;
+            align-items: center;
             justify-content: space-between;
             gap: 10px;
           }
-          .stat {
+          .module h2 {
             margin-top: 10px;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             line-height: 1.04;
             letter-spacing: -0.04em;
           }
-          .muted {
+          .module-copy {
             margin-top: 8px;
-            color: var(--ink-soft);
-            line-height: 1.45;
-            font-size: 13px;
           }
-          .actions {
+          .button-row {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
             margin-top: 12px;
           }
-          .meta {
+          .module-foot,
+          .meta-copy {
             margin-top: 10px;
-            color: var(--ink-faint);
-            line-height: 1.45;
-            font-size: 12px;
           }
-          .pill {
-            margin-top: 10px;
-            margin-bottom: 0;
-            color: ${getVerdictForeground(report?.verdict)};
-            background: ${getVerdictBackground(report?.verdict)};
-            border-color: ${getVerdictBorder(report?.verdict)};
-          }
-          .trust-list {
-            list-style: none;
-            margin: 10px 0 0;
-            padding: 0;
+          .row-table,
+          .line-list {
             display: grid;
             gap: 0;
+            margin-top: 12px;
           }
-          .trust-list li {
+          .row,
+          .line-list li {
+            display: grid;
+            gap: 3px;
             padding: 9px 0;
             border-top: 1px solid var(--line);
-            color: var(--ink-soft);
-            font-size: 13px;
           }
-          .trust-list li:first-child {
+          .row:first-child,
+          .line-list li:first-child {
             border-top: 0;
+            padding-top: 0;
+          }
+          .row:last-child,
+          .line-list li:last-child {
+            padding-bottom: 0;
+          }
+          .row span:first-child {
+            color: var(--ink-faint);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+          }
+          .row strong {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+          }
+          .line-list {
+            list-style: none;
+            padding: 0;
+          }
+          .line-list li {
+            color: var(--ink-soft);
+            font-size: 12px;
           }
           @media (max-width: 640px) {
-            .hero-top,
-            .identity {
+            .masthead-top,
+            .brand,
+            .module-grid {
               grid-template-columns: 1fr;
             }
-            .metric-grid,
-            .cards {
+            .stat-grid {
               grid-template-columns: 1fr;
             }
           }
         </style>
-        <div class="layout">
-          <section class="hero">
-            <div class="hero-top">
-              <div class="identity">
+        <div class="frame">
+          <section class="surface masthead">
+            <div class="masthead-top">
+              <div class="brand">
                 <div class="brand-mark" aria-hidden="true">
                   ${renderBrandMarkSvg()}
                 </div>
-                <div class="hero-copy">
-                  <div class="summary-label">MCP Preflight</div>
-                  <h1>Review MCP setup before first run.</h1>
-                  <p class="subcopy">Latest scan status, local license state, and the next actions for this editor profile.</p>
+                <div class="masthead-copy">
+                  <div class="eyebrow">MCP Preflight</div>
+                  <h1>Static review for local MCP setup.</h1>
+                  <p>Workspace health, license state, and quick actions for this editor profile.</p>
                 </div>
               </div>
-              <div class="tier-chip">${escapeHtml(license.status === "valid" ? "Pro active" : "Lite active")}</div>
+              <div class="mode-chip">${escapeHtml(license.status === "valid" ? "Pro active" : "Lite active")}</div>
             </div>
             <div class="toolbar">
-              <button data-command="scanWorkspace">Scan workspace</button>
-              <button class="secondary" data-command="scanCurrentFile">Scan current file</button>
+              <button data-command="scanWorkspace">Run workspace scan</button>
+              <button class="secondary" data-command="scanCurrentFile">Run file scan</button>
               <button class="secondary" data-command="refresh">Refresh</button>
             </div>
-            <div class="metric-grid">
-              <div class="metric">
+            <div class="stat-grid">
+              <div class="stat">
                 <strong>${activity.scans.total}</strong>
                 <span>local scans</span>
               </div>
-              <div class="metric">
+              <div class="stat">
                 <strong>${report ? report.summary.errors + report.summary.warnings + report.summary.info : 0}</strong>
                 <span>latest findings</span>
               </div>
-              <div class="metric">
+              <div class="stat">
                 <strong>${license.status === "valid" ? "Pro" : "Lite"}</strong>
                 <span>current tier</span>
               </div>
-              <div class="metric">
+              <div class="stat">
                 <strong>v${escapeHtml(params.version)}</strong>
                 <span>extension build</span>
               </div>
             </div>
           </section>
-          <div class="cards">
-            <section class="card">
-              <div class="card-head">
-                <div class="eyebrow">Latest scan</div>
-                <div class="pill">${escapeHtml(report?.verdict ?? "idle")}</div>
+          <div class="module-grid">
+            <section class="surface module">
+              <div class="module-head">
+                <div class="module-label">Analysis</div>
+                <div class="badge">${escapeHtml(report?.verdict ?? "idle")}</div>
               </div>
-              <div class="stat">${escapeHtml(reportSummary.title)}</div>
-              <p class="muted">${escapeHtml(reportSummary.detail)}</p>
-              <div class="actions">
+              <h2>${escapeHtml(reportSummary.title)}</h2>
+              <p class="module-copy">${escapeHtml(reportSummary.detail)}</p>
+              <div class="row-table">
+                <div class="row">
+                  <span>Workspace</span>
+                  <strong>${escapeHtml(report ? report.workspacePath : "No scan yet")}</strong>
+                </div>
+                <div class="row">
+                  <span>Files scanned</span>
+                  <strong>${report?.summary.filesScanned ?? 0}</strong>
+                </div>
+                <div class="row">
+                  <span>Suppressed</span>
+                  <strong>${report?.summary.suppressed ?? 0}</strong>
+                </div>
+              </div>
+              <div class="button-row">
                 ${reportSummary.actions}
               </div>
-              <div class="meta">${escapeHtml(reportSummary.meta)}</div>
+              <div class="module-foot">${escapeHtml(reportSummary.meta)}</div>
             </section>
-            <section class="card">
-              <div class="eyebrow">License</div>
-              <div class="stat">${escapeHtml(getLicenseCardTitle(license))}</div>
-              <p class="muted">${escapeHtml(getLicenseOverviewText(license))}</p>
-              <div class="actions">
-                ${licenseActions}
-              </div>
-              <div class="meta">${escapeHtml(getLicenseMetaText(license))}</div>
-            </section>
-            <section class="card">
-              <div class="eyebrow">Local mode</div>
-              <div class="stat">Local-first</div>
-              <p class="muted">The scanner reads local files. Lite needs no account. Pro uses a signed token on this machine.</p>
-              <ul class="trust-list">${trustList}</ul>
-            </section>
-            <section class="card">
-              <div class="eyebrow">Activity</div>
-              <div class="stat">${activity.scans.total}</div>
-              <p class="muted">${escapeHtml(activitySummary)}</p>
-              <div class="actions">
-                <button data-command="showLocalActivity">Show local activity</button>
-              </div>
-              <div class="meta">${escapeHtml(getActivityMetaText(activity))}</div>
-            </section>
-            <section class="card">
-              <div class="eyebrow">Quick links</div>
-              <div class="stat">Next actions</div>
-              <p class="muted">Open help, leave a review, or compare Lite and Pro.</p>
-              <div class="actions">
-                <button data-command="openSidebar">Open sidebar</button>
-                <button data-command="upgradeToPro">Upgrade</button>
-                <button class="secondary" data-command="leaveReview">Review</button>
-                <button class="secondary" data-command="getHelp">Help</button>
-              </div>
-              <div class="meta">Support stays async through GitHub Discussions and Issues.</div>
-            </section>
+            <div class="stack">
+              <section class="surface module">
+                <div class="module-head">
+                  <div class="module-label">License</div>
+                  <div class="inline-badge">${escapeHtml(license.status === "valid" ? "Pro" : "Lite")}</div>
+                </div>
+                <h2>${escapeHtml(getLicenseCardTitle(license))}</h2>
+                <p class="module-copy">${escapeHtml(getLicenseOverviewText(license))}</p>
+                <div class="button-row">
+                  ${licenseActions}
+                </div>
+                <div class="module-foot">${escapeHtml(getLicenseMetaText(license))}</div>
+              </section>
+              <section class="surface module">
+                <div class="module-head">
+                  <div class="module-label">Local mode</div>
+                </div>
+                <h2>Runs on this machine.</h2>
+                <p class="module-copy">The default scan stays local. Lite has no account requirement. Pro uses a signed token stored on disk.</p>
+                <ul class="line-list">${trustList}</ul>
+              </section>
+              <section class="surface module">
+                <div class="module-head">
+                  <div class="module-label">Recent activity</div>
+                </div>
+                <h2>${activity.scans.total} recorded scans</h2>
+                <p class="module-copy">${escapeHtml(activitySummary)}</p>
+                <div class="button-row">
+                  <button data-command="showLocalActivity">Show local activity</button>
+                </div>
+                <div class="module-foot">${escapeHtml(getActivityMetaText(activity))}</div>
+              </section>
+              <section class="surface module">
+                <div class="module-head">
+                  <div class="module-label">Links</div>
+                </div>
+                <h2>Support and next steps.</h2>
+                <p class="module-copy">Open support, leave a review, or compare Lite and Pro without leaving the editor.</p>
+                <div class="button-row">
+                  <button data-command="upgradeToPro">Compare Pro</button>
+                  <button class="secondary" data-command="leaveReview">Leave review</button>
+                  <button class="secondary" data-command="getHelp">Get help</button>
+                </div>
+                <div class="meta-copy">Support stays async through GitHub Discussions and Issues.</div>
+              </section>
+            </div>
           </div>
         </div>
         <script>
@@ -978,8 +1031,8 @@ function getReportOverview(report?: ScanReport): {
 } {
   if (!report) {
     return {
-        title: "No scan yet",
-        detail: "Run a workspace scan or file scan to see the latest result.",
+      title: "No scan yet",
+      detail: "Run a workspace scan or file scan to populate this view.",
       actions:
         `<button data-command="scanWorkspace">Scan workspace</button>` +
         `<button class="secondary" data-command="scanCurrentFile">Scan current file</button>`,
@@ -989,10 +1042,10 @@ function getReportOverview(report?: ScanReport): {
 
   const title =
     report.verdict === "fail"
-      ? "Needs review"
+      ? "Review required"
       : report.verdict === "warning"
-        ? "Warnings found"
-        : "No issues found";
+        ? "Warnings present"
+        : "No findings";
   const detail = `${report.summary.filesScanned} files scanned, ${report.summary.errors} errors, ${report.summary.warnings} warnings, ${report.summary.info} info, ${report.summary.suppressed} suppressed.`;
   const actions =
     report.findings.length > 0
@@ -1013,7 +1066,7 @@ function getLicenseCardTitle(license: ResolvedLicense): string {
   }
 
   if (license.status === "missing") {
-    return "Lite mode";
+    return "Lite active";
   }
 
   return "License needs review";

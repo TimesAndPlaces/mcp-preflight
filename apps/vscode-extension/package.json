@@ -2,7 +2,7 @@
   "name": "mcp-preflight-vscode",
   "displayName": "MCP Preflight",
   "description": "Local static scanner for MCP setup, prompts, tool descriptions, and repo manifests.",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "publisher": "mcp-preflight",
   "homepage": "https://mcppreflight.com",
   "repository": {
@@ -123,7 +123,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "mcp-preflight-core": "0.1.12"
+    "mcp-preflight-core": "0.1.13"
   },
   "devDependencies": {
     "@types/vscode": "^1.97.0"

@@ -1,6 +1,6 @@
 {
   "name": "mcp-preflight-core",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Shared scanning engine for MCP Preflight.",
   "homepage": "https://mcppreflight.com",
   "repository": {
