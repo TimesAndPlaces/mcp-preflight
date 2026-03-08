@@ -29,162 +29,195 @@
     </div>
   </header>
   <main class="shell">
-    <section class="hero">
+    <section class="hero home-hero">
       <div class="hero-grid">
         <article class="hero-copy">
           <p class="kicker">Local-first MCP preflight</p>
           <h1>Check an MCP server <span class="highlight">before you trust it.</span></h1>
-          <p class="lead">Run one command or one editor action. MCP Preflight reads <code>mcp.json</code>, tool descriptions, prompt resources, and repo manifests, then explains what deserves a second look before it turns into a runtime problem.</p>
+          <p class="lead">Before you run a new MCP server or ship an agent workflow, run one scan and get a deterministic verdict with plain-language fixes.</p>
           <div class="action-row">
             <a class="button" href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">Install for VS Code</a>
-            <a class="button-secondary" href="https://github.com/TimesAndPlaces/mcp-preflight#fast-start">Try the quickstart</a>
+            <a class="button-secondary" href="https://github.com/TimesAndPlaces/mcp-preflight#fast-start">Try the CLI quickstart</a>
             <a class="button-secondary" href="https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00">Buy Pro</a>
           </div>
           <div class="status-row">
             <span class="pill"><strong>Lite</strong> local scan, no account required</span>
             <span class="pill"><strong>Deterministic</strong> readable findings, not mystery scores</span>
-            <span class="pill"><strong>Pro</strong> reports, hooks, CI, presets</span>
             <span class="pill"><strong>Trust stance</strong> no hosted scan backend</span>
           </div>
+          <div class="channel-row">
+            <span class="channel-pill">VS Code Marketplace</span>
+            <span class="channel-pill">Open VSX</span>
+            <span class="channel-pill">GitHub Releases</span>
+          </div>
         </article>
-        <aside class="scan-window">
-          <div class="window-bar">
-            <span class="dot-group" aria-hidden="true">
-              <span class="dot signal"></span>
-              <span class="dot accent"></span>
-              <span class="dot"></span>
-            </span>
-            <span>Workspace scan preview</span>
-          </div>
-          <p class="terminal-command">$ npm run quickstart</p>
-          <div class="scan-meta">
-            <span class="verdict-chip">Verdict: fail</span>
-            <span class="scan-tag">1 file scanned</span>
-            <span class="scan-tag">8 findings</span>
-          </div>
-          <ul class="finding-list">
-            <li class="finding">
-              <header>
-                <strong>Remote MCP server uses insecure transport</strong>
-                <small>error</small>
-              </header>
-              <p><code>http://demo-user:demo-pass@127.0.0.1:8080/mcp</code> deserves review before you trust it.</p>
-            </li>
-            <li class="finding">
-              <header>
-                <strong>Credentials embedded in URL</strong>
-                <small>error</small>
-              </header>
-              <p>Move credentials out of the URL and into a narrower auth path.</p>
-            </li>
-            <li class="finding">
-              <header>
-                <strong>Environment passthrough is too broad</strong>
-                <small>warning</small>
-              </header>
-              <p><code>inheritEnv=true</code> and named token forwarding widen confused-deputy risk.</p>
-            </li>
-          </ul>
-          <div class="scan-footer">
-            <span class="scan-tag">local-first</span>
-            <span class="scan-tag">MCP-specific</span>
-            <span class="scan-tag">plain-language fixes</span>
-          </div>
+        <aside class="hero-side">
+          <section class="decision-card">
+            <p class="eyebrow">What a first scan tells you</p>
+            <div class="decision-list">
+              <article class="decision-item">
+                <header>
+                  <strong>Remote MCP URL uses insecure transport</strong>
+                  <span class="severity severity-error">error</span>
+                </header>
+                <p><code>http://demo-user:demo-pass@127.0.0.1:8080/mcp</code></p>
+                <small>Use HTTPS and move credentials out of the URL.</small>
+              </article>
+              <article class="decision-item">
+                <header>
+                  <strong>Environment passthrough is too broad</strong>
+                  <span class="severity severity-warning">warning</span>
+                </header>
+                <p><code>inheritEnv=true</code> and <code>OPENAI_API_KEY</code> forwarding</p>
+                <small>Reduce scope before the server gets host credentials it does not need.</small>
+              </article>
+              <article class="decision-item">
+                <header>
+                  <strong>Ephemeral launcher hides what actually runs</strong>
+                  <span class="severity severity-warning">warning</span>
+                </header>
+                <p><code>npx @example/filesystem-server --path /</code></p>
+                <small>Prefer a pinned install or reviewed local binary.</small>
+              </article>
+            </div>
+            <div class="decision-footer">
+              <span class="scan-tag">what looked risky</span>
+              <span class="scan-tag">why it matters</span>
+              <span class="scan-tag">what to change next</span>
+            </div>
+          </section>
         </aside>
-      </div>
-      <div class="proof-strip">
-        <article class="proof-item">
-          <span>Install path</span>
-          <strong>Repo or extension</strong>
-          <p>Start from the public repo, the VS Code Marketplace, or Open VSX.</p>
-        </article>
-        <article class="proof-item">
-          <span>What it covers</span>
-          <strong>MCP-specific risk</strong>
-          <p>Tool poisoning, prompt injection, auth drift, env passthrough, and unsafe launchers.</p>
-        </article>
-        <article class="proof-item">
-          <span>Free path</span>
-          <strong>No hosted account</strong>
-          <p>Lite is built to stay useful without sign-up friction or a scan backend.</p>
-        </article>
-        <article class="proof-item">
-          <span>Upgrade path</span>
-          <strong>Local signed token</strong>
-          <p>Pro unlocks on the machine with a local token instead of a hosted control plane.</p>
-        </article>
       </div>
     </section>
 
     <section class="section">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Built for the moment before trust</p>
-          <h2>Decide quickly whether it fits your workflow.</h2>
-          <p>Most competing surfaces lean toward broad security platforms, dashboards, or cloud scans. MCP Preflight stays narrow: one local check before you run a new MCP server or ship an agent workflow.</p>
+          <p class="eyebrow">Choose your path</p>
+          <h2>Start where you already work.</h2>
+          <p>MCP Preflight is the same narrow product through three entry points: extension, CLI, and Pro unlock.</p>
         </div>
       </div>
-      <div class="cards">
-        <article class="card">
-          <div class="step-badge">1</div>
-          <h3>Review the config layer</h3>
-          <p>Start with <code>.vscode/mcp.json</code> and other common MCP config locations. The scanner flags insecure transport, credentials in URLs, broad paths, risky launchers, and env passthrough.</p>
+      <div class="path-grid">
+        <article class="path-card featured">
+          <p class="path-label">VS Code</p>
+          <h3>One click from the editor</h3>
+          <p>Open the overview, scan the workspace or current file, and jump straight to the findings.</p>
+          <ul>
+            <li>workspace scan</li>
+            <li>current-file scan</li>
+            <li>local license status</li>
+            <li>review and support links built in</li>
+          </ul>
+          <div class="action-row">
+            <a class="button" href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">Install for VS Code</a>
+          </div>
         </article>
-        <article class="card">
-          <div class="step-badge">2</div>
-          <h3>Review tools and prompts</h3>
-          <p>Descriptions matter. MCP Preflight checks tool text and prompt resources for prompt injection, instruction bypass language, hidden forwarding, and suspicious side effects.</p>
+        <article class="path-card">
+          <p class="path-label">CLI</p>
+          <h3>Quickstart in minutes</h3>
+          <p>Run the bundled example first, then point the scanner at your own workspace.</p>
+          <pre>npm install
+npm run quickstart
+npm run scan -- /path/to/workspace</pre>
+          <div class="action-row">
+            <a class="button-secondary" href="https://github.com/TimesAndPlaces/mcp-preflight#fast-start">Open the quickstart</a>
+          </div>
         </article>
-        <article class="card">
-          <div class="step-badge">3</div>
-          <h3>Review the repo context</h3>
-          <p>Manifests, dependency specs, lockfiles, and obvious secret-bearing files all shape whether an MCP setup is predictable enough to trust.</p>
+        <article class="path-card">
+          <p class="path-label">Pro</p>
+          <h3>Unlock workflow surfaces, not a hosted account</h3>
+          <p>Pro adds export and gating features through a local signed token, not a dashboard.</p>
+          <ul>
+            <li>Markdown, HTML, and SARIF reports</li>
+            <li>CI mode and Git hooks</li>
+            <li>policy presets and suppressions</li>
+          </ul>
+          <div class="action-row">
+            <a class="button-secondary" href="/pro/">Read the Pro guide</a>
+          </div>
         </article>
       </div>
     </section>
 
-    <section class="section split">
-      <article class="page-card">
-        <p class="eyebrow">How it works</p>
-        <h2>Fast first value without ceremony.</h2>
-        <p>MCP Preflight is intentionally small enough to try before you commit to it.</p>
-        <pre>npm install
-npm run quickstart
-npm run scan -- /path/to/your/workspace</pre>
-        <div class="link-row" style="margin-top: 1rem;">
-          <a href="https://github.com/TimesAndPlaces/mcp-preflight#fast-start">Read the quickstart</a>
-          <a href="/example-report/">See the report shape</a>
+    <section class="section section-contrast">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">What it catches before trust</p>
+          <h2>Not broad AppSec. Specifically MCP review.</h2>
+          <p>This is the wedge: the setup-level mistakes and risky patterns generic tools often miss or explain poorly.</p>
         </div>
-      </article>
-      <article class="page-card">
-        <p class="eyebrow">What it is not</p>
-        <h2>Not a runtime gateway. Not a hosted scanner.</h2>
-        <ul>
-          <li>No multi-tenant dashboard.</li>
-          <li>No runtime enforcement proxy.</li>
-          <li>No generic AppSec sprawl.</li>
-          <li>No forced account for the free path.</li>
-        </ul>
-        <div class="link-row" style="margin-top: 1rem;">
-          <a href="/privacy/">Read the privacy note</a>
-          <a href="/security/">Report a product security issue</a>
-        </div>
-      </article>
+      </div>
+      <div class="signal-grid">
+        <article class="signal-card">
+          <h3>Remote MCP config risk</h3>
+          <p>Insecure transport, credentials embedded in URLs, auth disabled, localhost and metadata targets.</p>
+        </article>
+        <article class="signal-card">
+          <h3>Prompt and tool language</h3>
+          <p>Prompt injection language, instruction bypass cues, tool poisoning, and suspicious side effects.</p>
+        </article>
+        <article class="signal-card">
+          <h3>Environment and scope leakage</h3>
+          <p>Broad filesystem paths, blanket environment inheritance, named token passthrough, and unsafe launchers.</p>
+        </article>
+        <article class="signal-card">
+          <h3>Repo predictability</h3>
+          <p>Missing lockfiles, unpinned specs, secret-bearing files, and install-source drift that makes review harder.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="split home-split">
+        <article class="finding-frame">
+          <p class="eyebrow">How a finding reads</p>
+          <h2>Readable enough to act on.</h2>
+          <div class="finding-step">
+            <span class="finding-step-title">What looked risky</span>
+            <p>Remote MCP server URL embeds credentials and uses plain HTTP.</p>
+          </div>
+          <div class="finding-step">
+            <span class="finding-step-title">Why it matters</span>
+            <p>URLs are easy to leak through logs and screenshots, and HTTP makes interception possible.</p>
+          </div>
+          <div class="finding-step">
+            <span class="finding-step-title">What to change next</span>
+            <p>Move credentials out of the URL, switch to HTTPS, and tighten the auth path before first use.</p>
+          </div>
+          <div class="action-row">
+            <a class="button-secondary" href="/example-report/">See the example report</a>
+            <a class="button-secondary" href="/rules/">Read the rule overview</a>
+          </div>
+        </article>
+        <article class="page-card narrow-card">
+          <p class="eyebrow">Why it stays narrow</p>
+          <h2>Not a dashboard. Not a gateway.</h2>
+          <ul>
+            <li>No hosted scanning backend in the core flow.</li>
+            <li>No runtime enforcement proxy.</li>
+            <li>No forced account for Lite.</li>
+            <li>No enterprise-control-plane claims the product does not need yet.</li>
+          </ul>
+          <div class="link-row" style="margin-top: 1rem;">
+            <a href="/privacy/">Read the privacy note</a>
+            <a href="/security/">Security reporting</a>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section class="section">
       <div class="section-head">
         <div>
           <p class="eyebrow">Lite and Pro</p>
-          <h2>Lite stays simple. Pro earns its keep.</h2>
-          <p>The upgrade path stays simple: free local scan first, one-time paid unlock when you need reports and workflow surfaces.</p>
+          <h2>Lite gets you to a verdict. Pro gets you to handoff and gating.</h2>
         </div>
       </div>
       <div class="compare-grid">
         <article class="compare-card">
           <p class="plan-label">Lite</p>
           <h3>Free local preflight</h3>
-          <p>Use it to understand the setup before you trust it.</p>
           <ul>
             <li>quick local scan</li>
             <li>text and JSON output</li>
@@ -195,8 +228,7 @@ npm run scan -- /path/to/your/workspace</pre>
         </article>
         <article class="compare-card featured">
           <p class="plan-label">Pro</p>
-          <h3>Workflow surfaces for people who need handoff and gating</h3>
-          <p>Keep the unlock local, then add the outputs and automation surfaces teams actually ask for.</p>
+          <h3>Reports, hooks, CI, and presets</h3>
           <ul>
             <li>Markdown, HTML, and SARIF reports</li>
             <li>suppressions and policy presets</li>
@@ -212,52 +244,10 @@ npm run scan -- /path/to/your/workspace</pre>
     </section>
 
     <section class="section">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Evaluate in public</p>
-          <h2>Everything you need to evaluate it is public.</h2>
-          <p>Everything here should help someone answer a practical question: what does it check, what does the output look like, and how do I try it quickly?</p>
-        </div>
-      </div>
-      <div class="resource-grid">
-        <article class="resource-card">
-          <div>
-            <p class="eyebrow">Rules</p>
-            <h3>Understand the current checks</h3>
-            <p>See the rule families in plain language instead of reverse-engineering them from output.</p>
-          </div>
-          <div class="link-row">
-            <a href="/rules/">Open rules</a>
-          </div>
-        </article>
-        <article class="resource-card">
-          <div>
-            <p class="eyebrow">Example report</p>
-            <h3>See the tone before you install</h3>
-            <p>Review the structure of a local scan result and the level of detail in each finding.</p>
-          </div>
-          <div class="link-row">
-            <a href="/example-report/">Open the example report</a>
-          </div>
-        </article>
-        <article class="resource-card">
-          <div>
-            <p class="eyebrow">Guides</p>
-            <h3>Read practical setup reviews</h3>
-            <p>Short MCP-specific guides that stay focused on what deserves review before trust.</p>
-          </div>
-          <div class="link-row">
-            <a href="/guides/">Open the guides</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
       <div class="cta-band">
         <p class="eyebrow">Start with the narrow path</p>
-        <h2>Install it, scan a workspace, then decide whether it earns a place in your workflow.</h2>
-        <p>MCP Preflight is meant to be evaluated quickly: public repo, clear rules, example output, and a local-first Lite path.</p>
+        <h2>Install it, run one scan, then decide whether it deserves a place in your workflow.</h2>
+        <p>The public surface is here to help you evaluate the product quickly: install paths, rules, example output, guides, and support.</p>
         <div class="action-row">
           <a class="button" href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">Install for VS Code</a>
           <a class="button-secondary" href="https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode">Install from Open VSX</a>
