@@ -8,23 +8,58 @@ Website: [mcppreflight.com](https://mcppreflight.com)
 
 This repo contains the Lite product code, public docs, and release paths people need to evaluate MCP Preflight. Internal planning and maintainer admin work are kept private.
 
+## Get started
+Choose the path that matches how you want to try MCP Preflight.
+
+### 1. VS Code extension
+This is the fastest way to try it.
+
+1. Install MCP Preflight from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode).
+2. Open the repo or workspace you want to review.
+3. Run `MCP Preflight: Scan Workspace`.
+4. Read the findings in the overview and Problems panel.
+
+### 2. Standalone CLI from GitHub Releases
+Use this if you want the CLI without building the repo first.
+
+1. Download `mcp-preflight.js` from the latest [GitHub Release](https://github.com/TimesAndPlaces/mcp-preflight/releases).
+2. Run:
+
+```bash
+node mcp-preflight.js scan /path/to/workspace
+```
+
+3. If you want help, run:
+
+```bash
+node mcp-preflight.js --help
+```
+
+### 3. Run from this repository
+Use this path if you want to inspect the code, try the bundled example workspace, or work on the project itself.
+
+1. Clone the repository.
+2. Run `npm install`.
+3. Run `npm run quickstart`.
+4. Run `npm run scan -- /path/to/your/workspace`.
+
+`npm run quickstart` scans the bundled example workspace in [`demo/example-findings-workspace`](demo/example-findings-workspace) so you can see a representative finding set before scanning your own project.
+
+### Important note about npm
+MCP Preflight is not currently published as a global npm package.
+
+That means these are **not** the right install paths today:
+- `npx mcp-preflight`
+- `npm install -g mcp-preflight`
+
+Use the VS Code extension, the standalone CLI from GitHub Releases, or this repository checkout.
+
 ## What it checks
 - `.vscode/mcp.json` and other common MCP config locations
 - tool descriptions and prompt resources
 - repo manifests and dependency signals
 - obvious secret-bearing files such as `.env`
 - risky patterns such as embedded credentials, token passthrough, unsafe launchers, insecure remote targets, prompt injection, and tool poisoning
-
-## Fast start
-If you want to see MCP Preflight work before you point it at your own repo:
-
-1. `npm install`
-2. `npm run quickstart`
-3. `npm run scan -- /path/to/your/workspace`
-
-`npm run quickstart` scans the bundled example workspace in [`demo/example-findings-workspace`](demo/example-findings-workspace). It is there to show a representative finding set on a small self-contained config before you point MCP Preflight at your own repo.
-
-If you would rather use the editor flow, install the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode), open the MCP Preflight overview from the status bar, then run a workspace scan or current-file scan from there.
 
 ## Why people use it
 - It runs locally by default
@@ -55,20 +90,23 @@ If you would rather use the editor flow, install the extension from the [VS Code
 - [Guides](guides/)
 - [Security reporting](SECURITY.md)
 
-## Commands
-- `npm install` compiles the CLI and extension in this repo
+## CLI commands
+If you are running from this repository:
 - `npm run quickstart` shows a real scan against the bundled example workspace
 - `npm run scan -- /path/to/workspace` scans your own workspace
-- `node packages/cli/dist/index.js scan /path/to/workspace --no-exit-code` prints findings without returning a failing exit code
-- `node packages/cli/dist/index.js activity status` shows local activity counts
-- `node packages/cli/dist/index.js license guide` explains Pro delivery and install
-- `node packages/cli/dist/index.js license status` checks whether this machine has Pro unlocked
-- `node packages/cli/dist/index.js license install --from-file /path/to/license.token` installs a signed Pro token
-- `node packages/cli/dist/index.js ci /path/to/workspace --policy balanced` runs the Pro CI gate
-- `node packages/cli/dist/index.js hooks install /path/to/repo --hook pre-push` installs the Pro Git hook
-- `node packages/cli/dist/index.js upgrade` opens Pro checkout
-- `node packages/cli/dist/index.js review --channel marketplace` opens the review page
-- `node packages/cli/dist/index.js support --channel discussions` opens Discussions
+
+If you are using the built CLI directly:
+- `node mcp-preflight.js scan /path/to/workspace`
+- `node mcp-preflight.js scan /path/to/workspace --format json`
+- `node mcp-preflight.js scan /path/to/workspace --no-exit-code`
+- `node mcp-preflight.js --help`
+
+Pro-only CLI surfaces:
+- `node mcp-preflight.js license guide`
+- `node mcp-preflight.js license status`
+- `node mcp-preflight.js license install --from-file /path/to/license.token`
+- `node mcp-preflight.js ci /path/to/workspace --policy balanced`
+- `node mcp-preflight.js hooks install /path/to/repo --hook pre-push`
 
 ## Local activity
 MCP Preflight keeps a small local activity log so you can answer practical questions like:
