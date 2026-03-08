@@ -6,7 +6,7 @@
   <title>MCP Preflight | Check an MCP server before you trust it</title>
   <meta name="description" content="MCP Preflight is a local-first MCP security scanner for configs, prompts, and repo manifests.">
   <link rel="canonical" href="https://mcppreflight.com/">
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles.css?v=20260308-2">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -60,8 +60,8 @@
                   <strong>Remote MCP URL uses insecure transport</strong>
                   <span class="severity severity-error">error</span>
                 </header>
-                <p><code>http://demo-user:demo-pass@127.0.0.1:8080/mcp</code></p>
-                <small>Use HTTPS and move credentials out of the URL.</small>
+                <p><code>http://127.0.0.1:8080/mcp</code> with inline credentials</p>
+                <small>Use HTTPS and move credentials out of the URL before first use.</small>
               </article>
               <article class="decision-item">
                 <header>
