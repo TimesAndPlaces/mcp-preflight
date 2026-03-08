@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.1.4 - 2026-03-08
+- Replaced the malformed extension icon with a cleaner marketplace-ready mark that stays legible at small sizes.
+
 ## 0.1.3 - 2026-03-08
 - Added a VS Code overview panel that puts the latest scan, local activity, license state, and upgrade/review/help actions in one editor surface.
 - Changed the VS Code status item to open the overview instead of only triggering another scan.
