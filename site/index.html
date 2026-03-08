@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MCP Preflight | Static preflight for MCP setup and workflow trust</title>
-  <meta name="description" content="MCP Preflight is a local-first static MCP security scanner for configs, prompts, and repo manifests.">
+  <title>MCP Preflight | Local static scanner for MCP setup and workflow trust</title>
+  <meta name="description" content="MCP Preflight is a local, static scanner for MCP configs, prompts, tool descriptions, and repo manifests.">
   <link rel="canonical" href="https://mcppreflight.com/">
   <link rel="stylesheet" href="/styles.css?v=20260308-6">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -32,9 +32,9 @@
     <section class="hero home-hero">
       <div class="hero-grid">
         <article class="hero-copy">
-          <p class="kicker">Local-first MCP preflight</p>
-          <h1>Review MCP setup <span class="highlight">before first trust.</span></h1>
-          <p class="lead">Scan MCP config, prompt text, and repo manifests locally before you run a new server or ship an agent workflow. The core scan is static: it reviews setup and workflow risk without connecting to the server.</p>
+          <p class="kicker">Local static MCP scanner</p>
+          <h1>Check MCP setup <span class="highlight">before first run.</span></h1>
+          <p class="lead">Review MCP configs, prompt text, tool descriptions, and repo manifests before you trust a new server or ship an agent workflow. The core scan stays local and static by default.</p>
           <div class="hero-route-list">
             <div class="hero-route">
               <span>CLI</span>
@@ -98,8 +98,8 @@
       <div class="section-head">
         <div>
           <p class="eyebrow">Choose your path</p>
-          <h2>Install paths that are live today.</h2>
-          <p>MCP Preflight is available three ways right now: extension, published npm CLI, and a standalone GitHub Release bundle.</p>
+          <h2>Use it in your editor or terminal.</h2>
+          <p>Install the VS Code extension for workspace feedback, use the published npm CLI in the terminal, or download the standalone bundle from GitHub Releases.</p>
         </div>
       </div>
       <div class="path-grid">
@@ -143,8 +143,8 @@ mcp-preflight scan /path/to/workspace</pre>
       <div class="section-head">
         <div>
           <p class="eyebrow">What it catches before trust</p>
-          <h2>Not broad AppSec. Specifically MCP review.</h2>
-          <p>This is the wedge: the setup-level mistakes and risky patterns generic tools often miss or explain poorly.</p>
+          <h2>Focused on MCP review, not broad AppSec.</h2>
+          <p>This is a targeted scanner for MCP setup and workflow risk. It exists to catch the problems generic tools often miss, skip, or explain poorly.</p>
         </div>
       </div>
       <div class="signal-grid">
@@ -210,7 +210,7 @@ mcp-preflight scan /path/to/workspace</pre>
       <div class="section-head">
         <div>
           <p class="eyebrow">Lite and Pro</p>
-          <h2>Lite gets you to a verdict. Pro gets you to handoff and gating.</h2>
+          <h2>Start with Lite. Use Pro when you need workflow controls.</h2>
         </div>
       </div>
       <div class="compare-grid">
@@ -241,6 +241,7 @@ mcp-preflight scan /path/to/workspace</pre>
           </div>
         </article>
       </div>
+      <p class="section-note">Lite gives you the core static scan with local suppression files and no required account. Pro adds reports, CI mode, Git hooks, and policy presets.</p>
     </section>
 
     <section class="section">

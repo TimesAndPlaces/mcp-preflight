@@ -16,13 +16,19 @@ The scanner is deterministic on purpose. It is trying to be understandable befor
 Looks for hardcoded API keys, tokens, and private key material in common config and text files.
 
 ### Token passthrough and broad environment access
-Flags MCP setups that forward too much of the host environment into a server process.
+Flags MCP setups that forward too much of the host environment into a server process, and points to narrower env or token patterns.
 
 ### Unsafe launch patterns
-Flags shell wrappers, risky bootstrap commands, and floating or opaque package-launch patterns such as unpinned `npx`, `bunx`, `uvx`, or `dlx` setups.
+Flags shell wrappers, risky bootstrap commands, and floating or opaque package-launch patterns such as unpinned `npx`, `bunx`, `uvx`, or `dlx` setups. Pinned ephemeral launches are treated more softly than floating ones.
 
 ### Remote MCP configuration risks
-Flags insecure transport, credentials embedded in URLs, and remote targets that appear to point at localhost, metadata endpoints, or other sensitive internal destinations.
+Flags insecure transport, credentials embedded in URLs, weak or missing auth clues, and remote targets that appear to point at localhost, metadata endpoints, or other sensitive internal destinations.
+
+### Local stdio sandbox guidance
+Flags local stdio MCP servers that do not show sandbox guidance or explicitly disable client-side sandboxing where supported.
+
+### Allowlist and registry readiness
+Flags server identifiers that are awkward for exact-match allowlists, and catches configs that declare a second conflicting server id.
 
 ### Dependency and install-source drift
 Flags obviously unpinned dependency specs and missing lockfiles.

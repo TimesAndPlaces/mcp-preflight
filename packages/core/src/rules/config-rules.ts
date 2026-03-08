@@ -40,6 +40,7 @@ const ENV_INHERITANCE_FLAGS = ["inheritEnv", "inheritEnvironment", "forwardAllEn
 const PASS_THROUGH_ENV_KEYS = ["passThroughEnv", "forwardEnv", "allowedEnv", "allowEnv"];
 const EPHEMERAL_LAUNCHERS = new Set(["npx", "bunx", "uvx"]);
 const AUTH_CONFIG_KEYS = ["auth", "authentication", "authorization"];
+const EXPLICIT_SERVER_ID_KEYS = ["id", "serverId"];
 const SENSITIVE_ENV_NAMES = [
   "OPENAI_API_KEY",
   "ANTHROPIC_API_KEY",
@@ -50,6 +51,7 @@ const SENSITIVE_ENV_NAMES = [
   "AZURE_OPENAI_API_KEY",
   "GOOGLE_API_KEY"
 ];
+const GENERIC_SERVER_IDS = new Set(["server", "mcp", "default", "test", "example", "sample", "myserver"]);
 
 export function scanMcpConfigurationRisks(workspace: LoadedWorkspace): Finding[] {
   const findings: Finding[] = [];
@@ -92,8 +94,10 @@ export function scanMcpConfigurationRisks(workspace: LoadedWorkspace): Finding[]
     const serverContexts = collectServerContexts(file, tree, parsed);
 
     for (const context of serverContexts) {
+      findings.push(...scanServerIdReadiness(context));
       findings.push(...scanUnsafeShellWrappers(context));
       findings.push(...scanEphemeralLaunchers(context));
+      findings.push(...scanSandboxGuidance(context));
       findings.push(...scanTokenPassthrough(context));
       findings.push(...scanEnvironmentInheritance(context));
       findings.push(...scanTransportAndAuth(context));
@@ -271,7 +275,7 @@ function scanEnvironmentInheritance(context: ServerContext): Finding[] {
           description: `Server "${context.serverName}" enables ${key}=true, which can expose unrelated credentials and widen confused-deputy risk.`,
           severity: "warning",
           category: "scope-minimization",
-          suggestion: "Disable blanket environment inheritance and pass only the minimum variables required for the server to function.",
+          suggestion: `Set ${key} to false, then move only the variables this server actually needs into "env" or an explicit allowlist such as "allowedEnv".`,
           file: context.file,
           evidence: `${key}=true`,
           location: getContextLocation(context, [key]),
@@ -298,7 +302,7 @@ function scanEnvironmentInheritance(context: ServerContext): Finding[] {
             description: `Server "${context.serverName}" forwards "${entry}" through ${key}. Passing named host credentials directly into the MCP server weakens scope minimization.`,
             severity: "warning",
             category: "scope-minimization",
-            suggestion: "Avoid forwarding broad host credentials by name. Prefer a narrower token or an auth broker dedicated to this server.",
+            suggestion: `Stop forwarding ${entry} directly through ${key}. Prefer a dedicated server-specific credential, or map a narrower secret into "env" under a server-specific name.`,
             file: context.file,
             evidence: `${key}=["${entry}"]`,
             location: getContextLocation(context, [key, index], [key]),
@@ -317,7 +321,7 @@ function scanEnvironmentInheritance(context: ServerContext): Finding[] {
         description: `Server "${context.serverName}" forwards environment variables using a wildcard selector under ${key}. That is broader than necessary for most MCP servers.`,
         severity: "warning",
         category: "scope-minimization",
-        suggestion: "Replace wildcard environment forwarding with a short allowlist of explicit variable names.",
+        suggestion: `Replace "*" in ${key} with a short explicit list such as ["MCP_SERVER_TOKEN"] or another server-specific credential name.`,
         file: context.file,
         evidence: `${key}=["*"]`,
         location: getContextLocation(context, [key, wildcardIndex], [key]),
@@ -354,7 +358,7 @@ function scanTokenPassthrough(context: ServerContext): Finding[] {
         description: `Server "${context.serverName}" forwards "${key}" from the host environment. Broad token pass-through weakens scope minimization and increases confused-deputy risk.`,
         severity: "warning",
         category: "scope-minimization",
-        suggestion: "Prefer narrowly scoped credentials or an auth broker instead of forwarding broad host tokens directly into the server process.",
+        suggestion: `Avoid passing ${key} straight through from the host. Create a server-specific env entry such as MCP_SERVER_TOKEN and source it from a narrower credential instead.`,
         file: context.file,
         evidence: rendered,
         location: getContextLocation(context, ["env", key], ["env"]),
@@ -386,7 +390,7 @@ function scanTransportAndAuth(context: ServerContext): Finding[] {
         description: `Server "${context.serverName}" points to "${url}", which uses plain HTTP and can expose credentials or requests to interception.`,
         severity: "error",
         category: "transport",
-        suggestion: "Use HTTPS for remote MCP endpoints and verify the server identity before trusting the connection.",
+        suggestion: "Use HTTPS for the remote MCP endpoint, verify the server identity, and keep auth in headers or env-backed config instead of plaintext transport.",
         file: context.file,
         evidence: url,
         location,
@@ -422,7 +426,7 @@ function scanTransportAndAuth(context: ServerContext): Finding[] {
         description: `Server "${context.serverName}" includes credentials directly in the URL. URLs are easy to leak through logs, screenshots, and shell history.`,
         severity: "error",
         category: "auth",
-        suggestion: "Move credentials out of the URL and pass them through a safer auth channel such as headers or a local secret store.",
+        suggestion: "Move the credential out of the URL. Use an Authorization header, a local secret store, or an env-backed auth field instead of userinfo or query-string secrets.",
         file: context.file,
         evidence: url,
         location,
@@ -444,7 +448,7 @@ function scanTransportAndAuth(context: ServerContext): Finding[] {
         description: `Server "${context.serverName}" is remote but the config does not show clear auth hints. That can be valid, but it deserves review before the endpoint is trusted.`,
         severity: "info",
         category: "auth",
-        suggestion: "Verify how the remote server authenticates requests and document the expected auth method explicitly in the config or docs.",
+        suggestion: "Document the expected auth method explicitly. Prefer a visible header or server-specific token flow over relying on ambient login state or inherited host credentials.",
         file: context.file,
         evidence: url,
         location,
@@ -478,7 +482,7 @@ function scanExplicitRemoteAuthDisablement(context: ServerContext): Finding[] {
         description: `Server "${context.serverName}" appears to disable authentication via ${key}. Remote MCP servers should not rely on unauthenticated access by default.`,
         severity: "warning",
         category: "auth",
-        suggestion: "Review the remote auth setup and avoid explicit no-auth mode unless the endpoint is tightly isolated and intentionally public.",
+        suggestion: "Turn authentication back on, or place the endpoint behind a tightly scoped local gateway. Avoid explicit no-auth mode except on intentionally isolated loopback during development.",
         file: context.file,
         evidence: `${key}=${String(value)}`,
         location: getContextLocation(context, [key]),
@@ -536,6 +540,101 @@ function scanScopeRisks(context: ServerContext): Finding[] {
   return findings;
 }
 
+function scanSandboxGuidance(context: ServerContext): Finding[] {
+  if (!looksLikeLocalStdioServer(context.serverConfig)) {
+    return [];
+  }
+
+  const sandboxEnabled = context.serverConfig.sandboxEnabled;
+
+  if (sandboxEnabled === true) {
+    return [];
+  }
+
+  if (sandboxEnabled === false) {
+    return [
+      createFinding({
+        ruleId: "stdio-sandbox-disabled",
+        title: "Local stdio MCP server explicitly disables sandboxing",
+        description: `Server "${context.serverName}" launches locally over stdio but sets sandboxEnabled=false. Local tools are safer when client-side sandboxing is enabled where supported.`,
+        severity: "warning",
+        category: "sandbox-hardening",
+        suggestion:
+          "Set sandboxEnabled to true where your MCP client supports it, then narrow filesystem and network allowances to the minimum this server needs.",
+        file: context.file,
+        evidence: "sandboxEnabled=false",
+        location: getContextLocation(context, ["sandboxEnabled"], ["command"]),
+        tags: ["lite", "mcp", "sandbox"]
+      })
+    ];
+  }
+
+  return [
+    createFinding({
+      ruleId: "missing-stdio-sandbox",
+      title: "Local stdio MCP server has no visible sandbox guidance",
+      description: `Server "${context.serverName}" launches locally over stdio but the config does not show sandboxEnabled. That deserves review before the server gets filesystem or network access on the host.`,
+      severity: "info",
+      category: "sandbox-hardening",
+      suggestion:
+        "If your MCP client supports it, add sandboxEnabled: true for this local server and review any filesystem or network allowances before using it day to day.",
+      file: context.file,
+      evidence: typeof context.serverConfig.command === "string" ? context.serverConfig.command : context.serverName,
+      location: getContextLocation(context, ["command"]),
+      tags: ["lite", "mcp", "sandbox"]
+    })
+  ];
+}
+
+function scanServerIdReadiness(context: ServerContext): Finding[] {
+  const findings: Finding[] = [];
+  const serverIdIssue = getServerIdIssue(context.serverName);
+
+  if (serverIdIssue) {
+    findings.push(
+      createFinding({
+        ruleId: "noncanonical-server-id",
+        title: "Server ID may be awkward for allowlists or registry policy",
+        description: `Server "${context.serverName}" uses an identifier that exact-match allowlists and registry policy surfaces can handle poorly because ${serverIdIssue}.`,
+        severity: "info",
+        category: "policy-readiness",
+        suggestion:
+          'Rename the server key to one stable descriptive identifier such as "filesystem", "github", or "browserTools", then keep that exact ID consistent across docs and policy.',
+        file: context.file,
+        evidence: context.serverName,
+        location: getContextLocation(context),
+        tags: ["lite", "mcp", "policy"]
+      })
+    );
+  }
+
+  for (const key of EXPLICIT_SERVER_ID_KEYS) {
+    const value = context.serverConfig[key];
+
+    if (typeof value !== "string" || !value.trim() || value === context.serverName) {
+      continue;
+    }
+
+    findings.push(
+      createFinding({
+        ruleId: "server-id-mismatch",
+        title: "Server declares a second identifier",
+        description: `Server "${context.serverName}" also declares ${key}="${value}". That makes exact-match allowlists, registry policy, and docs harder to keep aligned.`,
+        severity: "info",
+        category: "config-integrity",
+        suggestion:
+          "Keep one canonical server identifier. Rename the config key or the explicit id so they match exactly, then use that same identifier in docs and policy.",
+        file: context.file,
+        evidence: `${key}=${value}`,
+        location: getContextLocation(context, [key]),
+        tags: ["lite", "mcp", "policy"]
+      })
+    );
+  }
+
+  return findings;
+}
+
 function collectServerContexts(
   file: LoadedWorkspace["files"][number],
   tree: Node | undefined,
@@ -582,6 +681,21 @@ function hasAuthHints(config: Record<string, unknown>): boolean {
 
 function looksLikeServerConfig(value: Record<string, unknown>): boolean {
   return typeof value.command === "string" || typeof value.url === "string" || Array.isArray(value.args);
+}
+
+function looksLikeLocalStdioServer(config: Record<string, unknown>): boolean {
+  if (getRemoteEndpoint(config)) {
+    return false;
+  }
+
+  const command = typeof config.command === "string" ? config.command.trim() : "";
+  const transport = typeof config.transport === "string" ? config.transport.trim().toLowerCase() : "";
+
+  if (!command) {
+    return false;
+  }
+
+  return !transport || transport === "stdio";
 }
 
 function collectNestedServerContexts(
@@ -687,6 +801,30 @@ function looksLikeDisabledAuthConfig(value: unknown): boolean {
 
 function looksOverbroadPath(value: string): boolean {
   return value === "/" || value === "~" || /^[A-Za-z]:\\?$/.test(value) || value === "C:\\";
+}
+
+function getServerIdIssue(serverName: string): string | undefined {
+  if (serverName.trim() !== serverName) {
+    return "it has leading or trailing whitespace";
+  }
+
+  if (/\s/.test(serverName)) {
+    return "it contains spaces";
+  }
+
+  if (/[^A-Za-z0-9_-]/.test(serverName)) {
+    return "it contains punctuation outside simple letters, numbers, hyphens, or underscores";
+  }
+
+  if (/^\d/.test(serverName)) {
+    return "it starts with a number";
+  }
+
+  if (GENERIC_SERVER_IDS.has(serverName.toLowerCase())) {
+    return "it is too generic to be a clear policy identifier";
+  }
+
+  return undefined;
 }
 
 function asStringArray(value: unknown): string[] {

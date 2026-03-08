@@ -33,9 +33,11 @@
     </section>
     <section class="cards">
       <article class="card"><h3>Secrets and credentials</h3><p>Looks for hardcoded API keys, tokens, and private key material in common config and text files.</p></article>
-      <article class="card"><h3>Token passthrough and broad environment access</h3><p>Flags MCP setups that forward too much of the host environment into a server process.</p></article>
-      <article class="card"><h3>Unsafe launch patterns</h3><p>Flags shell wrappers, risky bootstrap commands, and floating or opaque package-launch patterns such as unpinned <code>npx</code>, <code>bunx</code>, <code>uvx</code>, or <code>dlx</code> setups.</p></article>
-      <article class="card"><h3>Remote MCP configuration risks</h3><p>Flags insecure transport, credentials embedded in URLs, and remote targets that appear to point at localhost, metadata endpoints, or other sensitive internal destinations.</p></article>
+      <article class="card"><h3>Token passthrough and broad environment access</h3><p>Flags MCP setups that forward too much of the host environment into a server process, and points to narrower env or token patterns.</p></article>
+      <article class="card"><h3>Unsafe launch patterns</h3><p>Flags shell wrappers, risky bootstrap commands, and floating or opaque package-launch patterns such as unpinned <code>npx</code>, <code>bunx</code>, <code>uvx</code>, or <code>dlx</code> setups. Pinned ephemeral launches are treated more softly than floating ones.</p></article>
+      <article class="card"><h3>Remote MCP configuration risks</h3><p>Flags insecure transport, credentials embedded in URLs, weak or missing auth clues, and remote targets that appear to point at localhost, metadata endpoints, or other sensitive internal destinations.</p></article>
+      <article class="card"><h3>Local stdio sandbox guidance</h3><p>Flags local stdio MCP servers that do not show sandbox guidance or explicitly disable client-side sandboxing where supported.</p></article>
+      <article class="card"><h3>Allowlist and registry readiness</h3><p>Flags server identifiers that are awkward for exact-match allowlists, and catches configs that declare a second conflicting server id.</p></article>
       <article class="card"><h3>Dependency and install-source drift</h3><p>Flags obviously unpinned dependency specs and missing lockfiles.</p></article>
       <article class="card"><h3>Prompt injection indicators</h3><p>Flags tool descriptions or prompt resources that look like they are trying to override normal instructions, expose secrets, or bypass policy.</p></article>
       <article class="card"><h3>Tool poisoning indicators</h3><p>Flags descriptions that suggest hidden forwarding, exfiltration, or side effects that do not match the claimed purpose of the tool.</p></article>

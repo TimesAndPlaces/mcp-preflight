@@ -1,16 +1,18 @@
 # MCP Preflight
 
-MCP Preflight is the fast local static preflight you run before you trust a new MCP setup or ship an agent workflow.
+MCP Preflight is a local, static scanner for Model Context Protocol setups.
 
-It reads common MCP config files, tool descriptions, prompt resources, and repo manifests, then explains risky patterns in plain language so you can fix them before they become a bigger problem.
+It reviews MCP config files, tool descriptions, prompt resources, and repo manifests so you can catch risky patterns before you trust a new server or ship an agent workflow.
 
-The core scan is static. It reviews local setup and workflow risk without connecting to the server or exercising tools during the default scan.
+By default, the scan stays local and static. It does not exercise tools or connect to remote servers during the core scan.
+
+MCP Preflight is built for MCP setup and workflow review. It is not a hosted scanner, runtime gateway, SIEM, or broad AppSec platform.
 
 Website: [mcppreflight.com](https://mcppreflight.com)
 
 This repo contains the Lite product code, public docs, and release paths people need to evaluate MCP Preflight. Internal planning and maintainer admin work are kept private.
 
-## Install paths live today
+## Install
 
 | Surface | Status | Best for | Install |
 | --- | --- | --- | --- |
@@ -19,10 +21,10 @@ This repo contains the Lite product code, public docs, and release paths people 
 | GitHub Release CLI | Live | Single-file bundle | Download `mcp-preflight.js` from [GitHub Releases](https://github.com/TimesAndPlaces/mcp-preflight/releases) |
 
 ## Get started
-Choose the path that matches how you want to try MCP Preflight.
+Choose the path that fits how you want to use it.
 
 ### 1. VS Code extension
-This is the fastest way to try it.
+This is the simplest way to try MCP Preflight in a real workspace.
 
 1. Install MCP Preflight from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode).
 2. Open the repo or workspace you want to review.
