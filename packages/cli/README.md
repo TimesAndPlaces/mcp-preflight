@@ -1,8 +1,10 @@
 # MCP Preflight CLI
 
-`mcp-preflight` is the local-first CLI for static MCP setup review before first trust.
+`mcp-preflight` is the published CLI for MCP Preflight.
 
-It scans `mcp.json`, prompt/tool descriptions, and repo manifests locally. The default scan does not connect to the server or exercise tools.
+Use it to review MCP config, prompt text, tool descriptions, and repo manifests before you trust a setup or ship an agent workflow.
+
+The default scan is static and local. It does not connect to the server or execute tools.
 
 ## Install
 
@@ -18,9 +20,9 @@ mcp-preflight scan . --format json
 mcp-preflight scan . --format markdown
 ```
 
-## What it checks
+## What it reviews
 
-- risky MCP server transport and auth patterns
+- risky MCP transport and auth patterns
 - prompt injection and tool-poisoning language
 - credential exposure and broad env passthrough
 - unsafe install sources and floating ephemeral launchers

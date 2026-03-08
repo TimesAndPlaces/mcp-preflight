@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.10 - 2026-03-08
+- Rewrote the public repo and website copy so the install flow, scope, privacy stance, and commercial pages read more clearly and consistently.
+- Rewrote the npm package READMEs so the CLI and core package surfaces match the main product voice and install truth.
+- Refined the VS Code extension microcopy across onboarding, progress states, results, license prompts, and the overview sidebar.
+
 ## 0.1.9 - 2026-03-08
 - Removed the Pro gate from local suppression files so Lite users can calibrate noisy findings without paying first.
 - Recalibrated ephemeral launcher findings to distinguish unpinned quickstart-style launchers from exact-version pinned launchers.

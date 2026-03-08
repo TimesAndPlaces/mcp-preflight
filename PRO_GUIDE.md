@@ -1,24 +1,30 @@
 # MCP Preflight Pro
 
-MCP Preflight Pro is a one-time purchase that unlocks the local export and workflow features without turning MCP Preflight into a hosted account product.
+MCP Preflight Pro keeps the core scan the same. It adds the parts people need when the scan moves from local review to handoff and gating.
 
-## What you get
+It is a one-time purchase. The unlock stays local and does not turn MCP Preflight into a hosted account product.
+
+## What Pro adds
+
 - Markdown, HTML, and SARIF reports
 - CI mode
 - Git hooks
 - policy presets
 - 12 months of update entitlement from the purchase date
 
-## Buy once
+## Buy Pro
+
 - Buy MCP Preflight Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
 - Use the email address where you want the signed license token sent
 
 ## What arrives after purchase
+
 - a signed local `license.token` file
-- the license works locally on your machine
-- MCP Preflight does not need a hosted account just to decide whether Pro is active
+- a local Pro unlock on the machine where you install it
+- no MCP Preflight account requirement just to use Pro
 
 ## Install from the CLI
+
 If you installed the published CLI from npm:
 
 ```bash
@@ -41,16 +47,19 @@ node mcp-preflight.js license status
 ```
 
 ## Install from the VS Code extension
+
 1. Open the Command Palette.
 2. Run `MCP Preflight: Install Pro License`.
 3. Paste the token contents.
-4. Run `MCP Preflight: Show License Status` to confirm the machine is unlocked.
+4. Run `MCP Preflight: Show License Status` to confirm that the machine is unlocked.
 
 ## Reissue and recovery
-- Keep the `license.token` file somewhere you can find again.
-- If you lose it or move to another machine, contact license support with the same checkout email or Stripe payment reference and the token can be reissued.
 
-## Commercial terms
+- Keep the `license.token` file somewhere you can find again.
+- If you lose it or move to another machine, contact support with the checkout email or Stripe payment reference.
+
+## Commercial pages
+
 - Support: [mcppreflight.com/support/](https://mcppreflight.com/support/)
 - Terms: [mcppreflight.com/terms/](https://mcppreflight.com/terms/)
 - Refunds: [mcppreflight.com/refunds/](https://mcppreflight.com/refunds/)

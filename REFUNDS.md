@@ -1,20 +1,20 @@
 # Refunds
 
-MCP Preflight Pro is a low-cost self-serve software purchase. If the product does not work as described and the issue cannot be resolved in a reasonable support exchange, ask for a refund.
+If MCP Preflight Pro does not work as described and the issue cannot be resolved through normal support, ask for a refund.
 
 ## What to include
 
 - the checkout email
-- the Stripe payment reference if you have it
+- the Stripe payment reference, if you have it
 - a short description of what did not work
 
-## Normal support before refund
+## What usually happens first
 
-The first step is usually reissue, install help, or clarifying the intended workflow surface. If that does not solve the problem, a refund request is reasonable.
+The first step is usually install help, token reissue, or clarifying the intended workflow. If that does not solve the problem, a refund request is reasonable.
 
 ## How to ask
 
-- License and payment help: `support@mcppreflight.com`
-- Support page: [mcppreflight.com/support/](https://mcppreflight.com/support/)
+- Email `support@mcppreflight.com`
+- Or use the support page: [mcppreflight.com/support/](https://mcppreflight.com/support/)
 
 Site version: [mcppreflight.com/refunds/](https://mcppreflight.com/refunds/)

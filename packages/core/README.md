@@ -2,7 +2,7 @@
 
 `mcp-preflight-core` is the shared scanning engine behind MCP Preflight.
 
-Most users want the CLI package instead:
+Most people want the published CLI instead:
 
 ```bash
 npm install -g mcp-preflight

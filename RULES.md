@@ -1,14 +1,15 @@
 # Rules
 
-This page explains the current checks in plain language.
+This page explains what the scanner looks for today.
 
 ## How to read a finding
+
 Each finding answers three questions:
 - What looked risky?
 - Why does that matter for MCP?
 - What should you change next?
 
-The scanner is deterministic on purpose. It is trying to be understandable before it tries to be clever.
+The scanner is deterministic on purpose. The goal is to be understandable before it tries to be clever.
 
 ## Current rule families
 
@@ -52,7 +53,10 @@ Flags invalid `mcp.json` content and malformed suppression files so you do not s
 - It will not catch every malicious server
 
 ## False positives
+
 Some findings are heuristics. That is normal for a preflight tool. The important standard is:
 - the rule should be explainable
 - the suggested fix should be useful
 - the scanner should stay conservative rather than noisy
+
+Lite includes local suppression files, so you can keep the signal usable without paying to recover from normal setup noise.

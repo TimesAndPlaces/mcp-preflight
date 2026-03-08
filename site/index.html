@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MCP Preflight | Local static scanner for MCP setup and workflow trust</title>
-  <meta name="description" content="MCP Preflight is a local, static scanner for MCP configs, prompts, tool descriptions, and repo manifests.">
+  <meta name="description" content="MCP Preflight checks MCP config, prompts, tool descriptions, and repo manifests before first trust. The default scan stays local and static.">
   <link rel="canonical" href="https://mcppreflight.com/">
   <link rel="stylesheet" href="/styles.css?v=20260308-6">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -16,7 +16,7 @@
         <img class="brand-mark" src="/favicon.svg" alt="" aria-hidden="true">
         <span class="brand-copy">
           <strong>MCP Preflight</strong>
-          <span>Local MCP security scanner</span>
+          <span>Local static MCP scanner</span>
         </span>
       </a>
       <nav class="nav">
@@ -32,9 +32,9 @@
     <section class="hero home-hero">
       <div class="hero-grid">
         <article class="hero-copy">
-          <p class="kicker">Local static MCP scanner</p>
-          <h1>Check MCP setup <span class="highlight">before first run.</span></h1>
-          <p class="lead">Review MCP configs, prompt text, tool descriptions, and repo manifests before you trust a new server or ship an agent workflow. The core scan stays local and static by default.</p>
+          <p class="kicker">Local static review for MCP setups</p>
+          <h1>Check the setup <span class="highlight">before you trust the server.</span></h1>
+          <p class="lead">MCP Preflight checks MCP config, prompt text, tool descriptions, and repo manifests before first run. The default scan stays local and static. It does not connect to the server or execute tools.</p>
           <div class="hero-route-list">
             <div class="hero-route">
               <span>CLI</span>
@@ -46,13 +46,13 @@
             </div>
           </div>
           <div class="action-row">
-            <a class="button" href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">Install for VS Code</a>
+            <a class="button" href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">Get the extension</a>
             <a class="button-secondary" href="https://github.com/TimesAndPlaces/mcp-preflight#get-started">Install the CLI</a>
-            <a class="button-secondary" href="https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00">Buy Pro</a>
+            <a class="button-secondary" href="https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00">Read about Pro</a>
           </div>
           <div class="status-row">
-            <span class="pill"><strong>Lite</strong> local scan, no account required</span>
-            <span class="pill"><strong>Readable</strong> findings with clear next steps</span>
+            <span class="pill"><strong>Lite</strong> runs locally with no account</span>
+            <span class="pill"><strong>Readable</strong> findings with concrete next steps</span>
           </div>
           <div class="hero-links">
             <a href="https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode">Open VSX</a>
@@ -61,7 +61,7 @@
         </article>
         <aside class="hero-side">
           <section class="decision-card">
-            <p class="eyebrow">What a first scan tells you</p>
+            <p class="eyebrow">What a first scan can catch</p>
             <div class="decision-list">
               <article class="decision-item">
                 <header>
@@ -88,7 +88,7 @@
                 <small>This pattern is common in quickstarts. Pin the package version or move to a reviewed local install before daily use.</small>
               </article>
             </div>
-            <p class="decision-note">Every finding answers the same three questions: what looked risky, why it matters, and what to change next.</p>
+            <p class="decision-note">The point is not a score. It is a clear answer about what looked risky, why it matters, and what to change next.</p>
           </section>
         </aside>
       </div>
@@ -97,16 +97,16 @@
     <section class="section">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Choose your path</p>
-          <h2>Use it in your editor or terminal.</h2>
-          <p>Install the VS Code extension for workspace feedback, use the published npm CLI in the terminal, or download the standalone bundle from GitHub Releases.</p>
+          <p class="eyebrow">Install paths</p>
+          <h2>Use it where you already work.</h2>
+          <p>Install the extension for editor-first review, use the npm CLI in the terminal, or download the standalone bundle from GitHub Releases.</p>
         </div>
       </div>
       <div class="path-grid">
         <article class="path-card featured">
-          <p class="path-label">VS Code live</p>
-          <h3>One click from the editor</h3>
-          <p>Open the overview, scan the workspace or current file, and jump straight to the findings.</p>
+          <p class="path-label">VS Code</p>
+          <h3>Start from the editor</h3>
+          <p>Open the sidebar, scan the workspace or current file, and jump straight to the findings.</p>
           <ul>
             <li>workspace scan</li>
             <li>current-file scan</li>
@@ -118,9 +118,9 @@
           </div>
         </article>
         <article class="path-card">
-          <p class="path-label">npm live</p>
-          <h3>Quickstart in minutes</h3>
-          <p>Install once, run it anywhere, and scan the workspace in front of you.</p>
+          <p class="path-label">npm</p>
+          <h3>Install once, scan anywhere</h3>
+          <p>Use the published CLI if you want the fastest terminal path.</p>
           <pre>npm install -g mcp-preflight
 mcp-preflight scan /path/to/workspace</pre>
           <div class="action-row">
@@ -128,9 +128,9 @@ mcp-preflight scan /path/to/workspace</pre>
           </div>
         </article>
         <article class="path-card">
-          <p class="path-label">Release bundle live</p>
-          <h3>Single-file CLI from GitHub Releases</h3>
-          <p>Use the standalone bundle if you want the CLI as one downloaded file instead of a global install.</p>
+          <p class="path-label">Release bundle</p>
+          <h3>Use the standalone CLI file</h3>
+          <p>Download the single-file bundle if you do not want a global install.</p>
           <pre>node mcp-preflight.js scan /path/to/workspace</pre>
           <div class="action-row">
             <a class="button-secondary" href="https://github.com/TimesAndPlaces/mcp-preflight/releases">Browse releases</a>
@@ -142,9 +142,9 @@ mcp-preflight scan /path/to/workspace</pre>
     <section class="section section-contrast">
       <div class="section-head">
         <div>
-          <p class="eyebrow">What it catches before trust</p>
-          <h2>Focused on MCP review, not broad AppSec.</h2>
-          <p>This is a targeted scanner for MCP setup and workflow risk. It exists to catch the problems generic tools often miss, skip, or explain poorly.</p>
+          <p class="eyebrow">Why it exists</p>
+          <h2>Built for MCP setup review.</h2>
+          <p>MCP Preflight is narrow on purpose. It focuses on the setup mistakes and trust boundaries around MCP that are easy to miss in broader tools.</p>
         </div>
       </div>
       <div class="signal-grid">
@@ -170,8 +170,8 @@ mcp-preflight scan /path/to/workspace</pre>
     <section class="section">
       <div class="split home-split">
         <article class="finding-frame">
-          <p class="eyebrow">How a finding reads</p>
-          <h2>Readable enough to act on.</h2>
+          <p class="eyebrow">How the output reads</p>
+          <h2>The output should be easy to act on.</h2>
           <div class="finding-step">
             <span class="finding-step-title">What looked risky</span>
             <p>Remote MCP server URL embeds credentials and uses plain HTTP.</p>
@@ -190,7 +190,7 @@ mcp-preflight scan /path/to/workspace</pre>
           </div>
         </article>
         <article class="page-card narrow-card">
-          <p class="eyebrow">Why it stays narrow</p>
+          <p class="eyebrow">Scope</p>
           <h2>Not a dashboard. Not a gateway.</h2>
           <ul>
             <li>No hosted scanning backend in the core flow.</li>
@@ -210,7 +210,7 @@ mcp-preflight scan /path/to/workspace</pre>
       <div class="section-head">
         <div>
           <p class="eyebrow">Lite and Pro</p>
-          <h2>Start with Lite. Use Pro when you need workflow controls.</h2>
+          <h2>Start with Lite. Add Pro when you need exports or gating.</h2>
         </div>
       </div>
       <div class="compare-grid">
@@ -241,25 +241,25 @@ mcp-preflight scan /path/to/workspace</pre>
           </div>
         </article>
       </div>
-      <p class="section-note">Lite gives you the core static scan with local suppression files and no required account. Pro adds reports, CI mode, Git hooks, and policy presets.</p>
+      <p class="section-note">Lite gives you the core static scan with local suppression files and no account requirement. Pro adds reports, CI mode, Git hooks, and policy presets.</p>
     </section>
 
     <section class="section">
       <div class="cta-band">
-        <p class="eyebrow">Start with the narrow path</p>
-        <h2>Install it, run one scan, then decide whether it deserves a place in your workflow.</h2>
-        <p>The public surface is here to help you evaluate the product quickly: install paths, rules, example output, guides, and support.</p>
+        <p class="eyebrow">Try it first</p>
+        <h2>Run one scan before you decide whether it belongs in your workflow.</h2>
+        <p>The public surface is here to help you evaluate it quickly: install paths, rules, example output, guides, and support.</p>
         <div class="action-row">
-          <a class="button" href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">Install for VS Code</a>
-          <a class="button-secondary" href="https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode">Install from Open VSX</a>
-          <a class="button-secondary" href="https://github.com/TimesAndPlaces/mcp-preflight/releases">Browse releases</a>
+          <a class="button" href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">Get the extension</a>
+          <a class="button-secondary" href="https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode">Open VSX</a>
+          <a class="button-secondary" href="https://github.com/TimesAndPlaces/mcp-preflight/releases">GitHub Releases</a>
         </div>
       </div>
     </section>
   </main>
   <footer class="footer">
     <div class="shell">
-      <p class="small">MCP Preflight keeps the site focused on install paths, docs, example output, and support.</p>
+      <p class="small">MCP Preflight keeps the public surface focused on install paths, docs, example output, and support.</p>
       <div class="footer-links">
         <a href="/">Home</a>
         <a href="/privacy/">Privacy</a>

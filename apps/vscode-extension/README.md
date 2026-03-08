@@ -1,30 +1,32 @@
 # MCP Preflight
 
-MCP Preflight helps you catch risky MCP setup and workflow choices before first trust.
+MCP Preflight brings the local MCP scanner into the editor.
 
-The point is simple: scan first, trust later. The extension is local-first, fast to run, and written for people who want a clear answer instead of a dashboard.
+Use it to review MCP config, prompt text, tool descriptions, and repo signals before you trust a setup or wire it into a workflow.
 
-The core scan is static. It reviews local config, prompt text, and repo signals without connecting to the server during the default scan.
+The default scan is static and local. It does not connect to the server or execute tools.
 
 ## Fast start
+
 1. Install MCP Preflight from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode).
-2. Open the repo or workspace you want to review.
-3. Open the MCP Preflight icon in the activity bar, or click the MCP Preflight status item.
-4. From the sidebar, run a workspace scan or current-file scan.
-5. If you want to see example findings first, open the bundled example workspace in the public repo and scan that.
+2. Open the workspace you want to review.
+3. Open MCP Preflight from the activity bar, or click the status item.
+4. Run a workspace scan or current-file scan.
+5. Review the findings in the sidebar, overview, and Problems panel.
 
-You do not need an MCP Preflight account for Lite. The scan runs locally.
+Lite does not require an account. The scan runs locally.
 
-## What you get
-- a dedicated MCP Preflight sidebar with visible Lite or Pro state
-- scan the current workspace
-- scan the current file
+## What the extension adds
+
+- a dedicated MCP Preflight sidebar
+- workspace scan
+- current-file scan
 - Problems panel diagnostics
-- fix guidance in plain language
-- no required login for the Lite scan flow
-- a local Pro license command when you want to unlock export and workflow features
+- readable fix guidance
+- built-in license, review, and support actions
 
 ## Commands
+
 - `MCP Preflight: Open Overview`
 - `MCP Preflight: Open Sidebar`
 - `MCP Preflight: Scan Workspace`
@@ -37,11 +39,8 @@ You do not need an MCP Preflight account for Lite. The scan runs locally.
 - `MCP Preflight: Leave a Review`
 - `MCP Preflight: Get Help`
 
-If you are reviewing one config file instead of a whole repo, run `MCP Preflight: Scan Current File`.
+## What it reviews
 
-The sidebar keeps the latest scan result, trust cues, local activity summary, license state, and upgrade/review/help links in one place. The overview panel is still there when you want a wider surface.
-
-## What it checks today
 - hardcoded secrets and private key material
 - token passthrough and broad environment inheritance
 - unsafe shell wrappers and ephemeral launchers
@@ -51,25 +50,14 @@ The sidebar keeps the latest scan result, trust cues, local activity summary, li
 - broad filesystem or network scope in MCP launch arguments
 - invalid MCP config and malformed suppression files
 
-## Why people use it
-- local scan by default
-- no hosted MCP Preflight account required for the Lite scan
-- Pro unlock stays local too, through a signed license token on the machine
-- MCP-specific checks instead of a broad platform surface
-- findings that explain what looked risky and what to fix next
-- local activity is visible in the editor instead of being hidden behind a web dashboard
+## Lite and Pro
 
-## Upgrade
-- Buy MCP Preflight Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
-- Pro stays local after purchase: install the signed license token on the machine instead of logging into a hosted MCP Preflight account
-- Install and recovery steps: [Pro guide](https://mcppreflight.com/pro/)
-
-## Local activity
-The extension keeps a small local activity log for scan runs, local license actions, blocked Pro surfaces, and the product links you open from the command palette.
-
-That log stays on the machine unless you choose to export or share it yourself.
+- Lite gives you the core static scan, local suppression files, and the editor workflow.
+- Pro adds reports, CI mode, Git hooks, and policy presets.
+- Pro stays local too. It is unlocked with a signed local license token.
 
 ## Read more
+
 - [Privacy note](https://mcppreflight.com/privacy/)
 - [Rule overview](https://mcppreflight.com/rules/)
 - [Example report](https://mcppreflight.com/example-report/)
