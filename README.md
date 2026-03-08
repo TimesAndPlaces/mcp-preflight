@@ -13,6 +13,17 @@ This public repository stays intentionally narrow. It contains the Lite product 
 - obvious secret-bearing files such as `.env`
 - risky patterns such as embedded credentials, token passthrough, unsafe launchers, insecure remote targets, prompt injection, and tool poisoning
 
+## Fast start
+If you want to see MCP Preflight work before you point it at your own repo:
+
+1. `npm install`
+2. `npm run quickstart`
+3. `npm run scan -- /path/to/your/workspace`
+
+`npm run quickstart` scans the intentionally risky demo workspace in [`demo/quickstart-workspace`](demo/quickstart-workspace). It is there to make the first run obvious, not to model a real setup, so the command prints findings but does not fail your shell.
+
+If you would rather use the editor flow, install the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode), then run `MCP Preflight: Scan Workspace`.
+
 ## Why people use it
 - It runs locally by default
 - The Lite scan does not require an account
@@ -43,21 +54,19 @@ This public repository stays intentionally narrow. It contains the Lite product 
 - [Security reporting](SECURITY.md)
 
 ## Commands
-- `npm install`
-- `npm run build`
-- `npm run typecheck`
-- `node packages/cli/dist/index.js scan /path/to/workspace`
-- `node packages/cli/dist/index.js activity status`
-- `node packages/cli/dist/index.js activity export --format json --output ./mcp-preflight-activity.json`
-- `node packages/cli/dist/index.js license guide`
-- `node packages/cli/dist/index.js license status`
-- `node packages/cli/dist/index.js license install --from-file /path/to/license.token`
-- `node packages/cli/dist/index.js ci /path/to/workspace --policy balanced`
-- `node packages/cli/dist/index.js hooks install /path/to/repo --hook pre-push`
-- `node packages/cli/dist/index.js upgrade`
-- `node packages/cli/dist/index.js review --channel marketplace`
-- `node packages/cli/dist/index.js support --channel discussions`
-- `npm run scan -- /path/to/workspace`
+- `npm install` compiles the CLI and extension in this repo
+- `npm run quickstart` shows a real scan against the bundled demo workspace
+- `npm run scan -- /path/to/workspace` scans your own workspace
+- `node packages/cli/dist/index.js scan /path/to/workspace --no-exit-code` prints findings without returning a failing exit code
+- `node packages/cli/dist/index.js activity status` shows local activity counts
+- `node packages/cli/dist/index.js license guide` explains Pro delivery and install
+- `node packages/cli/dist/index.js license status` checks whether this machine has Pro unlocked
+- `node packages/cli/dist/index.js license install --from-file /path/to/license.token` installs a signed Pro token
+- `node packages/cli/dist/index.js ci /path/to/workspace --policy balanced` runs the Pro CI gate
+- `node packages/cli/dist/index.js hooks install /path/to/repo --hook pre-push` installs the Pro Git hook
+- `node packages/cli/dist/index.js upgrade` opens Pro checkout
+- `node packages/cli/dist/index.js review --channel marketplace` opens the review page
+- `node packages/cli/dist/index.js support --channel discussions` opens Discussions
 
 ## Local activity
 MCP Preflight keeps a small local activity log so you can answer practical questions like:
@@ -73,6 +82,7 @@ If you want to store it somewhere else, set `MCP_PREFLIGHT_ACTIVITY_FILE=/path/t
 
 ## Releases
 - [GitHub Releases](https://github.com/TimesAndPlaces/mcp-preflight/releases) for `.vsix` files, CLI bundles, and release notes
+- Install the extension directly from [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode)
 
 ## Repository layout
 - `packages/core`: shared scanning engine

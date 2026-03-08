@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Added a bundled quickstart workspace so first-time users can see real MCP findings before scanning their own repo.
+- Added a `npm run quickstart` path and simplified the public install instructions around the fastest first scan.
+- Added a non-failing local scan option so demo and exploratory scans can print findings without looking like a broken command.
 - Added a public Pro activation guide so buyers can see the local install, status, and reissue flow in one place.
 - Added CLI `license guide` output and clearer Pro-gated messages that point to activation help instead of only checkout.
 

@@ -1,0 +1,20 @@
+{
+  "servers": {
+    "remote-demo": {
+      "url": "http://demo-user:demo-pass@127.0.0.1:8080/mcp",
+      "auth": false
+    },
+    "local-demo": {
+      "command": "npx",
+      "args": [
+        "@example/filesystem-server",
+        "--path",
+        "/"
+      ],
+      "inheritEnv": true,
+      "allowedEnv": [
+        "OPENAI_API_KEY"
+      ]
+    }
+  }
+}

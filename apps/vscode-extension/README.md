@@ -4,6 +4,14 @@ MCP Preflight helps you catch risky MCP configs before you run them.
 
 The point is simple: scan first, trust later. The extension is local-first, fast to run, and written for people who want a clear answer instead of a dashboard.
 
+## Fast start
+1. Install MCP Preflight from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode).
+2. Open the repo or workspace you want to review.
+3. Run `MCP Preflight: Scan Workspace` from the command palette.
+4. If you only want a safe trial run first, use the bundled demo workspace in the public repo and scan that.
+
+You do not need an MCP Preflight account for Lite. The scan runs locally.
+
 ## What you get
 - scan the current workspace
 - scan the current file
@@ -22,6 +30,8 @@ The point is simple: scan first, trust later. The extension is local-first, fast
 - `MCP Preflight: Upgrade to Pro`
 - `MCP Preflight: Leave a Review`
 - `MCP Preflight: Get Help`
+
+If you are reviewing one config file instead of a whole repo, run `MCP Preflight: Scan Current File`.
 
 ## What it checks today
 - hardcoded secrets and private key material

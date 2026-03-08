@@ -125,7 +125,7 @@ async function runScanCommand(args: string[]): Promise<void> {
     process.stdout.write(`${output}\n`);
   }
 
-  process.exitCode = report.summary.errors > 0 ? 1 : 0;
+  process.exitCode = config.failOnFindings && report.summary.errors > 0 ? 1 : 0;
 }
 
 async function runLicenseCommand(args: string[]): Promise<void> {
@@ -644,12 +644,14 @@ async function installHook(args: string[]): Promise<void> {
 
 function parseScanArguments(args: string[]): {
   help: boolean;
+  failOnFindings: boolean;
   format: Format;
   outputPath?: string;
   workspacePath: string;
   scanOptions: Partial<ScanOptions>;
 } {
   let help = false;
+  let failOnFindings = true;
   let format: Format = "text";
   let outputPath: string | undefined;
   let workspacePath = process.cwd();
@@ -669,6 +671,11 @@ function parseScanArguments(args: string[]): {
 
     if (current === "--json") {
       format = "json";
+      continue;
+    }
+
+    if (current === "--no-exit-code") {
+      failOnFindings = false;
       continue;
     }
 
@@ -720,6 +727,7 @@ function parseScanArguments(args: string[]): {
 
   return {
     help,
+    failOnFindings,
     format,
     outputPath,
     workspacePath,
@@ -1053,6 +1061,7 @@ function printScanUsage(): void {
       "Usage:",
       "  mcp-preflight scan [path] [--format text|json|markdown|sarif|html]",
       "  mcp-preflight scan [path] [--output report.out]",
+      "  mcp-preflight scan [path] [--no-exit-code]",
       "  mcp-preflight scan [path] [--suppressions-file path]",
       "  mcp-preflight scan [path] [--no-suppressions]",
       "  mcp-preflight scan [path] [--include-suppressed]",
