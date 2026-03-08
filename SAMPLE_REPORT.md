@@ -1,6 +1,6 @@
-# Sample Report
+# Example Report
 
-This is a fake report that shows the tone and structure of a local scan result. The paths, values, and findings below are intentionally made up.
+This page shows an example local scan result. The paths, values, and findings below are placeholders, included to show report structure and tone.
 
 ## Verdict
 `fail`

@@ -68,6 +68,6 @@ That log stays on the machine unless you choose to export or share it yourself.
 ## Read more
 - [Privacy note](https://mcppreflight.com/privacy/)
 - [Rule overview](https://mcppreflight.com/rules/)
-- [Sample report](https://mcppreflight.com/sample-report/)
+- [Example report](https://mcppreflight.com/sample-report/)
 - [Guides](https://mcppreflight.com/guides/)
 - [Security reporting](https://mcppreflight.com/security/)

@@ -51,7 +51,7 @@ If you would rather use the editor flow, install the extension from the [VS Code
 - [Privacy](PRIVACY.md)
 - [Pro license guide](https://mcppreflight.com/pro/)
 - [Rule overview](RULES.md)
-- [Sample report](SAMPLE_REPORT.md)
+- [Example report](SAMPLE_REPORT.md)
 - [Guides](GUIDES.md)
 - [Security reporting](SECURITY.md)
 
