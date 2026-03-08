@@ -9,7 +9,7 @@ The point is simple: scan first, trust later. The extension is local-first, fast
 2. Open the repo or workspace you want to review.
 3. Click the MCP Preflight status item or run `MCP Preflight: Open Overview`.
 4. From the overview, run a workspace scan or current-file scan.
-5. If you only want a safe trial run first, use the bundled demo workspace in the public repo and scan that.
+5. If you want to see example findings first, open the bundled example workspace in the public repo and scan that.
 
 You do not need an MCP Preflight account for Lite. The scan runs locally.
 

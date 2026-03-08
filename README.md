@@ -22,7 +22,7 @@ If you want to see MCP Preflight work before you point it at your own repo:
 2. `npm run quickstart`
 3. `npm run scan -- /path/to/your/workspace`
 
-`npm run quickstart` scans the bundled demo workspace in [`demo/quickstart-workspace`](demo/quickstart-workspace). That workspace uses fake values and example-only misconfigurations so the first run shows real findings without asking you to scan your own repo first.
+`npm run quickstart` scans the bundled example workspace in [`demo/example-findings-workspace`](demo/example-findings-workspace). It is there to show a representative finding set on a small self-contained config before you point MCP Preflight at your own repo.
 
 If you would rather use the editor flow, install the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode), open the MCP Preflight overview from the status bar, then run a workspace scan or current-file scan from there.
 
@@ -57,7 +57,7 @@ If you would rather use the editor flow, install the extension from the [VS Code
 
 ## Commands
 - `npm install` compiles the CLI and extension in this repo
-- `npm run quickstart` shows a real scan against the bundled demo workspace
+- `npm run quickstart` shows a real scan against the bundled example workspace
 - `npm run scan -- /path/to/workspace` scans your own workspace
 - `node packages/cli/dist/index.js scan /path/to/workspace --no-exit-code` prints findings without returning a failing exit code
 - `node packages/cli/dist/index.js activity status` shows local activity counts

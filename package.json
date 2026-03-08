@@ -19,8 +19,8 @@
   "scripts": {
     "build": "tsc -b",
     "postinstall": "npm run build",
-    "quickstart": "node packages/cli/dist/index.js scan demo/quickstart-workspace --no-exit-code",
-    "quickstart:json": "node packages/cli/dist/index.js scan demo/quickstart-workspace --format json",
+    "quickstart": "node packages/cli/dist/index.js scan demo/example-findings-workspace --no-exit-code",
+    "quickstart:json": "node packages/cli/dist/index.js scan demo/example-findings-workspace --format json",
     "typecheck": "tsc -b --pretty false",
     "scan": "node packages/cli/dist/index.js scan"
   },
