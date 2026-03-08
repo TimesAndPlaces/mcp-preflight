@@ -52,7 +52,7 @@ If you would rather use the editor flow, install the extension from the [VS Code
 - [Pro license guide](https://mcppreflight.com/pro/)
 - [Rule overview](RULES.md)
 - [Sample report](SAMPLE_REPORT.md)
-- [Audit notes](AUDITS.md)
+- [Preflight notes](NOTES.md)
 - [Security reporting](SECURITY.md)
 
 ## Commands

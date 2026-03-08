@@ -69,5 +69,5 @@ That log stays on the machine unless you choose to export or share it yourself.
 - [Privacy note](https://mcppreflight.com/privacy/)
 - [Rule overview](https://mcppreflight.com/rules/)
 - [Sample report](https://mcppreflight.com/sample-report/)
-- [Audit notes](https://mcppreflight.com/audits/)
+- [Preflight notes](https://mcppreflight.com/notes/)
 - [Security reporting](https://mcppreflight.com/security/)

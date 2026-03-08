@@ -8,5 +8,5 @@ export const PRODUCT_URLS = {
   upgrade: "https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00",
   proLicenseGuide: "https://mcppreflight.com/pro/",
   licenseSupport: "mailto:igorsv199@gmail.com?subject=MCP%20Preflight%20Pro%20license",
-  audits: "https://mcppreflight.com/audits/"
+  notes: "https://mcppreflight.com/notes/"
 } as const;
