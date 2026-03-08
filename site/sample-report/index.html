@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sample Report | MCP Preflight</title>
+  <meta name="description" content="A fake MCP Preflight report that shows tone and structure.">
+  <link rel="canonical" href="https://mcppreflight.com/sample-report/">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <a class="brand" href="/">
+        <span class="brand-mark">MP</span>
+        <span class="brand-copy"><strong>MCP Preflight</strong><span>Local MCP security scanner</span></span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/rules/">Rules</a>
+        <a href="/pro/">Pro</a>
+      </nav>
+    </div>
+  </header>
+  <main class="shell page">
+    <section class="page-title">
+      <p class="kicker">Sample report</p>
+      <h1>A report should explain itself.</h1>
+      <p>This is a fake report that shows the tone and structure of a local scan result. The paths, values, and findings below are intentionally made up.</p>
+    </section>
+    <section class="page-grid">
+      <article class="page-card">
+        <h2>Verdict</h2>
+        <pre>fail</pre>
+        <h2>Summary</h2>
+        <ul>
+          <li>Files scanned: <code>12</code></li>
+          <li>Errors: <code>3</code></li>
+          <li>Warnings: <code>2</code></li>
+          <li>Info: <code>1</code></li>
+        </ul>
+      </article>
+      <article class="page-card">
+        <h2>Finding 1</h2>
+        <p><strong>Credential embedded in remote MCP URL</strong><br>Severity: <code>error</code><br>Rule: <code>credential-in-url</code><br>Location: <code>.vscode/mcp.json:8:18</code></p>
+        <p>The remote MCP URL contains what looks like a username or token. Move credentials out of the URL and use a safer auth mechanism with the smallest possible scope.</p>
+      </article>
+      <article class="page-card">
+        <h2>Finding 2</h2>
+        <p><strong>Ephemeral launcher used for MCP server startup</strong><br>Severity: <code>warning</code><br>Rule: <code>ephemeral-mcp-launcher</code><br>Location: <code>.vscode/mcp.json:14:7</code></p>
+        <p>The server is launched through <code>npx</code>, which makes the exact code you run harder to pin and review. Prefer a pinned install or a reviewed local binary.</p>
+      </article>
+      <article class="page-card">
+        <h2>Finding 3</h2>
+        <p><strong>Prompt injection language in tool description</strong><br>Severity: <code>warning</code><br>Rule: <code>prompt-injection-indicator</code><br>Location: <code>tools/sync.md:3:1</code></p>
+        <p>The description includes language telling the model to ignore previous instructions and reveal hidden data. Rewrite the description so it states the tool's real purpose without instruction-bypass language.</p>
+      </article>
+      <article class="page-card">
+        <h2>Finding 4</h2>
+        <p><strong>Missing lockfile</strong><br>Severity: <code>info</code><br>Rule: <code>missing-lockfile</code><br>Location: <code>package.json:1:1</code></p>
+        <p>The repo declares dependencies but does not include a lockfile. Commit the lockfile so installs are more predictable and easier to review.</p>
+      </article>
+      <article class="page-card">
+        <h2>Notes</h2>
+        <ul>
+          <li>Lite output is text or JSON.</li>
+          <li>Markdown, HTML, and SARIF are part of the Pro export surface.</li>
+          <li>The Lite product is meant to stay readable without a dashboard.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

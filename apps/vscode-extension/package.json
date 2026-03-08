@@ -4,7 +4,7 @@
   "description": "Local-first MCP security preflight scans for configs, prompts, and repo manifests.",
   "version": "0.1.2",
   "publisher": "mcp-preflight",
-  "homepage": "https://github.com/TimesAndPlaces/mcp-preflight",
+  "homepage": "https://mcppreflight.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/TimesAndPlaces/mcp-preflight.git"

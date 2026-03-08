@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rules | MCP Preflight</title>
+  <meta name="description" content="Current rule families in MCP Preflight, explained in normal language.">
+  <link rel="canonical" href="https://mcppreflight.com/rules/">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <a class="brand" href="/">
+        <span class="brand-mark">MP</span>
+        <span class="brand-copy"><strong>MCP Preflight</strong><span>Local MCP security scanner</span></span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/sample-report/">Sample report</a>
+        <a href="/audits/">Audit notes</a>
+      </nav>
+    </div>
+  </header>
+  <main class="shell page">
+    <section class="page-title">
+      <p class="kicker">Rule overview</p>
+      <h1>Readable rules beat mysterious scores.</h1>
+      <p>Each finding is meant to answer three questions: what looked risky, why it matters for MCP, and what you should change next.</p>
+    </section>
+    <section class="cards">
+      <article class="card"><h3>Secrets and credentials</h3><p>Looks for hardcoded API keys, tokens, and private key material in common config and text files.</p></article>
+      <article class="card"><h3>Token passthrough and broad environment access</h3><p>Flags MCP setups that forward too much of the host environment into a server process.</p></article>
+      <article class="card"><h3>Unsafe launch patterns</h3><p>Flags shell wrappers, risky bootstrap commands, and ephemeral package runners such as <code>npx</code>, <code>bunx</code>, <code>uvx</code>, or <code>dlx</code>.</p></article>
+      <article class="card"><h3>Remote MCP configuration risks</h3><p>Flags insecure transport, credentials embedded in URLs, and remote targets that appear to point at localhost, metadata endpoints, or other sensitive internal destinations.</p></article>
+      <article class="card"><h3>Dependency and install-source drift</h3><p>Flags obviously unpinned dependency specs and missing lockfiles.</p></article>
+      <article class="card"><h3>Prompt injection indicators</h3><p>Flags tool descriptions or prompt resources that look like they are trying to override normal instructions, expose secrets, or bypass policy.</p></article>
+      <article class="card"><h3>Tool poisoning indicators</h3><p>Flags descriptions that suggest hidden forwarding, exfiltration, or side effects that do not match the claimed purpose of the tool.</p></article>
+      <article class="card"><h3>Scope and path risk</h3><p>Flags broad workspace or filesystem scope that looks wider than it needs to be.</p></article>
+      <article class="card"><h3>Broken config and broken suppressions</h3><p>Flags invalid <code>mcp.json</code> content and malformed suppression files so you do not silently trust a broken setup.</p></article>
+    </section>
+    <section class="section">
+      <article class="page-card">
+        <h2>What this scanner does not claim</h2>
+        <ul>
+          <li>It is not a malware sandbox.</li>
+          <li>It is not a runtime gateway.</li>
+          <li>It is not a complete vulnerability scanner.</li>
+          <li>It will not catch every malicious server.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

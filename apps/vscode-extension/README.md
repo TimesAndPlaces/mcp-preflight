@@ -58,7 +58,7 @@ The overview panel keeps the latest scan result, local activity summary, license
 ## Upgrade
 - Buy MCP Preflight Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
 - Pro stays local after purchase: install the signed license token on the machine instead of logging into a hosted MCP Preflight account
-- Install and recovery steps: [Pro license guide](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/PRO_LICENSE.md)
+- Install and recovery steps: [Pro license guide](https://mcppreflight.com/pro/)
 
 ## Local activity
 The extension keeps a small local activity log for scan runs, local license actions, blocked Pro surfaces, and the product links you open from the command palette.
@@ -66,8 +66,8 @@ The extension keeps a small local activity log for scan runs, local license acti
 That log stays on the machine unless you choose to export or share it yourself.
 
 ## Read more
-- [Privacy note](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/PRIVACY.md)
-- [Rule overview](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/RULES.md)
-- [Sample report](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/SAMPLE_REPORT.md)
-- [Audit notes](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/AUDITS.md)
-- [Security reporting](https://github.com/TimesAndPlaces/mcp-preflight/blob/main/SECURITY.md)
+- [Privacy note](https://mcppreflight.com/privacy/)
+- [Rule overview](https://mcppreflight.com/rules/)
+- [Sample report](https://mcppreflight.com/sample-report/)
+- [Audit notes](https://mcppreflight.com/audits/)
+- [Security reporting](https://mcppreflight.com/security/)

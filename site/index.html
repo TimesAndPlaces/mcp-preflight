@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP Preflight | Check an MCP server before you trust it</title>
+  <meta name="description" content="MCP Preflight is a local-first MCP security scanner for configs, prompts, and repo manifests.">
+  <link rel="canonical" href="https://mcppreflight.com/">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <a class="brand" href="/">
+        <span class="brand-mark">MP</span>
+        <span class="brand-copy">
+          <strong>MCP Preflight</strong>
+          <span>Local MCP security scanner</span>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="/privacy/">Privacy</a>
+        <a href="/rules/">Rules</a>
+        <a href="/sample-report/">Sample report</a>
+        <a href="/audits/">Audit notes</a>
+        <a href="/pro/">Pro</a>
+      </nav>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-grid">
+        <article class="hero-copy">
+          <p class="kicker">Local-first MCP trust check</p>
+          <h1>Check an MCP server before you trust it.</h1>
+          <p>MCP Preflight reads common MCP config files, prompt resources, tool descriptions, and repo manifests, then explains risky patterns in plain language before they become a bigger problem.</p>
+          <div class="action-row">
+            <a class="button" href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">Install for VS Code</a>
+            <a class="button-secondary" href="https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode">Install from Open VSX</a>
+            <a class="button-secondary" href="https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00">Buy Pro</a>
+          </div>
+          <div class="status-row">
+            <span class="pill"><strong>Lite</strong> Local scan, no account required</span>
+            <span class="pill"><strong>Pro</strong> Reports, hooks, CI, presets</span>
+            <span class="pill"><strong>Trust stance</strong> No hosted scan backend</span>
+          </div>
+        </article>
+        <aside class="panel">
+          <p class="eyebrow">What it checks</p>
+          <ul>
+            <li><code>.vscode/mcp.json</code> and other common MCP config locations</li>
+            <li>tool descriptions and prompt resources</li>
+            <li>repo manifests and dependency signals</li>
+            <li>obvious secret-bearing files such as <code>.env</code></li>
+            <li>embedded credentials, token passthrough, unsafe launchers, insecure remote targets, prompt injection, and tool poisoning</li>
+          </ul>
+          <div class="link-row">
+            <a href="/rules/">Read the rule overview</a>
+            <a href="/sample-report/">See a sample report</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+    <section class="section">
+      <div class="cards">
+        <article class="card">
+          <p class="eyebrow">Fast start</p>
+          <h3>Get to a real scan quickly</h3>
+          <p>Install the extension or run the CLI from the public repo. The bundled quickstart workspace is intentionally risky, so the first run shows real findings instead of a blank success screen.</p>
+          <a href="https://github.com/TimesAndPlaces/mcp-preflight">Open the public repo</a>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Lite</p>
+          <h3>Keep the free path simple</h3>
+          <p>Lite is the fast local scan: workspace scan, current-file scan, text output, JSON output, and the core MCP-focused checks. No account is required.</p>
+          <a href="/privacy/">Read the privacy note</a>
+        </article>
+        <article class="card">
+          <p class="eyebrow">Pro</p>
+          <h3>Unlock workflow surfaces</h3>
+          <p>Pro adds Markdown, HTML, and SARIF reports, suppression files, CI mode, Git hooks, and policy presets through a local signed license token.</p>
+          <a href="/pro/">Read the Pro guide</a>
+        </article>
+      </div>
+    </section>
+    <section class="section split">
+      <article class="page-card">
+        <p class="eyebrow">Why this stays small</p>
+        <h2>Not a dashboard. Not a gateway. Not a broad AppSec platform.</h2>
+        <p>The point of MCP Preflight is narrow on purpose: scan first, trust later. That means local-first behavior, readable findings, conservative permissions, and a public surface that explains the product without turning it into a hosted control plane.</p>
+        <div class="link-row">
+          <a href="/audits/">Read the audit notes</a>
+          <a href="/security/">Report a security issue</a>
+        </div>
+      </article>
+      <article class="page-card">
+        <p class="eyebrow">Public surfaces</p>
+        <h2>Install, releases, and support</h2>
+        <ul>
+          <li><a href="https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode">VS Code Marketplace</a></li>
+          <li><a href="https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode">Open VSX</a></li>
+          <li><a href="https://github.com/TimesAndPlaces/mcp-preflight/releases">GitHub Releases</a></li>
+          <li><a href="https://github.com/TimesAndPlaces/mcp-preflight/discussions">GitHub Discussions</a></li>
+          <li><a href="https://github.com/TimesAndPlaces/mcp-preflight/issues">GitHub Issues</a></li>
+        </ul>
+      </article>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="shell">
+      <p class="small">MCP Preflight keeps the public site narrow on purpose: homepage, docs, trust, and install paths.</p>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/rules/">Rules</a>
+        <a href="/sample-report/">Sample report</a>
+        <a href="/pro/">Pro</a>
+        <a href="/audits/">Audit notes</a>
+        <a href="/security/">Security</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

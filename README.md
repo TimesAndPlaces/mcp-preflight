@@ -4,6 +4,8 @@ MCP Preflight is the fast local check you run before you trust a new MCP server 
 
 It reads common MCP config files, tool descriptions, prompt resources, and repo manifests, then explains risky patterns in plain language so you can fix them before they become a bigger problem.
 
+Website: [mcppreflight.com](https://mcppreflight.com)
+
 This public repository stays intentionally narrow. It contains the Lite product code and the user-facing materials people need to evaluate it. Internal planning, private operating notes, and maintainer admin work stay out of the public repo on purpose.
 
 ## What it checks
@@ -37,7 +39,7 @@ If you would rather use the editor flow, install the extension from the [VS Code
 - Pro is unlocked with a local signed license token, not a hosted MCP Preflight account
 - The scanner does not need to phone home just to decide whether Pro is active on your machine
 - Buy Pro: [Stripe checkout](https://buy.stripe.com/5kQ9AT6eX75v8p605PfIs00)
-- Activation and install: [Pro license guide](PRO_LICENSE.md)
+- Activation and install: [Pro license guide](https://mcppreflight.com/pro/)
 
 ## What it is not
 - Not a hosted scanner
@@ -47,7 +49,7 @@ If you would rather use the editor flow, install the extension from the [VS Code
 
 ## Read this next
 - [Privacy](PRIVACY.md)
-- [Pro license guide](PRO_LICENSE.md)
+- [Pro license guide](https://mcppreflight.com/pro/)
 - [Rule overview](RULES.md)
 - [Sample report](SAMPLE_REPORT.md)
 - [Audit notes](AUDITS.md)

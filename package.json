@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.2",
   "description": "Local-first MCP security preflight scanner monorepo.",
-  "homepage": "https://github.com/TimesAndPlaces/mcp-preflight",
+  "homepage": "https://mcppreflight.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/TimesAndPlaces/mcp-preflight.git"

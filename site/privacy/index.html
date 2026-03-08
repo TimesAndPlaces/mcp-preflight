@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy | MCP Preflight</title>
+  <meta name="description" content="Plain-language privacy note for MCP Preflight.">
+  <link rel="canonical" href="https://mcppreflight.com/privacy/">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <a class="brand" href="/">
+        <span class="brand-mark">MP</span>
+        <span class="brand-copy"><strong>MCP Preflight</strong><span>Local MCP security scanner</span></span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/rules/">Rules</a>
+        <a href="/pro/">Pro</a>
+        <a href="/security/">Security</a>
+      </nav>
+    </div>
+  </header>
+  <main class="shell page">
+    <section class="page-title">
+      <p class="kicker">Privacy</p>
+      <h1>Local by default means local by default.</h1>
+      <p>This is the plain-language version of how MCP Preflight is meant to behave.</p>
+    </section>
+    <section class="page-grid">
+      <article class="page-card">
+        <h2>Short version</h2>
+        <ul>
+          <li>The Lite product is designed to run locally.</li>
+          <li>It does not require an account.</li>
+          <li>It does not require a hosted MCP Preflight service.</li>
+          <li>It scans files in the workspace you point it at.</li>
+        </ul>
+      </article>
+      <article class="page-card">
+        <h2>What it reads</h2>
+        <p>The scanner looks at local files that help it answer one practical question: is this MCP setup safe enough to trust?</p>
+        <ul>
+          <li><code>.vscode/mcp.json</code> and other common MCP config files</li>
+          <li><code>package.json</code>, <code>pyproject.toml</code>, and lockfile presence</li>
+          <li>tool descriptions and prompt resources</li>
+          <li>obvious secret-bearing files such as <code>.env</code></li>
+        </ul>
+      </article>
+      <article class="page-card">
+        <h2>What it sends</h2>
+        <p>MCP Preflight is intended to work without sending your workspace to a hosted MCP Preflight backend. The current Pro unlock path is also local: a signed license token can be stored on disk and verified on the machine without a hosted login flow.</p>
+      </article>
+      <article class="page-card">
+        <h2>Local activity</h2>
+        <p>MCP Preflight keeps a small local activity log by default so you can inspect scan counts, blocked Pro surfaces, and local license actions on your own machine. The log is local-only. It is not uploaded to an MCP Preflight service and is not meant to store workspace contents.</p>
+        <ul>
+          <li>Disable activity logging with <code>MCP_PREFLIGHT_DISABLE_ACTIVITY=1</code></li>
+          <li>Change the activity file path with <code>MCP_PREFLIGHT_ACTIVITY_FILE=/path/to/activity-log.jsonl</code></li>
+        </ul>
+      </article>
+      <article class="page-card">
+        <h2>Important limits</h2>
+        <ul>
+          <li>Your editor, extension marketplace, operating system, or package manager may still have their own telemetry or network behavior.</li>
+          <li>Third-party MCP servers you choose to run are outside this privacy note.</li>
+          <li>If future paid update delivery changes this behavior, it should be described clearly and separately.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
