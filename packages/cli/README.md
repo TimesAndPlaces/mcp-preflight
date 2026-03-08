@@ -2,9 +2,9 @@
 
 `mcp-preflight` is the published CLI for MCP Preflight.
 
-Use it to review MCP config, prompt text, tool descriptions, and repo manifests before you trust a setup or ship an agent workflow.
+Use it to review MCP config, prompt text, tool descriptions, and repo manifests before you run a new setup or ship an agent workflow.
 
-The default scan is static and local. It does not connect to the server or execute tools.
+The default scan is local and static. It does not connect to the server or execute tools.
 
 ## Install
 

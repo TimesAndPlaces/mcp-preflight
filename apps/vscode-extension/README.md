@@ -1,10 +1,10 @@
 # MCP Preflight
 
-MCP Preflight brings the local MCP scanner into the editor.
+MCP Preflight brings the local static scan into the editor.
 
-Use it to review MCP config, prompt text, tool descriptions, and repo signals before you trust a setup or wire it into a workflow.
+Use it to review MCP config, prompt text, tool descriptions, and repo manifests without leaving VS Code or Cursor.
 
-The default scan is static and local. It does not connect to the server or execute tools.
+The default scan is local and static. It does not connect to the server or execute tools.
 
 ## Fast start
 
@@ -14,7 +14,7 @@ The default scan is static and local. It does not connect to the server or execu
 4. Run a workspace scan or current-file scan.
 5. Review the findings in the sidebar, overview, and Problems panel.
 
-Lite does not require an account. The scan runs locally.
+Lite does not require an account, and the scan stays local.
 
 ## What the extension adds
 

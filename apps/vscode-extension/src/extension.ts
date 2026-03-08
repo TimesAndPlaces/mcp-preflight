@@ -114,7 +114,7 @@ async function runWorkspaceScan(
   const folder = getActiveWorkspaceFolder();
 
   if (!folder) {
-    void vscode.window.showErrorMessage("Open a workspace folder to run a scan.");
+    void vscode.window.showErrorMessage("Open a workspace to start scanning.");
     return;
   }
 
@@ -122,7 +122,7 @@ async function runWorkspaceScan(
   const report = await vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
-      title: "Scanning workspace for MCP risks"
+      title: "Scanning workspace..."
     },
     () => scanWorkspace(folder.uri.fsPath)
   );
@@ -147,7 +147,7 @@ async function runWorkspaceScan(
 
   void vscode.window
     .showInformationMessage(
-      `Scan complete: ${report.summary.filesScanned} files in ${formatDuration(elapsedMs)}. ${report.summary.errors} errors, ${report.summary.warnings} warnings, ${report.summary.suppressed} suppressed.`,
+      `Done: ${pluralize(report.summary.filesScanned, "file")} in ${formatDuration(elapsedMs)}. ${pluralize(report.summary.errors, "error")}, ${pluralize(report.summary.warnings, "warning")}, ${report.summary.suppressed} suppressed.`,
       "Open Sidebar",
       "Fix Recipes"
     )
@@ -170,7 +170,7 @@ async function runCurrentFileScan(
   const folder = editor ? vscode.workspace.getWorkspaceFolder(editor.document.uri) : getActiveWorkspaceFolder();
 
   if (!editor || !folder) {
-    void vscode.window.showErrorMessage("Open a file inside a workspace folder to scan it.");
+    void vscode.window.showErrorMessage("Open a file in the workspace to scan it.");
     return;
   }
 
@@ -178,7 +178,7 @@ async function runCurrentFileScan(
   const report = await vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
-      title: "Scanning current file for MCP risks"
+      title: "Scanning file..."
     },
     () =>
       scanWorkspace(folder.uri.fsPath, {
@@ -209,7 +209,7 @@ async function runCurrentFileScan(
 
   void vscode.window
     .showInformationMessage(
-      `File scan complete: ${fileFindings.length} findings in ${editor.document.fileName.split(/[\\/]/).at(-1)} (${formatDuration(elapsedMs)}).`,
+      `Done: ${pluralize(fileFindings.length, "finding")} in ${editor.document.fileName.split(/[\\/]/).at(-1)} (${formatDuration(elapsedMs)}).`,
       "Open Sidebar",
       "Fix Recipes"
     )
@@ -404,7 +404,7 @@ async function leaveReview(output: vscode.OutputChannel): Promise<void> {
       }
     ],
     {
-      title: "Where do you want to leave a review?"
+      title: "Choose a review page."
     }
   );
 
@@ -432,7 +432,7 @@ async function getHelp(output: vscode.OutputChannel): Promise<void> {
       }
     ],
     {
-      title: "Where do you want to get help?"
+      title: "Choose a support path."
     }
   );
 
@@ -477,7 +477,7 @@ async function maybeShowOnboarding(
   await context.globalState.update(ONBOARDING_VERSION_KEY, currentVersion);
 
   const selection = await vscode.window.showInformationMessage(
-    "Welcome to MCP Preflight. Open the sidebar to see scan results, license status, and quick actions.",
+    "Welcome. Open the sidebar to scan the workspace, check the latest result, or install a Pro token.",
     "Open Sidebar",
     "Scan Workspace"
   );
@@ -633,7 +633,7 @@ function renderOverviewHtml(
       : `<button data-command="installLicense">Install Pro token</button><button class="secondary" data-command="upgradeToPro">Upgrade to Pro</button>`;
   const activitySummary =
     activity.eventsRecorded === 0
-      ? "No local activity yet."
+      ? "No scans recorded yet."
       : `${activity.scans.total} scans, ${activity.upgradesOpened} upgrade opens, ${activity.reviewsOpened} review opens, ${activity.supportOpens} help opens.`;
   const trustList = [
     "Local by default",
@@ -768,8 +768,8 @@ function renderOverviewHtml(
               </div>
               <div class="hero-copy">
                 <div class="eyebrow">MCP Preflight</div>
-                <h1>${isSidebar ? "Review your MCP setup before first run." : "Review your MCP setup before first run."}</h1>
-                <p class="subcopy">See the latest scan result, local license status, and quick actions without leaving VS Code or Cursor.</p>
+                <h1>${isSidebar ? "Review your MCP setup before you run it." : "Review your MCP setup before you run it."}</h1>
+                <p class="subcopy">See the latest scan, license status, and quick actions without leaving VS Code or Cursor.</p>
               </div>
               <div class="tier-chip">${escapeHtml(license.status === "valid" ? "Pro active" : "Lite active")}</div>
             </div>
@@ -799,7 +799,7 @@ function renderOverviewHtml(
           </section>
           <div class="cards">
             <section class="card">
-              <div class="eyebrow">Latest results</div>
+              <div class="eyebrow">Latest scan</div>
               <div class="pill">${escapeHtml(report?.verdict ?? "idle")}</div>
               <div class="stat">${escapeHtml(reportSummary.title)}</div>
               <p class="muted">${escapeHtml(reportSummary.detail)}</p>
@@ -809,7 +809,7 @@ function renderOverviewHtml(
               <div class="meta">${escapeHtml(reportSummary.meta)}</div>
             </section>
             <section class="card">
-              <div class="eyebrow">License status</div>
+              <div class="eyebrow">License</div>
               <div class="stat">${escapeHtml(getLicenseCardTitle(license))}</div>
               <p class="muted">${escapeHtml(getLicenseOverviewText(license))}</p>
               <div class="actions">
@@ -818,9 +818,9 @@ function renderOverviewHtml(
               <div class="meta">${escapeHtml(getLicenseMetaText(license))}</div>
             </section>
             <section class="card">
-              <div class="eyebrow">How it runs</div>
-              <div class="stat">Local and static</div>
-              <p class="muted">MCP Preflight runs as a local static scanner. Lite has no account requirement. Pro uses a signed local token.</p>
+              <div class="eyebrow">Local mode</div>
+              <div class="stat">Runs locally</div>
+              <p class="muted">MCP Preflight scans local files. Lite needs no account. Pro uses a signed local token.</p>
               <ul class="trust-list">${trustList}</ul>
             </section>
             <section class="card">
@@ -833,9 +833,9 @@ function renderOverviewHtml(
               <div class="meta">${escapeHtml(getActivityMetaText(activity))}</div>
             </section>
             <section class="card">
-              <div class="eyebrow">Links</div>
+              <div class="eyebrow">Quick links</div>
               <div class="stat">Next actions</div>
-              <p class="muted">Open checkout, ask for help, leave a review, or jump back to the sidebar.</p>
+              <p class="muted">Open the sidebar, get help, leave a review, or compare Pro.</p>
               <div class="actions">
                 <button data-command="openSidebar">Open sidebar</button>
                 <button data-command="upgradeToPro">Upgrade</button>
@@ -867,8 +867,8 @@ function getReportOverview(report?: ScanReport): {
 } {
   if (!report) {
     return {
-        title: "No scan results yet",
-        detail: "Run a workspace scan or current-file scan to see the latest result here.",
+        title: "No scan yet",
+        detail: "Run a workspace scan or file scan to see the latest result.",
       actions:
         `<button data-command="scanWorkspace">Scan workspace</button>` +
         `<button class="secondary" data-command="scanCurrentFile">Scan current file</button>`,
@@ -878,10 +878,10 @@ function getReportOverview(report?: ScanReport): {
 
   const title =
     report.verdict === "fail"
-      ? "Scan needs review"
+      ? "Needs review"
       : report.verdict === "warning"
-        ? "Scan has warnings"
-        : "Scan passed";
+        ? "Warnings found"
+        : "No issues found";
   const detail = `${report.summary.filesScanned} files scanned, ${report.summary.errors} errors, ${report.summary.warnings} warnings, ${report.summary.info} info, ${report.summary.suppressed} suppressed.`;
   const actions =
     report.findings.length > 0
@@ -914,7 +914,7 @@ function getLicenseOverviewText(license: ResolvedLicense): string {
   }
 
   if (license.status === "missing") {
-    return "No local Pro token is installed. MCP Preflight is running in Lite mode.";
+    return "No Pro token installed. MCP Preflight is in Lite mode.";
   }
 
   return license.reason ?? "The local license could not be used.";
@@ -1067,6 +1067,10 @@ function getHighlightLength(finding: Finding): number {
 
 function formatDuration(durationMs: number): string {
   return durationMs < 1_000 ? `${durationMs}ms` : `${(durationMs / 1_000).toFixed(1)}s`;
+}
+
+function pluralize(count: number, singular: string, plural?: string): string {
+  return `${count} ${count === 1 ? singular : (plural ?? `${singular}s`)}`;
 }
 
 function updateStatusBar(statusBar: vscode.StatusBarItem, report?: ScanReport): void {

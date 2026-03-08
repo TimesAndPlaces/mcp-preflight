@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.11 - 2026-03-08
+- Tightened the public homepage and GitHub docs so the product reads more like a practical developer tool and less like a careful product brief.
+- Simplified the root README install matrix and the extension/CLI package READMEs.
+- Shortened the extension UI copy across onboarding, progress messages, empty states, verdicts, and sidebar headings.
+
 ## 0.1.10 - 2026-03-08
 - Rewrote the public repo and website copy so the install flow, scope, privacy stance, and commercial pages read more clearly and consistently.
 - Rewrote the npm package READMEs so the CLI and core package surfaces match the main product voice and install truth.

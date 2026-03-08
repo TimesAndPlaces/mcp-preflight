@@ -1,30 +1,30 @@
 # MCP Preflight
 
-MCP Preflight is a local, static scanner for Model Context Protocol setups.
+MCP Preflight is a local static scanner for Model Context Protocol setups.
 
-It checks the files that define how an MCP server is installed, scoped, and described, then flags risky patterns before you trust the setup or ship an agent workflow.
+It reviews MCP config, prompt text, tool descriptions, and repo manifests, then flags risky patterns before you run a new setup or ship an agent workflow.
 
 The default scan stays on disk. It does not connect to the server or execute tools.
 
-This is a narrow product on purpose. It is built for MCP setup and workflow review, not for live server testing, runtime enforcement, or broad AppSec coverage.
+Lite is free, local, and includes suppression files. Pro adds reports, CI mode, Git hooks, and policy presets.
 
 Website: [mcppreflight.com](https://mcppreflight.com)
 
 ## Install
 
-| Surface | Status | Best for | Install |
-| --- | --- | --- | --- |
-| VS Code extension | Live | Editor workflow | [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode) |
-| npm CLI | Live | Terminal workflow | `npm install -g mcp-preflight` |
-| GitHub Release CLI | Live | Single-file bundle | Download `mcp-preflight.js` from [GitHub Releases](https://github.com/TimesAndPlaces/mcp-preflight/releases) |
+| Surface | Best for | Get it |
+| --- | --- | --- |
+| VS Code extension | Editor workflow | [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode) |
+| npm CLI | Terminal workflow | `npm install -g mcp-preflight` |
+| Standalone CLI | Single downloaded file | Download `mcp-preflight.js` from [GitHub Releases](https://github.com/TimesAndPlaces/mcp-preflight/releases) |
 
 ## Get started
 
-Pick the path that matches how you want to try it.
+Pick the path that fits how you want to try it.
 
 ### 1. VS Code extension
 
-This is the fastest way to see the scanner in a real project.
+This is the quickest way to try it in a real workspace.
 
 1. Install MCP Preflight from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mcp-preflight.mcp-preflight-vscode) or [Open VSX](https://open-vsx.org/extension/mcp-preflight/mcp-preflight-vscode).
 2. Open the workspace you want to review.
@@ -34,7 +34,7 @@ This is the fastest way to see the scanner in a real project.
 
 ### 2. CLI from npm
 
-Install once and run it anywhere.
+Install it once and run it anywhere.
 
 ```bash
 npm install -g mcp-preflight
