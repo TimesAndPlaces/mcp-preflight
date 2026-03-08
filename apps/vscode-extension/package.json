@@ -2,7 +2,7 @@
   "name": "mcp-preflight-vscode",
   "displayName": "MCP Preflight",
   "description": "Local-first MCP security preflight scans for configs, prompts, and repo manifests.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "publisher": "mcp-preflight",
   "homepage": "https://mcppreflight.com",
   "repository": {

@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## 0.1.3 - 2026-03-08
 - Added a VS Code overview panel that puts the latest scan, local activity, license state, and upgrade/review/help actions in one editor surface.
 - Changed the VS Code status item to open the overview instead of only triggering another scan.
 - Added a bundled quickstart workspace so first-time users can see real MCP findings before scanning their own repo.
@@ -8,6 +10,7 @@
 - Added a non-failing local scan option so demo and exploratory scans can print findings without looking like a broken command.
 - Added a public Pro activation guide so buyers can see the local install, status, and reissue flow in one place.
 - Added CLI `license guide` output and clearer Pro-gated messages that point to activation help instead of only checkout.
+- Added the public `mcppreflight.com` trust/docs site and switched public homepage links to the canonical domain.
 
 ## 0.1.2 - 2026-03-08
 - Added a local-only activity log with CLI and VS Code surfaces to inspect scan counts, blocked Pro features, and local license actions without a hosted backend.
