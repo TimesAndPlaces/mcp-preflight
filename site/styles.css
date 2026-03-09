@@ -11,13 +11,13 @@
   --text: #f4f6f8;
   --text-soft: #b4bac5;
   --text-faint: #7d8593;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.14);
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-  --shadow: 0 0 0 1px rgba(255, 255, 255, 0.015);
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.22);
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 3px;
+  --shadow: 0 0 0 1px rgba(255, 255, 255, 0.01);
   --success: #c8e3cf;
   --warning: #ddcfb0;
   --danger: #efc0be;
@@ -35,7 +35,7 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top center, rgba(255, 255, 255, 0.045), transparent 34rem),
+    radial-gradient(circle at top center, rgba(255, 255, 255, 0.018), transparent 26rem),
     linear-gradient(180deg, #09090b 0%, #0a0b0d 100%);
   color: var(--text);
   font-family: "Inter", sans-serif;
@@ -50,9 +50,9 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.035), transparent 24rem),
-    radial-gradient(circle at 80% 18%, rgba(255, 255, 255, 0.02), transparent 24rem);
-  opacity: 0.8;
+    radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.012), transparent 20rem),
+    radial-gradient(circle at 80% 18%, rgba(255, 255, 255, 0.008), transparent 20rem);
+  opacity: 0.56;
 }
 
 a {
@@ -79,7 +79,7 @@ pre {
 code {
   padding: 0.12rem 0.36rem;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   background: rgba(255, 255, 255, 0.035);
   color: #f7f8fb;
   font-size: 0.92em;
@@ -90,7 +90,7 @@ pre {
   overflow-x: auto;
   padding: 0.95rem 1rem;
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   background: linear-gradient(180deg, rgba(11, 12, 14, 0.98), rgba(9, 10, 12, 0.98));
   color: #f2f3f5;
   font-size: 0.85rem;
@@ -106,20 +106,19 @@ pre {
   position: sticky;
   top: 0;
   z-index: 40;
-  padding: 0.85rem 0 0;
+  padding: 0.62rem 0 0;
 }
 
 .topbar .shell {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  min-height: 4.25rem;
-  padding: 0.9rem 1rem;
+  gap: 1rem;
+  min-height: 3.35rem;
+  padding: 0.62rem 0.8rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
-  background: linear-gradient(180deg, rgba(13, 14, 17, 0.92), rgba(10, 11, 13, 0.96));
-  backdrop-filter: blur(18px);
+  background: linear-gradient(180deg, rgba(13, 14, 17, 0.96), rgba(10, 11, 13, 0.98));
   box-shadow: var(--shadow);
 }
 
@@ -158,7 +157,7 @@ pre {
 .nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .nav a {
@@ -173,7 +172,7 @@ pre {
 }
 
 .hero {
-  padding: 1.35rem 0 1rem;
+  padding: 1rem 0 0.8rem;
 }
 
 .hero-grid,
@@ -186,7 +185,7 @@ pre {
 .signal-grid,
 .bento-grid {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.6rem;
 }
 
 .hero-grid {
@@ -207,9 +206,7 @@ pre {
 .decision-card {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.028), transparent 18rem),
-    linear-gradient(180deg, var(--bg-panel-strong), var(--bg-panel));
+  background: linear-gradient(180deg, rgba(17, 19, 22, 0.98), rgba(11, 12, 15, 0.98));
   box-shadow: var(--shadow);
 }
 
@@ -224,16 +221,16 @@ pre {
 .signal-card,
 .finding-frame,
 .decision-card {
-  padding: 1.1rem;
+  padding: 0.82rem;
 }
 
 .hero-copy {
-  padding: 1.45rem;
+  padding: 1rem;
 }
 
 .home-hero .hero-copy {
   display: grid;
-  gap: 1rem;
+  gap: 0.82rem;
 }
 
 .kicker,
@@ -245,10 +242,10 @@ pre {
   align-items: center;
   width: fit-content;
   max-width: 100%;
-  padding: 0.3rem 0.56rem;
+  padding: 0.18rem 0.38rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.015);
   color: #d7dce3;
   font-size: 0.67rem;
   font-weight: 700;
@@ -308,7 +305,7 @@ pre {
 .lead,
 .page-title p {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.95rem;
   max-width: 40rem;
 }
 
@@ -322,7 +319,7 @@ pre {
 .status-row,
 .hero-links {
   display: flex;
-  gap: 0.65rem;
+  gap: 0.35rem;
   flex-wrap: wrap;
 }
 
@@ -337,7 +334,7 @@ pre {
 
 .hero-links a {
   color: var(--text-faint);
-  font-size: 0.84rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
 }
@@ -351,21 +348,21 @@ pre {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.55rem;
-  padding: 0.62rem 0.95rem;
+  min-height: 1.9rem;
+  padding: 0.34rem 0.56rem;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 2px;
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 650;
   letter-spacing: -0.02em;
   transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
 }
 
 .button {
-  background: #f5f6f8;
-  border-color: rgba(255, 255, 255, 0.9);
-  color: #0a0b0d;
+  background: #f2f3f5;
+  border-color: rgba(255, 255, 255, 0.82);
+  color: #090a0c;
 }
 
 .button:hover {
@@ -374,7 +371,7 @@ pre {
 }
 
 .button-secondary {
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.015);
   color: var(--text);
 }
 
@@ -388,12 +385,12 @@ pre {
   display: inline-flex;
   align-items: center;
   gap: 0.38rem;
-  padding: 0.42rem 0.62rem;
+  padding: 0.24rem 0.38rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.012);
   color: var(--text-soft);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
 }
 
 .pill strong {
@@ -402,19 +399,19 @@ pre {
 
 .hero-route-list {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.35rem;
 }
 
 .hero-route {
   display: grid;
-  grid-template-columns: 5.2rem minmax(0, 1fr);
-  gap: 0.8rem;
+  grid-template-columns: 4.6rem minmax(0, 1fr);
+  gap: 0.55rem;
   align-items: center;
-  min-height: 3rem;
-  padding: 0.72rem 0.8rem;
+  min-height: 2.15rem;
+  padding: 0.46rem 0.52rem;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.025);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.012);
 }
 
 .hero-route span {
@@ -431,14 +428,14 @@ pre {
   background: transparent;
   overflow-wrap: anywhere;
   color: var(--text);
-  font-size: 0.83rem;
+  font-size: 0.79rem;
 }
 
 .decision-card {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.75rem;
   align-content: start;
-  padding: 1rem;
+  padding: 0.82rem;
 }
 
 .decision-list {
@@ -450,10 +447,10 @@ pre {
 }
 
 .decision-item {
-  padding: 0.85rem 0.9rem;
+  padding: 0.75rem 0.78rem;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.015);
 }
 
 .decision-item header {
@@ -465,7 +462,7 @@ pre {
 
 .decision-item strong {
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
@@ -485,9 +482,9 @@ pre {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.2rem 0.46rem;
+  padding: 0.16rem 0.36rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 2px;
   font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -508,7 +505,7 @@ pre {
 }
 
 .section {
-  padding: 1rem 0;
+  padding: 0.85rem 0;
 }
 
 .section-head {
@@ -516,7 +513,7 @@ pre {
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 0.95rem;
+  margin-bottom: 0.72rem;
 }
 
 .section-head p {
@@ -550,8 +547,8 @@ pre {
 .path-card h3,
 .signal-card h3,
 .finding-frame h2 {
-  margin-top: 0.58rem;
-  font-size: 1.18rem;
+  margin-top: 0.45rem;
+  font-size: 1.08rem;
   line-height: 1.08;
 }
 
@@ -568,22 +565,18 @@ pre {
 .path-card.featured,
 .compare-card.featured {
   border-color: var(--line-strong);
-  background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), transparent 18rem),
-    linear-gradient(180deg, rgba(18, 20, 24, 0.98), rgba(12, 13, 16, 0.98));
+  background: linear-gradient(180deg, rgba(18, 20, 24, 0.98), rgba(12, 13, 16, 0.98));
 }
 
 .section-contrast {
-  padding: 1rem;
+  padding: 0.85rem;
   border: 1px solid var(--line);
-  border-radius: calc(var(--radius-lg) + 2px);
-  background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.026), transparent 18rem),
-    linear-gradient(180deg, rgba(14, 16, 19, 0.98), rgba(10, 11, 13, 0.98));
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(14, 16, 19, 0.98), rgba(10, 11, 13, 0.98));
 }
 
 .finding-step {
-  padding: 0.85rem 0;
+  padding: 0.72rem 0;
   border-top: 1px solid var(--line);
 }
 
@@ -592,20 +585,20 @@ pre {
 }
 
 .page {
-  padding: 1rem 0 2.4rem;
+  padding: 0.85rem 0 2rem;
 }
 
 .page-title {
-  margin-bottom: 0.95rem;
+  margin-bottom: 0.72rem;
 }
 
 .prose-card {
-  padding: 1.25rem;
+  padding: 1rem;
 }
 
 .prose {
   display: grid;
-  gap: 0.95rem;
+  gap: 0.8rem;
 }
 
 .prose h2 {
@@ -618,8 +611,8 @@ pre {
 
 .cta-band {
   display: grid;
-  gap: 0.75rem;
-  padding: 1.25rem;
+  gap: 0.6rem;
+  padding: 0.85rem;
 }
 
 .cta-band h2 {
@@ -627,7 +620,7 @@ pre {
 }
 
 .footer {
-  padding: 1.25rem 0 2.4rem;
+  padding: 1rem 0 2rem;
 }
 
 .footer .shell {
@@ -653,14 +646,14 @@ pre {
 
 .small {
   margin: 0;
-  font-size: 0.86rem;
+  font-size: 0.8rem;
 }
 
 /* Homepage-specific layout */
 
 .hero-main {
   display: grid;
-  gap: 1rem;
+  gap: 0.82rem;
 }
 
 .hero-main .lead {
@@ -669,7 +662,7 @@ pre {
 
 .console-panel {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.72rem;
 }
 
 .console-head {
@@ -690,17 +683,17 @@ pre {
 .bento-card p {
   margin: 0.35rem 0 0;
   color: var(--text-soft);
-  font-size: 0.9rem;
+  font-size: 0.84rem;
 }
 
 .status-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 3.5rem;
-  padding: 0.28rem 0.52rem;
+  min-width: 3.1rem;
+  padding: 0.12rem 0.32rem;
   border: 1px solid rgba(239, 192, 190, 0.18);
-  border-radius: 999px;
+  border-radius: 2px;
   background: rgba(169, 59, 59, 0.12);
   color: var(--danger);
   font-size: 0.68rem;
@@ -710,20 +703,20 @@ pre {
 }
 
 .console-run {
-  border-radius: 12px;
+  border-radius: 2px;
 }
 
 .console-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.65rem;
+  gap: 0.45rem;
 }
 
 .console-summary > div {
-  padding: 0.75rem 0.8rem;
+  padding: 0.52rem 0.56rem;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.025);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.015);
 }
 
 .console-summary span {
@@ -743,16 +736,16 @@ pre {
 
 .finding-stream {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.38rem;
 }
 
 .finding-row {
   display: grid;
   gap: 0.34rem;
-  padding: 0.78rem 0.82rem;
+  padding: 0.56rem 0.58rem;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.015);
 }
 
 .finding-row header {
@@ -795,7 +788,7 @@ pre {
 
 .bento-card {
   display: grid;
-  gap: 0.85rem;
+  gap: 0.72rem;
 }
 
 .bento-card.wide {
@@ -817,7 +810,7 @@ pre {
 .mini-matrix li {
   display: grid;
   gap: 0.22rem;
-  padding: 0.8rem 0;
+  padding: 0.64rem 0;
   border-top: 1px solid var(--line);
 }
 
@@ -836,7 +829,7 @@ pre {
 
 .surface-topic {
   color: var(--text);
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
@@ -845,7 +838,7 @@ pre {
 .dense-list li,
 .mini-matrix li {
   color: var(--text-soft);
-  font-size: 0.9rem;
+  font-size: 0.84rem;
 }
 
 .matrix-block {
@@ -856,8 +849,8 @@ pre {
 .matrix-line {
   display: grid;
   grid-template-columns: 6.2rem 1fr;
-  gap: 0.8rem;
-  padding: 0.78rem 0;
+  gap: 0.6rem;
+  padding: 0.62rem 0;
   border-top: 1px solid var(--line);
 }
 
@@ -873,7 +866,7 @@ pre {
 .matrix-line strong,
 .matrix-line span:first-child {
   color: var(--text);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -882,7 +875,7 @@ pre {
 .matrix-line span:last-child,
 .matrix-line a {
   color: var(--text-soft);
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   text-decoration: none;
 }
 
@@ -893,7 +886,7 @@ pre {
 .workflow-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-  gap: 0.9rem;
+  gap: 0.6rem;
 }
 
 .subtle {
@@ -930,12 +923,12 @@ pre {
   }
 
   .topbar {
-    padding-top: 0.55rem;
+    padding-top: 0.45rem;
   }
 
   .topbar .shell {
     align-items: flex-start;
-    padding: 0.82rem;
+    padding: 0.68rem;
   }
 
   .nav {
@@ -973,7 +966,7 @@ pre {
   .signal-card,
   .finding-frame,
   .decision-card {
-    padding: 1rem;
+    padding: 0.82rem;
   }
 
   .action-row,

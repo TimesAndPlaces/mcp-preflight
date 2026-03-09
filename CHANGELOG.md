@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.14 - 2026-03-09
+- Flattened the public site into a sharper, more square developer-tool layout with smaller radii, denser spacing, and less decorative chrome.
+- Tightened the homepage route rows, CTA controls, summary panels, and content cards so the site reads more like a workstation UI and less like a soft marketing page.
+- Matched the VS Code overview surface to the sharper site language by reducing padding, flattening modules, and replacing rounded controls with tighter operator-style components.
+
 ## 0.1.13 - 2026-03-08
 - Rebuilt the homepage around a denser product-first bento layout with tighter geometry, less decorative chrome, and a more developer-tool presentation.
 - Replaced the shared site styling with smaller radii, hairline borders, reduced gradients, and a more consistent dark workstation feel across secondary pages.

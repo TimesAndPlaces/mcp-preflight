@@ -653,34 +653,30 @@ function renderOverviewHtml(
             --bg: #09090b;
             --surface: #101215;
             --surface-strong: #14161a;
-            --surface-inline: rgba(255, 255, 255, 0.035);
-            --line: rgba(255, 255, 255, 0.08);
-            --line-strong: rgba(255, 255, 255, 0.14);
+            --surface-inline: rgba(255, 255, 255, 0.015);
+            --line: rgba(255, 255, 255, 0.12);
+            --line-strong: rgba(255, 255, 255, 0.22);
             --ink: #f4f6f8;
             --ink-soft: #b7bcc5;
             --ink-faint: #7f8793;
           }
           body {
             margin: 0;
-            padding: ${isSidebar ? "10px" : "14px"};
+            padding: ${isSidebar ? "6px" : "8px"};
             font-family: Inter, "Segoe UI", sans-serif;
             color: var(--ink);
-            background:
-              radial-gradient(circle at top, rgba(255, 255, 255, 0.04), transparent 18rem),
-              linear-gradient(180deg, #09090a 0%, #0b0c0e 100%);
+            background: linear-gradient(180deg, #09090a 0%, #0b0c0e 100%);
           }
           h1, h2, h3, p, ul { margin: 0; }
-          .frame { display: grid; gap: 10px; }
+          .frame { display: grid; gap: 8px; }
           .surface {
             border: 1px solid var(--line);
-            border-radius: 12px;
-            background:
-              radial-gradient(circle at top left, rgba(255, 255, 255, 0.03), transparent 12rem),
-              linear-gradient(180deg, rgba(18, 20, 24, 0.98), rgba(13, 14, 17, 0.98));
+            border-radius: 2px;
+            background: linear-gradient(180deg, rgba(18, 20, 24, 0.98), rgba(13, 14, 17, 0.98));
           }
           .masthead,
           .module {
-            padding: ${isSidebar ? "12px" : "14px"};
+            padding: ${isSidebar ? "8px" : "10px"};
           }
           .masthead-top {
             display: grid;
@@ -691,27 +687,27 @@ function renderOverviewHtml(
           .brand {
             display: grid;
             grid-template-columns: auto 1fr;
-            gap: 12px;
+            gap: 8px;
             align-items: start;
           }
           .brand-mark {
             width: ${isSidebar ? "38px" : "42px"};
             height: ${isSidebar ? "38px" : "42px"};
-            border-radius: 10px;
+            border-radius: 2px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.025);
+            background: rgba(255, 255, 255, 0.01);
             border: 1px solid var(--line);
           }
           .module-grid {
             display: grid;
             grid-template-columns: ${isSidebar ? "1fr" : "minmax(0, 1.2fr) minmax(0, 0.9fr)"};
-            gap: 10px;
+            gap: 6px;
           }
           .stack {
             display: grid;
-            gap: 10px;
+            gap: 6px;
           }
           .eyebrow,
           .mode-chip,
@@ -722,10 +718,10 @@ function renderOverviewHtml(
             align-items: center;
             width: fit-content;
             max-width: 100%;
-            padding: 4px 8px;
+            padding: 2px 5px;
             border: 1px solid var(--line);
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.03);
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.015);
             font-size: 10px;
             font-weight: 700;
             letter-spacing: 0.09em;
@@ -748,7 +744,7 @@ function renderOverviewHtml(
           }
           .masthead-copy h1 {
             margin-top: 8px;
-            font-size: ${isSidebar ? "20px" : "22px"};
+            font-size: ${isSidebar ? "19px" : "20px"};
             line-height: 1.02;
             letter-spacing: -0.04em;
           }
@@ -757,8 +753,8 @@ function renderOverviewHtml(
           .module-foot,
           .meta-copy {
             color: var(--ink-soft);
-            line-height: 1.45;
-            font-size: 12px;
+            line-height: 1.4;
+            font-size: 11px;
           }
           .masthead-copy p {
             margin-top: 8px;
@@ -768,21 +764,21 @@ function renderOverviewHtml(
           .button-row,
           button {
             display: flex;
-            gap: 8px;
+            gap: 4px;
             flex-wrap: wrap;
           }
           .toolbar {
-            margin-top: 12px;
+            margin-top: 8px;
           }
           button {
             appearance: none;
             border: 1px solid var(--line);
-            border-radius: 10px;
-            padding: 7px 10px;
+            border-radius: 2px;
+            padding: 5px 7px;
             background: #f3f4f6;
             color: #0a0a0b;
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 10px;
+            font-weight: 650;
             letter-spacing: -0.01em;
             cursor: pointer;
           }
@@ -794,14 +790,14 @@ function renderOverviewHtml(
             border-color: var(--line-strong);
           }
           .stat-grid {
-            margin-top: 12px;
+            margin-top: 8px;
             display: grid;
             grid-template-columns: ${isSidebar ? "repeat(2, minmax(0, 1fr))" : "repeat(4, minmax(0, 1fr))"};
-            gap: 8px;
+            gap: 4px;
           }
           .stat {
-            padding: 10px;
-            border-radius: 10px;
+            padding: 7px;
+            border-radius: 2px;
             border: 1px solid var(--line);
             background: var(--surface-inline);
           }
@@ -825,36 +821,36 @@ function renderOverviewHtml(
             gap: 10px;
           }
           .module h2 {
-            margin-top: 10px;
-            font-size: 20px;
+            margin-top: 8px;
+            font-size: 16px;
             font-weight: 700;
             line-height: 1.04;
             letter-spacing: -0.04em;
           }
           .module-copy {
-            margin-top: 8px;
+            margin-top: 7px;
           }
           .button-row {
             display: flex;
-            gap: 8px;
+            gap: 4px;
             flex-wrap: wrap;
-            margin-top: 12px;
+            margin-top: 8px;
           }
           .module-foot,
           .meta-copy {
-            margin-top: 10px;
+            margin-top: 8px;
           }
           .row-table,
           .line-list {
             display: grid;
             gap: 0;
-            margin-top: 12px;
+            margin-top: 10px;
           }
           .row,
           .line-list li {
             display: grid;
             gap: 3px;
-            padding: 9px 0;
+            padding: 7px 0;
             border-top: 1px solid var(--line);
           }
           .row:first-child,
