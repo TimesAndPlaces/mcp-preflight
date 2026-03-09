@@ -770,6 +770,49 @@ function renderOverviewHtml(
           .toolbar {
             margin-top: 8px;
           }
+          .scan-rail {
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 4px;
+          }
+          .scan-node {
+            display: grid;
+            gap: 2px;
+            padding: 6px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.015);
+            transition: border-color 160ms ease, background-color 160ms ease;
+          }
+          .scan-node span {
+            color: var(--ink-faint);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+          }
+          .scan-node strong {
+            font-size: 11px;
+            letter-spacing: -0.02em;
+            text-transform: lowercase;
+          }
+          .scan-node.active {
+            border-color: var(--line-strong);
+            background: rgba(255, 255, 255, 0.05);
+          }
+          .scan-meter {
+            position: relative;
+            margin-top: 6px;
+            height: 2px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.08);
+          }
+          .scan-meter span {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 26%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.86), transparent);
+            animation: scanMeter 2.2s linear infinite;
+          }
           button {
             appearance: none;
             border: 1px solid var(--line);
@@ -881,14 +924,27 @@ function renderOverviewHtml(
             color: var(--ink-soft);
             font-size: 12px;
           }
+          @keyframes scanMeter {
+            0% { transform: translateX(-140%); }
+            100% { transform: translateX(360%); }
+          }
           @media (max-width: 640px) {
             .masthead-top,
             .brand,
-            .module-grid {
+            .module-grid,
+            .scan-rail {
               grid-template-columns: 1fr;
             }
             .stat-grid {
               grid-template-columns: 1fr;
+            }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .scan-meter span {
+              animation: none;
+            }
+            .scan-node {
+              transition: none;
             }
           }
         </style>
@@ -912,6 +968,13 @@ function renderOverviewHtml(
               <button class="secondary" data-command="scanCurrentFile">Run file scan</button>
               <button class="secondary" data-command="refresh">Refresh</button>
             </div>
+            <div class="scan-rail" aria-label="Scan stage rail">
+              <div class="scan-node active" data-scan-node><span>01</span><strong>config</strong></div>
+              <div class="scan-node" data-scan-node><span>02</span><strong>scope</strong></div>
+              <div class="scan-node" data-scan-node><span>03</span><strong>text</strong></div>
+              <div class="scan-node" data-scan-node><span>04</span><strong>fixes</strong></div>
+            </div>
+            <div class="scan-meter" aria-hidden="true"><span></span></div>
             <div class="stat-grid">
               <div class="stat">
                 <strong>${activity.scans.total}</strong>
@@ -1012,6 +1075,16 @@ function renderOverviewHtml(
             button.addEventListener("click", () => {
               vscode.postMessage({ command: button.getAttribute("data-command") });
             });
+          }
+          const scanNodes = Array.from(document.querySelectorAll("[data-scan-node]"));
+          if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && scanNodes.length > 0) {
+            let activeIndex = 0;
+            window.setInterval(() => {
+              activeIndex = (activeIndex + 1) % scanNodes.length;
+              scanNodes.forEach((node, index) => {
+                node.classList.toggle("active", index === activeIndex);
+              });
+            }, 2200);
           }
         </script>
       </body>

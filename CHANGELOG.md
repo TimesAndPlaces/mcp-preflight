@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.15 - 2026-03-09
+- Added a structured operating strip and an animated scan-trace module to the homepage so the site feels more like a tool surface than a static landing page.
+- Tightened section spacing and hierarchy across the public site while keeping the motion restrained and functional.
+- Added a matching scan-stage rail to the VS Code overview so the extension surface and website share the same operator-style visual language.
+
 ## 0.1.14 - 2026-03-09
 - Flattened the public site into a sharper, more square developer-tool layout with smaller radii, denser spacing, and less decorative chrome.
 - Tightened the homepage route rows, CTA controls, summary panels, and content cards so the site reads more like a workstation UI and less like a soft marketing page.

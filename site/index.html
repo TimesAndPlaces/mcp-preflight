@@ -6,7 +6,7 @@
   <title>MCP Preflight | Local static scanner for MCP setup and workflow trust</title>
   <meta name="description" content="MCP Preflight reviews MCP config, prompts, tool descriptions, and repo manifests before first trust. The default scan stays local and static.">
   <link rel="canonical" href="https://mcppreflight.com/">
-  <link rel="stylesheet" href="/styles.css?v=20260309-1">
+  <link rel="stylesheet" href="/styles.css?v=20260309-2">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -30,11 +30,64 @@
   </header>
   <main class="shell">
     <section class="hero home-hero">
+      <div class="system-strip" aria-label="Product operating strip">
+        <article class="system-cell">
+          <span class="system-label">Mode</span>
+          <strong>Static review</strong>
+          <small>Reads setup files before first run.</small>
+        </article>
+        <article class="system-cell">
+          <span class="system-label">Default</span>
+          <strong>Local only</strong>
+          <small>No tool execution. No server connection.</small>
+        </article>
+        <article class="system-cell">
+          <span class="system-label">Scope</span>
+          <strong>Config, prompts, manifests</strong>
+          <small>Focused on the trust surface around MCP.</small>
+        </article>
+        <article class="system-cell">
+          <span class="system-label">Output</span>
+          <strong>Readable findings</strong>
+          <small>Plain-language fixes, deterministic local verdicts.</small>
+        </article>
+      </div>
       <div class="hero-grid">
         <article class="hero-copy hero-main">
           <p class="kicker">Local static analysis for MCP</p>
           <h1>Verify MCP setup before you run it.</h1>
           <p class="lead">Review config, prompts, tool descriptions, and manifests for risky patterns and over-scoped access. The default scan stays on disk, does not execute tools, and does not connect to the server.</p>
+          <section class="trace-frame" aria-label="Inspection flow">
+            <div class="trace-head">
+              <p class="eyebrow">Inspection flow</p>
+              <span class="trace-status" data-trace-label>Parse config</span>
+            </div>
+            <div class="trace-steps">
+              <div class="trace-step is-active" data-trace-step>
+                <span class="trace-index">01</span>
+                <strong>Parse config</strong>
+                <small>Load MCP config and local workspace context.</small>
+              </div>
+              <div class="trace-step" data-trace-step>
+                <span class="trace-index">02</span>
+                <strong>Check scope</strong>
+                <small>Inspect env, path, launcher, and manifest breadth.</small>
+              </div>
+              <div class="trace-step" data-trace-step>
+                <span class="trace-index">03</span>
+                <strong>Read text surfaces</strong>
+                <small>Review prompt and tool language for risky instructions.</small>
+              </div>
+              <div class="trace-step" data-trace-step>
+                <span class="trace-index">04</span>
+                <strong>Emit fixes</strong>
+                <small>Return findings with direct next actions.</small>
+              </div>
+            </div>
+            <div class="trace-meter" aria-hidden="true">
+              <span></span>
+            </div>
+          </section>
           <div class="hero-route-list">
             <div class="hero-route">
               <span>npm</span>
@@ -73,6 +126,24 @@
             </div>
             <span class="status-chip">fail</span>
           </div>
+          <div class="scan-rail" aria-label="Scan stage rail">
+            <div class="scan-node is-active" data-scan-node>
+              <span>01</span>
+              <strong>config</strong>
+            </div>
+            <div class="scan-node" data-scan-node>
+              <span>02</span>
+              <strong>scope</strong>
+            </div>
+            <div class="scan-node" data-scan-node>
+              <span>03</span>
+              <strong>text</strong>
+            </div>
+            <div class="scan-node" data-scan-node>
+              <span>04</span>
+              <strong>fixes</strong>
+            </div>
+          </div>
           <pre class="console-run">mcp-preflight scan /workspace/agent-repo</pre>
           <div class="console-summary">
             <div>
@@ -89,7 +160,7 @@
             </div>
           </div>
           <div class="finding-stream">
-            <article class="finding-row">
+            <article class="finding-row is-active" data-finding-row>
               <header>
                 <strong>Remote MCP URL uses insecure transport</strong>
                 <span class="severity severity-error">error</span>
@@ -97,7 +168,7 @@
               <p><code>http://127.0.0.1:8080/mcp</code> with credentials in the URL</p>
               <small>Move auth into headers or env-backed fields and switch to HTTPS before first use.</small>
             </article>
-            <article class="finding-row">
+            <article class="finding-row" data-finding-row>
               <header>
                 <strong>Environment passthrough is broader than needed</strong>
                 <span class="severity severity-warning">warning</span>
@@ -105,7 +176,7 @@
               <p><code>inheritEnv=true</code> plus named token forwarding</p>
               <small>Disable blanket inheritance and pass only the specific variables the server needs.</small>
             </article>
-            <article class="finding-row">
+            <article class="finding-row" data-finding-row>
               <header>
                 <strong>Floating launcher deserves review</strong>
                 <span class="severity severity-warning">warning</span>
@@ -273,5 +344,38 @@
       </div>
     </div>
   </footer>
+  <script>
+    (() => {
+      const labels = ["Parse config", "Check scope", "Read text surfaces", "Emit fixes"];
+      const traceSteps = Array.from(document.querySelectorAll("[data-trace-step]"));
+      const scanNodes = Array.from(document.querySelectorAll("[data-scan-node]"));
+      const findingRows = Array.from(document.querySelectorAll("[data-finding-row]"));
+      const traceLabel = document.querySelector("[data-trace-label]");
+      if (traceSteps.length === 0 || scanNodes.length === 0 || !traceLabel) {
+        return;
+      }
+      let index = 0;
+      const sync = () => {
+        traceSteps.forEach((step, stepIndex) => {
+          step.classList.toggle("is-active", stepIndex === index);
+        });
+        scanNodes.forEach((node, nodeIndex) => {
+          node.classList.toggle("is-active", nodeIndex === index);
+        });
+        findingRows.forEach((row, rowIndex) => {
+          row.classList.toggle("is-active", rowIndex === (index % findingRows.length));
+        });
+        traceLabel.textContent = labels[index] ?? labels[0];
+      };
+      sync();
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
+      window.setInterval(() => {
+        index = (index + 1) % traceSteps.length;
+        sync();
+      }, 2200);
+    })();
+  </script>
 </body>
 </html>

@@ -172,7 +172,7 @@ pre {
 }
 
 .hero {
-  padding: 1rem 0 0.8rem;
+  padding: 0.78rem 0 0.72rem;
 }
 
 .hero-grid,
@@ -191,6 +191,43 @@ pre {
 .hero-grid {
   grid-template-columns: minmax(0, 1.18fr) minmax(21rem, 0.82fr);
   align-items: stretch;
+}
+
+.system-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin-bottom: 0.56rem;
+}
+
+.system-cell {
+  display: grid;
+  gap: 0.2rem;
+  min-height: 4.35rem;
+  padding: 0.56rem 0.62rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(14, 16, 18, 0.98), rgba(10, 11, 13, 0.98));
+}
+
+.system-label {
+  color: var(--text-faint);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.system-cell strong {
+  font-size: 0.86rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.system-cell small {
+  color: var(--text-soft);
+  font-size: 0.76rem;
+  line-height: 1.35;
 }
 
 .hero-copy,
@@ -225,12 +262,12 @@ pre {
 }
 
 .hero-copy {
-  padding: 1rem;
+  padding: 0.88rem;
 }
 
 .home-hero .hero-copy {
   display: grid;
-  gap: 0.82rem;
+  gap: 0.72rem;
 }
 
 .kicker,
@@ -305,8 +342,8 @@ pre {
 .lead,
 .page-title p {
   margin: 0;
-  font-size: 0.95rem;
-  max-width: 40rem;
+  font-size: 0.93rem;
+  max-width: 41rem;
 }
 
 .highlight {
@@ -324,12 +361,12 @@ pre {
 }
 
 .action-row {
-  margin-top: 0.15rem;
+  margin-top: 0;
 }
 
 .status-row,
 .hero-links {
-  margin-top: 0.1rem;
+  margin-top: 0;
 }
 
 .hero-links a {
@@ -348,12 +385,12 @@ pre {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 1.9rem;
-  padding: 0.34rem 0.56rem;
+  min-height: 1.8rem;
+  padding: 0.3rem 0.5rem;
   border: 1px solid var(--line);
   border-radius: 2px;
   text-decoration: none;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 650;
   letter-spacing: -0.02em;
   transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
@@ -385,12 +422,12 @@ pre {
   display: inline-flex;
   align-items: center;
   gap: 0.38rem;
-  padding: 0.24rem 0.38rem;
+  padding: 0.2rem 0.34rem;
   border: 1px solid var(--line);
   border-radius: 2px;
   background: rgba(255, 255, 255, 0.012);
   color: var(--text-soft);
-  font-size: 0.72rem;
+  font-size: 0.69rem;
 }
 
 .pill strong {
@@ -399,16 +436,16 @@ pre {
 
 .hero-route-list {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.28rem;
 }
 
 .hero-route {
   display: grid;
   grid-template-columns: 4.6rem minmax(0, 1fr);
-  gap: 0.55rem;
+  gap: 0.5rem;
   align-items: center;
-  min-height: 2.15rem;
-  padding: 0.46rem 0.52rem;
+  min-height: 1.95rem;
+  padding: 0.4rem 0.48rem;
   border: 1px solid var(--line);
   border-radius: 2px;
   background: rgba(255, 255, 255, 0.012);
@@ -505,20 +542,20 @@ pre {
 }
 
 .section {
-  padding: 0.85rem 0;
+  padding: 0.72rem 0;
 }
 
 .section-head {
   display: flex;
   align-items: end;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.72rem;
+  gap: 0.8rem;
+  margin-bottom: 0.56rem;
 }
 
 .section-head p {
-  margin: 0.35rem 0 0;
-  max-width: 42rem;
+  margin: 0.28rem 0 0;
+  max-width: 38rem;
 }
 
 .cards,
@@ -611,16 +648,16 @@ pre {
 
 .cta-band {
   display: grid;
-  gap: 0.6rem;
-  padding: 0.85rem;
+  gap: 0.48rem;
+  padding: 0.76rem;
 }
 
 .cta-band h2 {
-  font-size: clamp(1.8rem, 3.4vw, 2.7rem);
+  font-size: clamp(1.55rem, 3vw, 2.25rem);
 }
 
 .footer {
-  padding: 1rem 0 2rem;
+  padding: 0.8rem 0 1.5rem;
 }
 
 .footer .shell {
@@ -629,7 +666,7 @@ pre {
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
-  padding-top: 1rem;
+  padding-top: 0.8rem;
   border-top: 1px solid var(--line);
 }
 
@@ -646,14 +683,14 @@ pre {
 
 .small {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
 }
 
 /* Homepage-specific layout */
 
 .hero-main {
   display: grid;
-  gap: 0.82rem;
+  gap: 0.68rem;
 }
 
 .hero-main .lead {
@@ -662,14 +699,98 @@ pre {
 
 .console-panel {
   display: grid;
-  gap: 0.72rem;
+  gap: 0.56rem;
+}
+
+.trace-frame {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.58rem 0.62rem 0.62rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background:
+    linear-gradient(180deg, rgba(12, 14, 16, 0.98), rgba(10, 11, 13, 0.98)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02), transparent 40%);
+}
+
+.trace-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.trace-status {
+  color: var(--text-soft);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.trace-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.32rem;
+}
+
+.trace-step {
+  display: grid;
+  gap: 0.2rem;
+  min-height: 5rem;
+  padding: 0.45rem 0.48rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.012);
+  transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.trace-step.is-active {
+  border-color: var(--line-strong);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.012);
+  transform: translateY(-1px);
+}
+
+.trace-index {
+  color: var(--text-faint);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.trace-step strong {
+  font-size: 0.82rem;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.trace-step small {
+  color: var(--text-soft);
+  font-size: 0.74rem;
+  line-height: 1.3;
+}
+
+.trace-meter {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.trace-meter span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 28%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+  animation: traceMeter 2.2s linear infinite;
 }
 
 .console-head {
   display: flex;
   align-items: start;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .console-head h2,
@@ -700,6 +821,41 @@ pre {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.scan-rail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.32rem;
+}
+
+.scan-node {
+  display: grid;
+  gap: 0.14rem;
+  padding: 0.34rem 0.38rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.012);
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.scan-node.is-active {
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.scan-node span {
+  color: var(--text-faint);
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scan-node strong {
+  font-size: 0.75rem;
+  line-height: 1.05;
+  text-transform: lowercase;
+  letter-spacing: -0.02em;
 }
 
 .console-run {
@@ -746,6 +902,14 @@ pre {
   border: 1px solid var(--line);
   border-radius: 2px;
   background: rgba(255, 255, 255, 0.015);
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.finding-row.is-active {
+  border-color: var(--line-strong);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+    rgba(255, 255, 255, 0.015);
 }
 
 .finding-row header {
@@ -893,7 +1057,19 @@ pre {
   color: var(--text-faint);
 }
 
+@keyframes traceMeter {
+  0% {
+    transform: translateX(-140%);
+  }
+  100% {
+    transform: translateX(360%);
+  }
+}
+
 @media (max-width: 1080px) {
+  .system-strip,
+  .trace-steps,
+  .scan-rail,
   .hero-grid,
   .workflow-grid,
   .bento-grid,
@@ -929,6 +1105,22 @@ pre {
   .topbar .shell {
     align-items: flex-start;
     padding: 0.68rem;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
+  .brand-copy strong {
+    font-size: 0.92rem;
+  }
+
+  .brand-copy span {
+    font-size: 0.76rem;
+  }
+
+  .system-cell {
+    min-height: auto;
   }
 
   .nav {
@@ -969,6 +1161,15 @@ pre {
     padding: 0.82rem;
   }
 
+  .trace-frame {
+    padding: 0.52rem;
+  }
+
+  .trace-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .action-row,
   .link-row,
   .hero-links,
@@ -1004,7 +1205,21 @@ pre {
 }
 
 @media (max-width: 520px) {
+  .trace-steps,
+  .scan-rail,
   .console-summary {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-meter span {
+    animation: none;
+  }
+
+  .trace-step,
+  .scan-node,
+  .finding-row {
+    transition: none;
   }
 }
