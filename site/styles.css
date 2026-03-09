@@ -203,8 +203,8 @@ pre {
 .system-cell {
   display: grid;
   gap: 0.2rem;
-  min-height: 4.35rem;
-  padding: 0.56rem 0.62rem;
+  min-height: 3.9rem;
+  padding: 0.5rem 0.58rem;
   border: 1px solid var(--line);
   border-radius: 2px;
   background: linear-gradient(180deg, rgba(14, 16, 18, 0.98), rgba(10, 11, 13, 0.98));
@@ -226,7 +226,7 @@ pre {
 
 .system-cell small {
   color: var(--text-soft);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   line-height: 1.35;
 }
 
@@ -1051,6 +1051,7 @@ pre {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
   gap: 0.6rem;
+  align-items: start;
 }
 
 .subtle {
@@ -1067,7 +1068,6 @@ pre {
 }
 
 @media (max-width: 1080px) {
-  .system-strip,
   .trace-steps,
   .scan-rail,
   .hero-grid,
@@ -1081,6 +1081,10 @@ pre {
   .path-grid,
   .signal-grid {
     grid-template-columns: 1fr;
+  }
+
+  .system-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .bento-card.wide {
@@ -1103,12 +1107,11 @@ pre {
   }
 
   .topbar .shell {
+    display: grid;
+    grid-template-columns: 1fr;
     align-items: flex-start;
+    gap: 0.48rem;
     padding: 0.68rem;
-  }
-
-  .brand {
-    width: 100%;
   }
 
   .brand-copy strong {
@@ -1125,18 +1128,15 @@ pre {
 
   .nav {
     width: 100%;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 0.1rem;
-    scrollbar-width: none;
-  }
-
-  .nav::-webkit-scrollbar {
-    display: none;
+    flex-wrap: wrap;
+    overflow: visible;
+    padding-bottom: 0;
+    gap: 0.3rem 0.55rem;
   }
 
   .nav a {
-    white-space: nowrap;
+    white-space: normal;
+    font-size: 0.8rem;
   }
 
   .hero h1 {
@@ -1168,6 +1168,11 @@ pre {
   .trace-head {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .trace-steps,
+  .scan-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .action-row,
@@ -1205,6 +1210,10 @@ pre {
 }
 
 @media (max-width: 520px) {
+  .system-strip {
+    grid-template-columns: 1fr;
+  }
+
   .trace-steps,
   .scan-rail,
   .console-summary {
