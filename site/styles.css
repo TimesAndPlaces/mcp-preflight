@@ -561,20 +561,24 @@ pre {
 .cards,
 .resource-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
 }
 
 .signal-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
 }
 
 .path-grid {
   grid-template-columns: 1.25fr 1fr 1fr;
+  align-items: start;
 }
 
 .page-grid,
 .split,
 .compare-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
 }
 
 .card h3,
@@ -584,9 +588,19 @@ pre {
 .path-card h3,
 .signal-card h3,
 .finding-frame h2 {
-  margin-top: 0.45rem;
+  margin-top: 0.32rem;
   font-size: 1.08rem;
   line-height: 1.08;
+}
+
+.page-card,
+.resource-card,
+.compare-card,
+.path-card,
+.signal-card {
+  display: grid;
+  align-content: start;
+  gap: 0.42rem;
 }
 
 .page-card ul,
@@ -595,7 +609,7 @@ pre {
 .path-card ul,
 .resource-card ul,
 .prose ul {
-  margin: 0.8rem 0 0;
+  margin: 0.52rem 0 0;
   padding-left: 1.05rem;
 }
 
@@ -622,20 +636,20 @@ pre {
 }
 
 .page {
-  padding: 0.85rem 0 2rem;
+  padding: 0.72rem 0 1.55rem;
 }
 
 .page-title {
-  margin-bottom: 0.72rem;
+  margin-bottom: 0.56rem;
 }
 
 .prose-card {
-  padding: 1rem;
+  padding: 0.86rem;
 }
 
 .prose {
   display: grid;
-  gap: 0.8rem;
+  gap: 0.64rem;
 }
 
 .prose h2 {
