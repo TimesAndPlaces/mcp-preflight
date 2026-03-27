@@ -176,6 +176,46 @@ This separation is not just a safety policy. It is an architectural reality: the
 
 ---
 
+---
+
+## The Ecosystem: What Else Is Out There
+
+As of March 2026, several projects address the agent memory problem from different angles. Understanding where they sit relative to file-based memory is useful for architectural decisions.
+
+### Honcho (plastic-labs/honcho)
+**1,179 stars | Python | MIT | Updated daily**
+
+The leading managed memory service for stateful agents. Architecture: a "memory agent" server that ingests messages, uses fine-tuned models to extract "Representations" of the author/user, and runs background "dreaming" processes that make deductions across stored messages. Exposes a natural-language chat endpoint for querying memory ("What learning styles does this user prefer?").
+
+Benchmark claims: SOTA on LongMem S (90.4%), LoCoMo (89.9%), top scores on BEAM. Claims to enable "reasoning across more tokens than the context window supports."
+
+**Key insight**: Honcho's dreaming concept — proactive background reasoning that pre-connects causes before retrieval time — addresses the causal decontextualization problem that RAG-style retrieval cannot solve. A RAG system retrieves semantically similar fragments; Honcho retrieves pre-reasoned conclusions. This is architecturally significant.
+
+**When to use**: Agent-user relationship memory (what does this user like, how do they communicate). Less applicable to agent self-knowledge (what have I learned, what are my commitments). Self-hosted via Postgres + pgvector + Python.
+
+### Membrane (GustyCube/membrane)
+**64 stars | Go | MIT | Updated 2026-03-25**
+
+A typed, revisable, decayable memory substrate for agentic systems. Architecture: episodic → semantic consolidation pipeline with explicit revision operations (supersede, fork, retract, merge, contest) and full provenance tracking. Memory salience decays over time unless reinforced by success. Trust-gated retrieval with sensitivity levels.
+
+**Key insight**: Membrane directly addresses the successor problem's authority-inflation failure mode. Instead of well-written entries accumulating unearned authority, entries can be formally superseded with an audit trail. The decay mechanism means entries that aren't reinforced by subsequent success automatically lose salience — addressing the durational authority problem structurally rather than through discipline.
+
+**When to use**: Agent self-knowledge systems where fact revision and provenance matter. The Go gRPC API + TypeScript/Python clients make it integrable with OpenClaw tooling. Likely the right upgrade path for `LESSONS.md` in production systems.
+
+**Gap**: No equivalent for LCM compaction stakes-compression.
+
+### The Three-Layer Succession Problem
+
+Running file-based memory + semantic retrieval + lossy compression simultaneously creates three distinct successor-distortion problems, articulated by sparkxu (Moltbook, March 2026):
+
+- **Layer 1 (LESSONS.md)**: Authority inflation — well-written entries are trusted more than they deserve. *Membrane addresses this via supersede/decay semantics.*
+- **Layer 2 (UAML semantic search)**: Causal decontextualization — embedding retrieval strips causal position. "This was central to the problem" looks identical at retrieval time to "this was tangentially mentioned." *Honcho's dreaming partially addresses this by pre-reasoning before retrieval.*
+- **Layer 3 (LCM summaries)**: Stakes deflation — compressed sessions understate operational weight of conclusions. *Unsolved.*
+
+Understanding which layer your memory architecture operates in determines which solutions are relevant.
+
+---
+
 ## Recommended Starting Point
 
 If you are setting up an OpenClaw agent for continuous autonomous operation:
