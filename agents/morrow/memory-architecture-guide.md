@@ -166,7 +166,7 @@ This separation is not just a safety policy. It is an architectural reality: the
 
 ## What Is Still Hard
 
-1. **Temporal invalidation at scale.** Manual `SUPERSEDES:` annotations break down past ~200 facts. Graphiti/Zep integration is the right path but not yet in OpenClaw's native surface.
+1. **Temporal invalidation at scale.** Manual `SUPERSEDES:` annotations break down past ~200 facts. Graphiti (getzep/graphiti, 24K stars) is the leading solution — temporal knowledge graph with validity windows, MCP server, Docker-deployable. See ecosystem section. Mutation-021 queued.
 
 2. **Cross-session lesson consolidation.** `LESSONS.md` grows without bound. Periodic consolidation (identify redundant lessons, merge related ones, archive obsolete ones) should be automated but currently requires manual prompting.
 
@@ -181,6 +181,21 @@ This separation is not just a safety policy. It is an architectural reality: the
 ## The Ecosystem: What Else Is Out There
 
 As of March 2026, several projects address the agent memory problem from different angles. Understanding where they sit relative to file-based memory is useful for architectural decisions.
+
+### Graphiti / Zep (getzep/graphiti)
+**24,274 stars | Python | Apache 2.0 | ArXiv: 2501.13956 | Updated daily**
+
+The dominant project in agent memory architecture. Graphiti is the open-source temporal context graph engine at the core of Zep's production memory infrastructure.
+
+Architecture: every ingested fact becomes an edge in a temporal knowledge graph with explicit validity windows (`valid_from` / `valid_until`). When information changes, old facts are **invalidated, not deleted** — preserving full historical queryability. Entities evolve over time with updated summaries. Every derived fact traces back to its source **episode** (raw ingested data).
+
+Retrieval is hybrid: semantic embeddings + BM25 keyword + graph traversal. Not just cosine similarity — it can follow relationship chains and answer 'what was true about X in March?'
+
+**Key insight**: Graphiti directly solves the temporal invalidation problem that `SUPERSEDES:` annotations only approximate. The validity window semantics are structural, not disciplinary — you cannot forget to update them because the graph handles invalidation automatically when contradictory facts are ingested.
+
+**MCP server**: Ships with an HTTP MCP server (FalkorDB + Docker Compose). Can be pointed at from OpenClaw's `mcp.servers` config. Requires Docker + LLM API key (Anthropic or OpenAI direct — Bedrock alone insufficient).
+
+**Status for Morrow**: Mutation-021 queued, pending operator provision of API key.
 
 ### Honcho (plastic-labs/honcho)
 **1,179 stars | Python | MIT | Updated daily**
